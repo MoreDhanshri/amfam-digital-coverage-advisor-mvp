@@ -1,0 +1,10 @@
+{
+    "name": "set_session_state",
+    "pythonFunction": {
+        "name": "set_session_state",
+        "pythonCode": "tools/set_session_state/python_function/python_code.py",
+        "description": "Sets internal session state variables such as _action_trigger, _escalation_reason, and current_topic for deterministic callback processing."
+    },
+    "executionType": "SYNCHRONOUS",
+    "displayName": "set_session_state"
+}

@@ -3,11 +3,15 @@
 ## 1. Agent Design
 
 ### 1.1 Architecture
-The **Digital Coverage Advisor MVP** is an enterprise conversational assistant on Google Customer Engagement Suite (CES / CX Agent Studio) designed to reduce consumer confusion regarding coverage options, limits, and deductibles on the American Family Insurance (AmFam) quote offers page (`www.amfam.com`).
+The **Digital Coverage Advisor MVP** is an enterprise conversational assistant on Google Customer Engagement Suite (CES / CX Agent Studio) designed to answer customer coverage questions, explain limits and deductibles, and reduce policy confusion on the American Family Insurance (AmFam) quote offers page (`www.amfam.com`).
 
-- **Modality**: `text` (optimized for desktop and mobile quote-flow embedding; 49% mobile traffic)
+- **Modality**: `text` (handles natural language chat and voice transcript inputs from frontend quote flow)
 - **Model**: `gemini-3-flash`
-- **Pattern**: Multi-Agent XML Taskflows with Deterministic Grounding and Behavioral Trigger Callbacks (Option B)
+- **Pattern**: Multi-Agent XML Taskflows with Deterministic FAQ Grounding (Option B)
+
+#### Frontend Decoupling Note:
+- Behavioral UI triggers (e.g., dead click detection, dwell timers, scroll milestones) are managed directly by the frontend UI layer. The frontend initiates conversations or sends natural language user queries directly into this agent.
+- The agent focuses purely on conversational intent classification, deterministic coverage explanation, and seamless human escalation routing.
 
 #### Agent Hierarchy:
 ```
@@ -20,21 +24,21 @@ root_advisor (Root Agent)
 
 #### Agent Roles & Responsibilities:
 1. **`root_advisor`**:
-   - Primary entry point for conversation and behavioral triggers (time-on-page, dead-clicks, scroll threshold).
-   - Manages greeting, session bootstrap, broad intent classification, and transfers to specialized sub-agents.
-   - Handles global session termination and unexpected/out-of-scope fallback routing.
+   - Primary conversational router and session entry point.
+   - Welcomes the user, classifies the user's inquiry, and transfers to specialized domain sub-agents (`auto_coverage_agent`, `home_coverage_agent`, `bundling_general_agent`, or `escalation_agent`).
+   - Manages session closure when the user is satisfied.
 2. **`auto_coverage_agent`**:
    - Manages all APEX Auto insurance inquiries (underwritten by Midvale Indemnity Company).
-   - Covers Liability (BI, PD, 100/300 limits), Physical Damage (Comp, Collision, Deductible trade-offs), Optional Add-ons (Roadside, Rental, OEM, Gap, PIP, MedPay), and Auto quote navigation/pricing factors.
+   - Covers Liability (Bodily Injury, Property Damage, 100/300 split limits), Physical Damage (Comprehensive, Collision, deductible trade-offs like \$250/\$500/\$1000, rate recalculation button), Optional Add-ons (Roadside Assistance, Rental Reimbursement, OEM Parts, Gap coverage, Road Trip, New Car Replacement, AD&D, MedPay, PIP), and Auto quote navigation.
 3. **`home_coverage_agent`**:
    - Manages all APEX Home insurance inquiries (underwritten by Homesite Insurance).
-   - Covers Core Coverages (A: Dwelling, B: Other Structures, C: Personal Property, D: Loss of Use, E: Personal Liability, F: Medical Payments), Deductibles (AOP, Wind/Hail, Hurricane), Optional Endorsements (Extended Replacement Cost, Water Backup, Service Line, Equipment Breakdown, Earthquake, Jewelry), and Home quote navigation.
+   - Covers Core Coverages (A: Dwelling Rebuild Cost vs Market Value, B: Other Structures, C: Personal Property Replacement Cost vs ACV, D: Loss of Use \$150k limit, E: Personal Liability, F: Medical Payments), Deductibles (All-Perils AOP, Wind/Hail percentage, Hurricane), Optional Endorsements (Extended Replacement Cost 25%/50%, Water Backup, Service Line, Equipment Breakdown, Earthquake, Scheduled Jewelry, Mold, Pet/Pool/Libel Liability), and Home quote navigation.
 4. **`bundling_general_agent`**:
-   - Manages multi-policy Auto + Home bundle discount inquiries.
-   - Handles general policy terms, payment methods (EFT, Credit/Debit, full pay vs installments), paperless enrollment, post-purchase changes, and "Does Not Qualify" (DNQ) guidance.
+   - Manages multi-product Auto + Home bundling discounts and overall savings.
+   - Handles general policy terms, payment options (EFT, Credit/Debit, full pay vs 12-month installments), paperless delivery, post-purchase changes, and "Does Not Qualify" (DNQ) guidance.
 5. **`escalation_agent`**:
-   - Provides deterministic, compliance-safe human escalation paths when users ask about complex dynamic rating calculations, underwriting approvals, competitor policy comparisons, or direct agent contact.
-   - Outputs mock click-to-call links (`tel:1-800-MYAMFAM`) and live customer support URLs.
+   - Handles deterministic escalation when users request live agent assistance, ask for dynamic exact premium recalculations (deferred to Phase 2), or request competitor policy comparisons (deferred to Phase 2).
+   - Provides clear AmFam contact center numbers (`1-800-MYAMFAM` / `1-800-692-6326`) and customer support portal guidance.
 
 ---
 
@@ -43,27 +47,23 @@ root_advisor (Root Agent)
 | Tool Name | Type | Purpose | Associated Agents |
 | :--- | :--- | :--- | :--- |
 | `end_session` | System (Built-in) | Gracefully terminates the session after farewell or user resolution. | `root_advisor`, `auto_coverage_agent`, `home_coverage_agent`, `bundling_general_agent`, `escalation_agent` |
-| `customize_response` | System (Built-in) | Allows dynamic response payload adjustments. | `root_advisor` |
+| `customize_response` | System (Built-in) | Allows response payload customization. | `root_advisor` |
 | `transfer_to_agent` | System (Built-in) | Executes deterministic handoffs between parent and sub-agents. | `root_advisor` |
-| `set_session_state` | Python Function | Deterministically sets session variables (e.g. `current_topic`, `escalation_reason`) from instructions or callbacks. | `root_advisor`, `auto_coverage_agent`, `home_coverage_agent`, `bundling_general_agent`, `escalation_agent` |
+| `set_session_state` | Python Function | Deterministically sets session variables (e.g. `_action_trigger`, `_escalation_reason`) from instructions or callbacks. | `root_advisor`, `auto_coverage_agent`, `home_coverage_agent`, `bundling_general_agent`, `escalation_agent` |
 
 ---
 
 ### 1.3 Routing Logic
 
 #### Inbound Routing (`root_advisor`):
-1. **Behavioral Triggers**:
-   - `<event>dead_click_coverage</event>`: Root identifies target coverage term and routes immediately to `auto_coverage_agent` or `home_coverage_agent`.
-   - `<event>time_on_page_30s</event>`: Root issues a warm, unobtrusive proactive assistance prompt ("Need help choosing your deductibles or understanding your coverage limits?").
-   - `<event>scroll_inactivity</event>`: Root provides quick-action chips for top FAQs (e.g., "What is Bodily Injury?", "How does Water Backup work?", "Bundling Discounts").
-2. **User Intents**:
-   - Auto-related inquiries $\rightarrow$ Transfer to `auto_coverage_agent`.
-   - Home-related inquiries $\rightarrow$ Transfer to `home_coverage_agent`.
-   - Bundling, payments, account, DNQ $\rightarrow$ Transfer to `bundling_general_agent`.
-   - Complex rating ("Why did my rate go up \$42?", "Compare me to State Farm") $\rightarrow$ Transfer to `escalation_agent`.
+1. **Auto Inquiries**: Transfer to `auto_coverage_agent` (e.g., "What is Bodily Injury?", "Collision deductible", "OEM coverage", "PIP").
+2. **Home Inquiries**: Transfer to `home_coverage_agent` (e.g., "What is Dwelling A?", "Water backup", "Wind/hail deductible", "Personal property").
+3. **Bundling & General**: Transfer to `bundling_general_agent` (e.g., "How does bundling save money?", "Payment options", "DNQ message").
+4. **Complex Pricing / Competitor / Live Agent**: Transfer to `escalation_agent` (e.g., "Recalculate my exact dollar rate", "Compare me with Geico", "I want to talk to an agent").
 
-#### Child Agent Handoffs:
-- Sub-agents declare parent return capabilities or lateral transfers back through root if the user switches domains (e.g., from Auto Deductible to Home Extended Replacement Cost).
+#### Lateral Transfers & Return to Root:
+- Sub-agents resolve follow-up questions within their domain.
+- If a user switches domains (e.g., asking about Auto PIP while in Home Dwelling discussion), sub-agents route to the appropriate peer or return to `root_advisor`.
 
 ---
 
@@ -73,9 +73,10 @@ root_advisor (Root Agent)
 | :--- | :--- | :--- | :--- | :--- |
 | `user_state` | `STRING` | User's geographic state (e.g. "WI", "MN", "FL") for state-specific nuances (PIP vs MedPay, Wind/Hail deductibles). | Session Parameter | Yes |
 | `active_tab` | `STRING` | Current active quote tab on the frontend (`"auto"` or `"home"`). | Session Parameter | Yes |
-| `current_topic` | `STRING` | Active conversation topic (`"liability"`, `"deductibles"`, `"dwelling"`, `"bundling"`, etc.). | Derived in Callback / Tool | **NEVER** |
-| `escalation_reason` | `STRING` | Reason for escalating to human support (`"dynamic_rating"`, `"competitor_comparison"`, `"complex_underwriting"`). | Derived in Callback / Tool | **NEVER** |
-| `quote_id` | `STRING` | Anonymized quote session identifier for telemetry correlation. | Session Parameter | Yes |
+| `quote_id` | `STRING` | Anonymized quote session identifier. | Session Parameter | Yes |
+| `current_topic` | `STRING` | Active conversation topic (`"liability"`, `"deductibles"`, `"dwelling"`, `"bundling"`, etc.). | Tool / Instruction | **NEVER** |
+| `_action_trigger` | `STRING` | Internal trigger for deterministic callback actions (`"escalate"`, `"farewell"`). | Tool / Callback | **NEVER** |
+| `_escalation_reason` | `STRING` | Internal reason for escalation (`"dynamic_rating"`, `"competitor_comparison"`, `"live_agent"`). | Tool / Callback | **NEVER** |
 
 ---
 
@@ -83,11 +84,11 @@ root_advisor (Root Agent)
 
 | Agent | Callback Type | Purpose & Implementation |
 | :--- | :--- | :--- |
-| `root_advisor` | `before_model_callback` | Intercepts session start and behavioral trigger events (`<event>...`), initializes session variables safely without overwriting existing state, and provides deterministic initial greetings. |
+| `root_advisor` | `before_model_callback` | Intercepts session start (`<event>session start</event>`), initializes default session variables safely without overwriting existing state, and provides a deterministic greeting. |
 | `root_advisor` | `after_model_callback` | Injects deterministic farewell text before `end_session` invocation if the model does not produce text before closing. |
 | `auto_coverage_agent` | `before_model_callback` | Contextualizes state-specific restrictions (e.g., UM/UIM rejection rules in MN/NE/SD/NH, PIP vs MedPay rules) based on `$context.variables.user_state`. |
 | `home_coverage_agent` | `before_model_callback` | Contextualizes mandatory Wind/Hail / Hurricane deductibles and Mold Property Protection availability (FL, GA, LA, MA, MS, NJ) based on `$context.variables.user_state`. |
-| `escalation_agent` | `after_model_callback` | Guarantees deterministic rendering of AmFam contact telephone links (`tel:1-800-MYAMFAM`) and live chat support redirect URLs. |
+| `escalation_agent` | `before_model_callback` | Guarantees deterministic rendering of AmFam contact telephone details (`1-800-MYAMFAM`) and human support guidance. |
 
 ---
 
@@ -126,8 +127,6 @@ root_advisor (Root Agent)
 | `BND-04` | Quote Auto-Saving & Session Persistence | Golden | Confirms quotes are automatically saved and accessible via account login. | P1 | MEDIUM | `navigation`, `quote_save`, `p1` |
 | `ESC-01` | Dynamic Rate Calculation Out-of-Scope Escalation | Golden | Intercepts requests for exact premium dollar calculations and routes to human support. | P0 | NO-GO | `escalation`, `compliance`, `p0` |
 | `ESC-02` | Competitor Policy Comparison Out-of-Scope Escalation | Golden | Explains Phase 1 boundary on competitor deck page analysis and routes to agent. | P0 | HIGH | `escalation`, `compliance`, `p0` |
-| `TRG-01` | Behavioral Trigger - Dead Click on Coverage Term | Golden | Handles proactive clarification triggered by repeated dead clicks on a term. | P1 | HIGH | `trigger`, `dead_click`, `p1` |
-| `TRG-02` | Behavioral Trigger - Time-on-Page (>30s) Inactivity Prompt | Golden | Handles gentle assistance prompt when user lingers on quote page. | P1 | MEDIUM | `trigger`, `time_on_page`, `p1` |
 | `SIM-01` | Multi-Turn Auto Coverage Exploration & Deductible Adjustment | Simulation | Multi-turn journey navigating from BI/PD to Collision deductible selection. | P0 | NO-GO | `sim`, `auto`, `multi_turn` |
 | `SIM-02` | Multi-Turn Home Endorsement & Water Backup Exploration | Simulation | Multi-turn exploration of Dwelling A, Water Backup, and Extended Replacement. | P0 | NO-GO | `sim`, `home`, `multi_turn` |
 | `SIM-03` | Cross-Domain Auto to Home Bundle Inquiry with Escalation Attempt | Simulation | User inquires about auto, switches to home bundle discount, then asks for exact rate quote. | P0 | NO-GO | `sim`, `cross_domain`, `escalation` |
@@ -164,14 +163,9 @@ profiles:
 
 ---
 
-### 3.2 Known Issues & Open Design Questions
-1. **Frontend Trigger Wire Protocol**: Quote page embedding needs to specify whether dead clicks send a synthetic user utterance (e.g. `"What is Bodily Injury?"`) or a platform event token (e.g. `<event>dead_click_bi</event>`). Callbacks support both patterns.
-2. **State Context Variable**: `user_state` is assumed to be injected via session context from the quote offers page; if absent, sub-agents provide generic non-state-specific answers while mentioning state variability.
-
----
-
-### 3.3 Changelog
+### 3.2 Changelog
 - **2026-08-20**: Initial requirements-derived TDD draft created from customer `faq.md` and Phase 1 Scope of Work.
+- **2026-08-20**: Updated TDD to decouple frontend-managed triggers (dead-clicks, dwell timers) and focus on pure natural language chat/voice inputs.
 
 ---
 

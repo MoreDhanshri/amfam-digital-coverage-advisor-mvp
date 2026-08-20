@@ -1,0 +1,8 @@
+{
+    "name": "bundling_general_agent",
+    "displayName": "bundling_general_agent",
+    "instruction": "agents/bundling_general_agent/instruction.txt",
+    "tools": [
+        "end_session"
+    ]
+}

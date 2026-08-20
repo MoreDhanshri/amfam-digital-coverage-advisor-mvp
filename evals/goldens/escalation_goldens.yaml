@@ -1,0 +1,24 @@
+common_session_parameters:
+  user_state: "WI"
+  active_tab: "auto"
+
+conversations:
+  - conversation: golden_escalate_dynamic_rate_calculation
+    turns:
+      - user: "<event>welcome</event>"
+        agent: "Hello! I am your American Family Digital Coverage Advisor. I can help you understand your auto and home coverages, deductibles, limits, and bundling discounts. How can I assist you today?"
+      - user: "Why did my monthly premium increase by $45 when I changed my deductible?"
+        agent: "To see exact premium adjustments based on your selected coverage and deductible changes, please click the 'Calculate new rate' button on your quote page. For personalized questions about complex rate calculations or underwriting discounts, our licensed specialists are happy to help at 1-800-MYAMFAM (1-800-692-6326) or via live support."
+    expectations:
+      - "The agent must direct user to Calculate new rate button or escalate to 1-800-MYAMFAM."
+    tags: [P0, NO-GO, escalation, rate, ESC-01]
+
+  - conversation: golden_escalate_competitor_comparison
+    turns:
+      - user: "<event>welcome</event>"
+        agent: "Hello! I am your American Family Digital Coverage Advisor. I can help you understand your auto and home coverages, deductibles, limits, and bundling discounts. How can I assist you today?"
+      - user: "Can you compare my current State Farm policy deck page to this quote?"
+        agent: "While I can explain American Family coverages and deductible options, side-by-side policy comparisons with competitor documents are handled directly by our licensed agents. Please contact our team at 1-800-MYAMFAM (1-800-692-6326) or connect with an agent on the quote page for a detailed comparison."
+    expectations:
+      - "The agent must explain that competitor policy comparisons are handled by licensed agents and provide 1-800-MYAMFAM."
+    tags: [P0, HIGH, escalation, competitor, ESC-02]

@@ -1,0 +1,39 @@
+{
+    "name": "amfam_digital_coverage_advisor",
+    "displayName": "amfam-digital-coverage-advisor",
+    "description": "AmFam Digital Coverage Advisor MVP Phase 1 - Deterministic coverage explanation for Auto and Home",
+    "rootAgent": "root_advisor",
+    "tools": [
+        "set_session_state"
+    ],
+    "modelSettings": {
+        "model": "gemini-3-flash"
+    },
+    "languageSettings": {
+        "defaultLanguageCode": "en-US"
+    },
+    "timeZoneSettings": {
+        "timeZone": "America/Chicago"
+    },
+    "toolExecutionMode": "PARALLEL",
+    "evaluationMetricsThresholds": {
+        "goldenEvaluationMetricsThresholds": {
+            "turnLevelMetricsThresholds": {
+                "semanticSimilaritySuccessThreshold": 3,
+                "overallToolInvocationCorrectnessThreshold": 1
+            },
+            "toolMatchingSettings": {
+                "extraToolCallBehavior": "ALLOW"
+            }
+        },
+        "goldenHallucinationMetricBehavior": "DISABLED"
+    },
+    "variableDeclarations": [
+        {"name": "user_state", "description": "User geographic state for state-specific nuances", "schema": {"type": "STRING", "default": "", "required": []}},
+        {"name": "active_tab", "description": "Current active quote tab on the frontend (auto or home)", "schema": {"type": "STRING", "default": "", "required": []}},
+        {"name": "quote_id", "description": "Quote session identifier", "schema": {"type": "STRING", "default": "", "required": []}},
+        {"name": "current_topic", "description": "Active conversation topic", "schema": {"type": "STRING", "default": "", "required": []}},
+        {"name": "_action_trigger", "description": "Internal action trigger for deterministic callbacks", "schema": {"type": "STRING", "default": "", "required": []}},
+        {"name": "_escalation_reason", "description": "Internal reason for escalation", "schema": {"type": "STRING", "default": "", "required": []}}
+    ]
+}

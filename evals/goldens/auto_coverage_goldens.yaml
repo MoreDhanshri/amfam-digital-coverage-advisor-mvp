@@ -1,0 +1,77 @@
+common_session_parameters:
+  user_state: "WI"
+  active_tab: "auto"
+
+conversations:
+  - conversation: golden_auto_bi_pd_definition
+    turns:
+      - user: "<event>welcome</event>"
+        agent: "Hello! I am your American Family Digital Coverage Advisor. I can help you understand your auto and home coverages, deductibles, limits, and bundling discounts. How can I assist you today?"
+      - user: "What is bodily injury and property damage liability?"
+        agent: "Bodily Injury (BI) covers costs if you injure someone else in an accident, including their medical bills, lost wages, and legal defense if they sue you. Property Damage (PD) pays for damage you cause to someone else's vehicle or property, such as a fence or building, in an at-fault accident. Both are required in most states to protect your personal assets."
+    expectations:
+      - "The agent must define Bodily Injury coverage as protection for third-party injuries, medical bills, and legal defense."
+      - "The agent must define Property Damage coverage as paying for damage to other vehicles or property."
+    tags: [P0, NO-GO, auto, liability, AUT-01]
+
+  - conversation: golden_auto_split_limits_100_300
+    turns:
+      - user: "<event>welcome</event>"
+        agent: "Hello! I am your American Family Digital Coverage Advisor. I can help you understand your auto and home coverages, deductibles, limits, and bundling discounts. How can I assist you today?"
+      - user: "What does 100/300 mean on bodily injury limits?"
+        agent: "For 100/300 Bodily Injury limits, the first number ($100,000) is the maximum amount paid per person injured, and the second ($300,000) is the total maximum paid per accident regardless of how many people are injured. A common recommendation is carrying limits at least equal to your net worth to safeguard your assets."
+    expectations:
+      - "The agent must explain that 100k is the per-person limit and 300k is the per-accident limit."
+    tags: [P0, NO-GO, auto, limits, AUT-02]
+
+  - conversation: golden_auto_comp_vs_collision
+    turns:
+      - user: "<event>welcome</event>"
+        agent: "Hello! I am your American Family Digital Coverage Advisor. I can help you understand your auto and home coverages, deductibles, limits, and bundling discounts. How can I assist you today?"
+      - user: "What is the difference between comprehensive and collision?"
+        agent: "Comprehensive covers damage to your vehicle from non-collision events such as theft, vandalism, fire, hail, flooding, or hitting an animal. Collision covers damage when your vehicle hits another vehicle or object, regardless of who is at fault. Most lenders require both if your car is financed or leased."
+    expectations:
+      - "The agent must distinguish Comprehensive (non-collision perils) from Collision (impact with vehicles or objects)."
+    tags: [P0, NO-GO, auto, physical_damage, AUT-04]
+
+  - conversation: golden_auto_deductible_tradeoff
+    turns:
+      - user: "<event>welcome</event>"
+        agent: "Hello! I am your American Family Digital Coverage Advisor. I can help you understand your auto and home coverages, deductibles, limits, and bundling discounts. How can I assist you today?"
+      - user: "How do I choose between a $250, $500, or $1,000 deductible?"
+        agent: "A higher deductible (like $1,000) lowers your monthly premium but means you pay more out of pocket if you file a claim. If you have emergency savings, a higher deductible is a smart trade-off. If cash flow is tighter, a lower deductible ($250 or $500) provides predictable costs. You can click 'Calculate new rate' on your quote page to see how changing your deductible affects your rate."
+    expectations:
+      - "The agent must explain the trade-off between higher deductibles/lower premiums vs lower deductibles/predictable out-of-pocket costs."
+      - "The agent must mention the 'Calculate new rate' button."
+    tags: [P1, HIGH, auto, deductibles, AUT-05]
+
+  - conversation: golden_auto_um_uim_rejection
+    turns:
+      - user: "<event>welcome</event>"
+        agent: "Hello! I am your American Family Digital Coverage Advisor. I can help you understand your auto and home coverages, deductibles, limits, and bundling discounts. How can I assist you today?"
+      - user: "Can I reject uninsured motorist coverage?"
+        agent: "In some states you may reject UM or UIM coverage in writing, but in certain states such as Nebraska, South Dakota, New Hampshire, and Minnesota, rejection is not permitted by state law. The option to reject will only appear on your quote if your state permits it."
+    expectations:
+      - "The agent must note that some states allow rejection in writing while states like MN, NE, SD, and NH prohibit rejection."
+    tags: [P0, HIGH, auto, uninsured, AUT-03]
+
+  - conversation: golden_auto_gap_and_oem
+    turns:
+      - user: "<event>welcome</event>"
+        agent: "Hello! I am your American Family Digital Coverage Advisor. I can help you understand your auto and home coverages, deductibles, limits, and bundling discounts. How can I assist you today?"
+      - user: "What is OEM coverage and loan gap assistance?"
+        agent: "OEM (Original Equipment Manufacturer) Parts coverage ensures your vehicle is repaired using original factory parts rather than aftermarket alternatives (available for vehicles up to 11 model years old). Loan or Lease Assistance (Gap) covers the difference between your vehicle's market value payout and what you still owe on your loan or lease if totaled. Both coverages require Comprehensive and Collision."
+    expectations:
+      - "The agent must explain OEM parts and Gap loan/lease protection."
+      - "The agent must mention that both require Comprehensive and Collision."
+    tags: [P1, HIGH, auto, addons, AUT-08]
+
+  - conversation: golden_auto_underwriting_company
+    turns:
+      - user: "<event>welcome</event>"
+        agent: "Hello! I am your American Family Digital Coverage Advisor. I can help you understand your auto and home coverages, deductibles, limits, and bundling discounts. How can I assist you today?"
+      - user: "Who underwrites the APEX Auto policy?"
+        agent: "Your APEX Auto policy is underwritten by Midvale Indemnity Company, an American Family Insurance company."
+    expectations:
+      - "The agent must state that APEX Auto is underwritten by Midvale Indemnity Company."
+    tags: [P1, MEDIUM, auto, underwriting, AUT-11]

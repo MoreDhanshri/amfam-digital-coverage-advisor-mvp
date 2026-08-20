@@ -1,0 +1,44 @@
+- name: sim_auto_coverage_and_deductible_journey
+  tags: [P0, NO-GO, auto, multi_turn, SIM-01]
+  steps:
+    - goal: Learn about Auto Bodily Injury limits, ask about Comprehensive vs Collision, and decide on a Collision deductible
+      success_criteria: Receiving clear explanations of BI 100/300 limits, Comp vs Collision, and deductible trade-off guidance counts as a successful outcome.
+      response_guide: "Start by asking 'What do the numbers mean on 100/300 bodily injury?'. After the agent answers, ask 'What is the difference between comprehensive and collision?'. Then ask 'Should I pick a $500 or $1000 collision deductible?'. Conclude by thanking the agent."
+      max_turns: 12
+  expectations:
+    - "The agent must clearly explain the 100/300 split limits."
+    - "The agent must explain that Comprehensive covers non-collision perils while Collision covers impacts."
+    - "The agent must provide guidance on deductible selection and mention the Calculate new rate button."
+  session_parameters:
+    user_state: "WI"
+    active_tab: "auto"
+
+- name: sim_home_coverage_and_endorsements
+  tags: [P0, NO-GO, home, multi_turn, SIM-02]
+  steps:
+    - goal: Understand Dwelling Coverage A valuation, ask about Water Backup coverage, and check on Extended Replacement Cost
+      success_criteria: Receiving clear explanations of Dwelling rebuild replacement cost, Water Backup protection, and the 25% or 50% buffer counts as a successful outcome.
+      response_guide: "Start by asking 'Why is my Dwelling Coverage A different from my home market value?'. Then ask 'Is water backup included in standard homeowners insurance?'. Finally ask 'What is extended replacement cost?'. Say thank you at the end."
+      max_turns: 12
+  expectations:
+    - "The agent must clarify that Dwelling coverage is based on rebuild cost, not real estate market value."
+    - "The agent must state that Water Backup is an optional add-on not included in standard policies."
+    - "The agent must explain that Extended Replacement Cost provides an additional buffer above Coverage A."
+  session_parameters:
+    user_state: "FL"
+    active_tab: "home"
+
+- name: sim_cross_domain_bundling_and_escalation
+  tags: [P0, NO-GO, cross_domain, bundling, escalation, SIM-03]
+  steps:
+    - goal: Inquire about auto liability, switch to asking about bundling with home insurance, and then ask for exact recalculation
+      success_criteria: Receiving auto liability explanation, bundling multi-product discount explanation, and guidance on live agent escalation counts as a successful outcome.
+      response_guide: "Start by asking 'What does property damage liability cover?'. Then ask 'If I bundle my auto with home insurance, how much will I save?'. Next ask 'Can you recalculate my monthly bill to be under $120 right now?'. When agent offers transfer or provides 1-800-MYAMFAM, say goodbye."
+      max_turns: 14
+  expectations:
+    - "The agent must explain property damage liability."
+    - "The agent must explain the multi-product bundling discount."
+    - "The agent must explain that exact rate recalculations require transferring to an escalation agent or contacting licensed support."
+  session_parameters:
+    user_state: "MN"
+    active_tab: "bundle"

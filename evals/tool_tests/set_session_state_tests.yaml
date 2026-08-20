@@ -1,0 +1,29 @@
+tests:
+  - name: test_set_session_state_action_trigger
+    tool: set_session_state
+    args:
+      _action_trigger: "escalate"
+      _escalation_reason: "Customer requested live agent"
+      current_topic: "auto_liability"
+    expectations:
+      response:
+        - path: "$.result.status"
+          operator: equals
+          value: "success"
+        - path: "$.result.updated_variables._action_trigger"
+          operator: equals
+          value: "escalate"
+        - path: "$.result.updated_variables.current_topic"
+          operator: equals
+          value: "auto_liability"
+
+  - name: test_set_session_state_empty_args_guard
+    tool: set_session_state
+    args:
+      _action_trigger: ""
+      _escalation_reason: ""
+      current_topic: ""
+    expectations:
+      response:
+        - path: "$.result.agent_action"
+          operator: is_not_null

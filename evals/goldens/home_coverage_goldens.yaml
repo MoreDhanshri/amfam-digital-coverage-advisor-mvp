@@ -1,0 +1,64 @@
+common_session_parameters:
+  user_state: "FL"
+  active_tab: "home"
+
+conversations:
+  - conversation: golden_home_dwelling_replacement_cost
+    turns:
+      - user: "<event>welcome</event>"
+        agent: "Hello! I am your American Family Digital Coverage Advisor. I can help you understand your auto and home coverages, deductibles, limits, and bundling discounts. How can I assist you today?"
+      - user: "What is Dwelling Coverage A and how is it determined?"
+        agent: "Dwelling coverage (Coverage A) pays to repair or rebuild your home's physical structure if it is damaged by a covered peril. The coverage amount is calculated based on the estimated replacement cost to rebuild your home from the ground up, not its real estate market value or purchase price."
+    expectations:
+      - "The agent must explain that Dwelling coverage is based on rebuild replacement cost rather than real estate market value."
+    tags: [P0, NO-GO, home, dwelling, HOM-01]
+
+  - conversation: golden_home_personal_property_replacement
+    turns:
+      - user: "<event>welcome</event>"
+        agent: "Hello! I am your American Family Digital Coverage Advisor. I can help you understand your auto and home coverages, deductibles, limits, and bundling discounts. How can I assist you today?"
+      - user: "Should I choose Replacement Cost or Depreciated Value for personal property?"
+        agent: "Replacement Cost pays to replace your belongings with brand-new items of similar kind and quality without deducting for depreciation. Depreciated Value (Actual Cash Value) only pays what your items are worth today considering age and wear. Replacement Cost provides more complete protection for your possessions."
+    expectations:
+      - "The agent must contrast Replacement Cost (new items) with Actual Cash Value (depreciated worth)."
+    tags: [P0, HIGH, home, personal_property, HOM-03]
+
+  - conversation: golden_home_water_backup_and_service_line
+    turns:
+      - user: "<event>welcome</event>"
+        agent: "Hello! I am your American Family Digital Coverage Advisor. I can help you understand your auto and home coverages, deductibles, limits, and bundling discounts. How can I assist you today?"
+      - user: "What is water backup and service line coverage?"
+        agent: "Water Backup covers damage caused by water or sewage backing up through drains, sewers, or sump pump overflow, which standard homeowners policies exclude (available limits: $5,000 to $25,000). Service Line coverage pays to repair or replace damaged underground utility lines (water, sewer, electrical, gas, internet) running from the street to your home."
+    expectations:
+      - "The agent must explain Water Backup sewer/drain overflow and Service Line underground utility line coverage."
+    tags: [P0, NO-GO, home, water_backup, HOM-08]
+
+  - conversation: golden_home_extended_replacement_cost
+    turns:
+      - user: "<event>welcome</event>"
+        agent: "Hello! I am your American Family Digital Coverage Advisor. I can help you understand your auto and home coverages, deductibles, limits, and bundling discounts. How can I assist you today?"
+      - user: "What is extended replacement cost coverage?"
+        agent: "Extended Replacement Cost provides an additional buffer (25% or 50% above your Coverage A Dwelling limit) if rebuilding costs exceed initial estimates due to surge inflation, rising material costs, or labor shortages following a major disaster."
+    expectations:
+      - "The agent must explain the 25% or 50% buffer above Dwelling limits."
+    tags: [P0, HIGH, home, replacement_cost, HOM-07]
+
+  - conversation: golden_home_deductibles_wind_hail
+    turns:
+      - user: "<event>welcome</event>"
+        agent: "Hello! I am your American Family Digital Coverage Advisor. I can help you understand your auto and home coverages, deductibles, limits, and bundling discounts. How can I assist you today?"
+      - user: "What is the difference between AOP and Wind/Hail deductibles?"
+        agent: "The All-Perils (AOP) deductible is the standard flat amount ($500 to $5,000) you pay out of pocket before insurance covers most claims. In many states, a separate Wind/Hail deductible applies specifically to wind or hail damage, often calculated as a percentage of your Dwelling coverage (e.g., 1% or 2%) and must be at least equal to your AOP deductible."
+    expectations:
+      - "The agent must explain flat AOP deductibles vs separate percentage Wind/Hail deductibles."
+    tags: [P0, NO-GO, home, deductibles, HOM-06]
+
+  - conversation: golden_home_underwriting_company
+    turns:
+      - user: "<event>welcome</event>"
+        agent: "Hello! I am your American Family Digital Coverage Advisor. I can help you understand your auto and home coverages, deductibles, limits, and bundling discounts. How can I assist you today?"
+      - user: "Who underwrites the APEX Home policy?"
+        agent: "Your APEX Home policy is underwritten by Homesite Insurance, an American Family Insurance company."
+    expectations:
+      - "The agent must state that APEX Home is underwritten by Homesite Insurance."
+    tags: [P1, MEDIUM, home, underwriting, HOM-12]

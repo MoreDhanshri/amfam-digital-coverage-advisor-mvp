@@ -1,0 +1,11 @@
+{
+    "name": "auto_coverage_agent",
+    "displayName": "auto_coverage_agent",
+    "instruction": "agents/auto_coverage_agent/instruction.txt",
+    "tools": [
+        "end_session"
+    ],
+    "beforeModelCallbacks": [
+        {"pythonCode": "agents/auto_coverage_agent/before_model_callbacks/before_model_callbacks_01/python_code.py"}
+    ]
+}

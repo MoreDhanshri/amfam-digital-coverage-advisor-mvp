@@ -1,0 +1,34 @@
+common_session_parameters:
+  user_state: "MN"
+  active_tab: "bundle"
+
+conversations:
+  - conversation: golden_bundling_multiproduct_discount
+    turns:
+      - user: "<event>welcome</event>"
+        agent: "Hello! I am your American Family Digital Coverage Advisor. I can help you understand your auto and home coverages, deductibles, limits, and bundling discounts. How can I assist you today?"
+      - user: "How does bundling auto and home save me money?"
+        agent: "When you quote and purchase both an auto and home policy together in a single flow, a multi-product discount is automatically applied to both policies, delivering meaningful savings on your total insurance cost."
+    expectations:
+      - "The agent must explain that multi-product bundling applies discounts to both auto and home policies."
+    tags: [P0, NO-GO, bundling, discounts, BND-01]
+
+  - conversation: golden_billing_payment_options
+    turns:
+      - user: "<event>welcome</event>"
+        agent: "Hello! I am your American Family Digital Coverage Advisor. I can help you understand your auto and home coverages, deductibles, limits, and bundling discounts. How can I assist you today?"
+      - user: "What payment options and methods are accepted?"
+        agent: "You can pay using a credit card, debit card, or electronic bank transfer (EFT). Both full payment (one-pay, which avoids installment fees) and monthly 12-installment payment plans are available."
+    expectations:
+      - "The agent must list Credit/Debit and EFT payment methods and explain 1-pay vs monthly installments."
+    tags: [P1, HIGH, payments, billing, BND-02]
+
+  - conversation: golden_dnq_guidance
+    turns:
+      - user: "<event>welcome</event>"
+        agent: "Hello! I am your American Family Digital Coverage Advisor. I can help you understand your auto and home coverages, deductibles, limits, and bundling discounts. How can I assist you today?"
+      - user: "What does it mean if I get a Does Not Qualify message?"
+        agent: "A Does Not Qualify (DNQ) message means that based on the details provided, we are unable to offer an automated policy through this online platform at this time. However, our licensed support team is available to assist you with customized alternative coverage options."
+    expectations:
+      - "The agent must explain that DNQ means the online platform cannot auto-quote and offer agent assistance for alternatives."
+    tags: [P0, NO-GO, dnq, support, BND-03]

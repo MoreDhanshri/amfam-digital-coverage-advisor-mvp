@@ -1,0 +1,11 @@
+{
+    "name": "home_coverage_agent",
+    "displayName": "home_coverage_agent",
+    "instruction": "agents/home_coverage_agent/instruction.txt",
+    "tools": [
+        "end_session"
+    ],
+    "beforeModelCallbacks": [
+        {"pythonCode": "agents/home_coverage_agent/before_model_callbacks/before_model_callbacks_01/python_code.py"}
+    ]
+}
