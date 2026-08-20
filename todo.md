@@ -1,44 +1,18 @@
-# Implementation Checklist: Digital Coverage Advisor MVP
+# Sprint Task Backlog & Execution Contract
 
-## Gate 0: Prerequisites & Environment Setup
-- [x] Create project workspace & Git repo structure (`amfam-digital-coverage-advisor-mvp`)
-- [x] Initialize virtual environment with `cxas-scrapi` and `cxas` CLI
-- [x] Configure `gecx-config.json` with GCP project `gecx-amfam` and App `amfam-digital-coverage-advisor`
-- [x] Ingest & verify customer source of truth in `faq.md`
-- [x] GCP Project `gecx-amfam` provisioned with required APIs enabled (`ces.googleapis.com`, `dialogflow.googleapis.com`)
-- [x] Create CXAS App shell `projects/gecx-amfam/locations/us/apps/amfam-digital-coverage-advisor`
-
-
-## Gate 1: Gather Requirements & Formalize CUJs
-- [ ] Formalize Level 1 & 2 Coverage Understanding scope
-- [ ] Map all 55+ Q&A items from `faq.md` to discrete CUJ domains (Auto, Home, Bundling/General)
-- [ ] Define behavioral trigger contracts (Time-on-page, dead-clicks, scroll threshold)
-- [ ] Define deterministic escalation paths (click-to-call, human chat redirection)
-
-## Gate 2: Technical Design Document (TDD) + User Approval
-- [ ] Draft comprehensive `tdd.md` (Architecture, XML Taskflows, Callbacks, Coverage Map)
-- [ ] Review open questions with user and obtain explicit TDD approval
-
-## Gate 3: Scaffold Application (`cxas_app/`)
-- [ ] Scaffold `app.json` for `amfam-digital-coverage-advisor`
-- [ ] Scaffold `root_advisor` (Intent triage, greetings, event routing)
-- [ ] Scaffold `auto_coverage_agent` (Liability, Physical Damage, Deductibles, PIP/UM/UIM, Add-ons)
-- [ ] Scaffold `home_coverage_agent` (Dwelling A-F, Peril Deductibles, Endorsements)
-- [ ] Scaffold `bundling_general_agent` (Multi-product discounts, payment terms, DNQ)
-- [ ] Scaffold `escalation_agent` (Deterministic human support routing)
-- [ ] Scaffold Python callbacks (`before_model_callback`, `after_model_callback`)
-
-## Gate 4: Static Quality Assurance & Linting
-- [ ] Run `cxas lint` across `cxas_app/`
-- [ ] Fix all structural and schema errors/warnings (Zero Warnings Policy)
-
-## Gate 5: Author Evaluation Suite
-- [ ] Author Golden Evaluations (`evals/goldens/*.yaml`) covering all FAQ CUJs
-- [ ] Author Simulation Evaluations (`evals/simulations/*.yaml`) for multi-turn journeys
-- [ ] Author Callback unit tests (`evals/callback_tests/`)
-
-## Gate 6: Platform Push & Verification
-- [ ] Push app to CXAS: `cxas push --app-dir cxas_app/amfam_digital_coverage_advisor`
-- [ ] Run platform build verification: `python scripts/gate-check.py`
-- [ ] Execute baseline evaluation runs (`run-and-report.py --runs 5`)
-- [ ] Verify pass rates >= 90% and log in `experiment_log.md`
+## Current Sprint Objectives: AmFam Digital Coverage Advisor MVP (Phase 1)
+- [x] Ingest customer FAQ library into `faq.md` and `docs/faq.md`
+- [x] Log kickoff call notes in `docs/calls/2026-08-20_kickoff_mvp_phase1.md`
+- [x] Draft living requirements matrix in `docs/requirements.md` (REQ-001 to REQ-007)
+- [x] Document Architecture Decision Records (ADRs) in `docs/decisions.md` (ADR-001 to ADR-003)
+- [x] Define system topology in `docs/architecture.md`
+- [x] Build high-fidelity Redesigned American Family Insurance Homepage (`src/index.html`)
+- [x] Build APEX Quote Offers Page with live coverage configurator & rate calculator
+- [x] Build Digital Coverage Advisor (Chat & Voice assistant with deterministic FAQ engine)
+- [x] Implement Behavioral Triggers (Dead click detector, Time-on-page dwell timer, Scroll trigger)
+- [x] Implement Seamless Human Escalation (Click-to-Call modal, live agent routing)
+- [x] Construct Critical User Journey (CUJ) Interactive Studio & Simulator
+- [x] Add RUM Telemetry Dashboard & Mobile Viewport Emulation
+- [x] Exact replica of amfam.com homepage on `feature/amfam-homepage-replica` with 5s automated glowing & jumping chat bubble
+- [x] Verify functionality across all views, test responsiveness, and deploy web server
+- [x] Push all branches and deliverables to remote repository

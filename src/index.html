@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>American Family Insurance | Digital Coverage Advisor MVP</title>
+  <!-- Tailwind CSS via allowlisted CDN -->
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-slate-50 text-slate-900 min-h-screen flex flex-col font-sans antialiased">
+
+  <!-- TOP SANDBOX CONTROLS & VIEWPORT EMULATOR BAR -->
+  <header class="bg-slate-900 text-slate-200 px-4 py-2 text-xs flex flex-wrap justify-between items-center border-b border-slate-800 sticky top-0 z-50">
+    <div class="flex items-center gap-3">
+      <span class="inline-flex items-center gap-1.5 font-bold text-red-500">
+        <span class="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
+        SANDBOX ENVIRONMENT
+      </span>
+      <span class="text-slate-500">|</span>
+      <span class="text-slate-300 font-medium hidden sm:inline">AmFam Digital Coverage Advisor MVP (Phase 1)</span>
+      <span class="bg-blue-950 text-blue-300 px-2 py-0.5 rounded border border-blue-800 font-mono text-[10px]">Target: gecx-dm-demo</span>
+    </div>
+
+    <!-- VIEWPORT SWITCHER (REQ-005: 49% Mobile Traffic Verification) -->
+    <div class="flex items-center gap-2">
+      <span class="text-slate-400 font-semibold mr-1 hidden md:inline">Viewport:</span>
+      <div class="inline-flex rounded-lg bg-slate-800 p-0.5 border border-slate-700">
+        <button onclick="setViewport('desktop')" data-mode="desktop" class="viewport-btn px-2.5 py-1 rounded-md text-[11px] font-medium bg-blue-600 text-white transition flex items-center gap-1">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+          <span class="hidden sm:inline">Desktop</span>
+        </button>
+        <button onclick="setViewport('tablet')" data-mode="tablet" class="viewport-btn px-2.5 py-1 rounded-md text-[11px] font-medium bg-slate-800 text-slate-300 hover:text-white transition flex items-center gap-1">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+          <span class="hidden sm:inline">Tablet</span>
+        </button>
+        <button onclick="setViewport('mobile')" data-mode="mobile" class="viewport-btn px-2.5 py-1 rounded-md text-[11px] font-medium bg-slate-800 text-slate-300 hover:text-white transition flex items-center gap-1">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+          <span>Mobile (390px)</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- VIEWPORT CONTAINER -->
+  <div id="app-viewport-wrapper" class="w-full flex-grow flex flex-col transition-all duration-300">
+    <div id="mobile-notch-el" class="mobile-notch hidden"></div>
+
+    <!-- MAIN BRAND HEADER -->
+    <nav class="bg-white border-b border-slate-200 sticky top-[37px] z-40 shadow-sm">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+          
+          <!-- BRAND LOGO -->
+          <div class="flex items-center gap-3 cursor-pointer" onclick="setView('home')">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-900 to-blue-800 flex items-center justify-center text-white font-black text-xl shadow-md border-b-2 border-red-600">
+              AF
+            </div>
+            <div>
+              <div class="font-extrabold text-blue-950 text-base sm:text-lg tracking-tight leading-none">AMERICAN FAMILY</div>
+              <div class="text-[10px] font-bold text-red-600 tracking-wider uppercase">I N S U R A N C E</div>
+            </div>
+          </div>
+
+          <!-- PRIMARY NAVIGATION TABS -->
+          <div class="hidden lg:flex items-center space-x-1">
+            <button onclick="setView('home')" data-view="home" class="nav-tab-btn px-3 py-2 rounded-lg text-sm font-semibold transition bg-blue-900 text-white">
+              🏠 Homepage Redesign
+            </button>
+            <button onclick="setView('quote')" data-view="quote" class="nav-tab-btn px-3 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:bg-slate-100 transition">
+              🚗 APEX Quote & Advisor
+            </button>
+            <button onclick="setView('cuj')" data-view="cuj" class="nav-tab-btn px-3 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:bg-slate-100 transition">
+              🗺️ CUJ Interactive Studio
+            </button>
+            <button onclick="setView('faqs')" data-view="faqs" class="nav-tab-btn px-3 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:bg-slate-100 transition">
+              📚 Knowledge Base (FAQs)
+            </button>
+            <button onclick="setView('telemetry')" data-view="telemetry" class="nav-tab-btn px-3 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:bg-slate-100 transition">
+              📊 RUM Telemetry
+            </button>
+          </div>
+
+          <!-- QUICK ACTION CTA -->
+          <div class="flex items-center gap-2">
+            <button onclick="setView('quote')" class="bg-red-600 hover:bg-red-700 text-white text-xs sm:text-sm font-bold px-4 py-2 rounded-xl shadow-md transition transform active:scale-95">
+              Get a Quote →
+            </button>
+          </div>
+        </div>
+
+        <!-- MOBILE SUB-NAV TABS -->
+        <div class="lg:hidden flex overflow-x-auto py-2 border-t border-slate-100 gap-1 text-xs">
+          <button onclick="setView('home')" data-view="home" class="nav-tab-btn px-2.5 py-1.5 rounded-md whitespace-nowrap font-medium bg-blue-900 text-white">Home</button>
+          <button onclick="setView('quote')" data-view="quote" class="nav-tab-btn px-2.5 py-1.5 rounded-md whitespace-nowrap font-medium text-slate-600">APEX Quote</button>
+          <button onclick="setView('cuj')" data-view="cuj" class="nav-tab-btn px-2.5 py-1.5 rounded-md whitespace-nowrap font-medium text-slate-600">CUJ Studio</button>
+          <button onclick="setView('faqs')" data-view="faqs" class="nav-tab-btn px-2.5 py-1.5 rounded-md whitespace-nowrap font-medium text-slate-600">FAQ Library</button>
+          <button onclick="setView('telemetry')" data-view="telemetry" class="nav-tab-btn px-2.5 py-1.5 rounded-md whitespace-nowrap font-medium text-slate-600">Telemetry</button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- ========================================================================= -->
+    <!-- VIEW 1: REDESIGNED AMERICAN FAMILY INSURANCE HOMEPAGE -->
+    <!-- ========================================================================= -->
+    <main id="view-home" class="view-container flex-grow">
+      
+      <!-- HERO SECTION -->
+      <section class="relative bg-gradient-to-b from-blue-950 via-blue-900 to-blue-950 text-white py-12 md:py-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
+        <!-- Subtle background pattern -->
+        <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:16px_16px]"></div>
+
+        <div class="max-w-7xl mx-auto relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          
+          <!-- HERO LEFT COPY -->
+          <div class="lg:col-span-7 space-y-6">
+            <div class="inline-flex items-center gap-2 bg-blue-800/80 border border-blue-700/60 px-3 py-1 rounded-full text-xs font-semibold text-blue-200">
+              <span class="bg-red-600 text-white text-[10px] uppercase font-bold px-2 py-0.5 rounded-full">New</span>
+              <span>AI Digital Coverage Advisor Live in Sandbox</span>
+            </div>
+            
+            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight">
+              Insure carefully. <br>
+              <span class="text-transparent bg-clip-text bg-gradient-to-r from-red-400 via-red-500 to-amber-300">Dream fearlessly.</span>
+            </h1>
+            
+            <p class="text-slate-300 text-base sm:text-lg max-w-2xl leading-relaxed">
+              Experience the future of insurance with American Family. Instant customized policy options, smart bundle discounts up to 29%, and our real-time Digital Coverage Advisor to eliminate confusion.
+            </p>
+
+            <div class="flex flex-wrap gap-4 pt-2">
+              <button onclick="setView('quote')" class="bg-red-600 hover:bg-red-700 text-white font-bold px-6 py-3.5 rounded-xl shadow-lg shadow-red-900/30 text-sm sm:text-base transition transform hover:-translate-y-0.5">
+                Start My Quote & Test Advisor →
+              </button>
+              <button onclick="setView('cuj')" class="bg-blue-800/60 hover:bg-blue-800 border border-blue-700 text-white font-semibold px-6 py-3.5 rounded-xl text-sm sm:text-base transition">
+                Explore Customer Journeys (CUJ)
+              </button>
+            </div>
+
+            <!-- TRUST STATS -->
+            <div class="grid grid-cols-3 gap-4 pt-6 border-t border-blue-800/60 text-left">
+              <div>
+                <div class="text-2xl font-black text-white">95+</div>
+                <div class="text-xs text-blue-300">Years of Protection</div>
+              </div>
+              <div>
+                <div class="text-2xl font-black text-red-400">-29%</div>
+                <div class="text-xs text-blue-300">Bundle & Save Discount</div>
+              </div>
+              <div>
+                <div class="text-2xl font-black text-amber-400">4.8 / 5</div>
+                <div class="text-xs text-blue-300">100k+ Customer Reviews</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- HERO RIGHT: INTERACTIVE QUOTE STARTER CARD -->
+          <div class="lg:col-span-5">
+            <div class="bg-white text-slate-900 rounded-3xl p-6 sm:p-8 shadow-2xl border border-slate-100">
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-bold text-slate-900">Get a Free Instant Quote</h3>
+                <span class="bg-blue-100 text-blue-900 text-xs font-bold px-2 py-0.5 rounded-full">Save Time</span>
+              </div>
+              
+              <div class="space-y-4">
+                <!-- PRODUCT SELECTOR -->
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Select Protection</label>
+                  <div class="grid grid-cols-2 gap-2">
+                    <button class="flex items-center gap-2 p-3 rounded-xl border-2 border-red-600 bg-red-50 text-red-900 font-bold text-xs">
+                      <span>🚗 Auto</span>
+                      <span class="ml-auto text-[10px] bg-red-600 text-white px-1.5 py-0.2 rounded">APEX</span>
+                    </button>
+                    <button class="flex items-center gap-2 p-3 rounded-xl border-2 border-red-600 bg-red-50 text-red-900 font-bold text-xs">
+                      <span>🏠 Home</span>
+                      <span class="ml-auto text-[10px] bg-red-600 text-white px-1.5 py-0.2 rounded">APEX</span>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- ZIP CODE INPUT -->
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">ZIP Code</label>
+                  <div class="relative">
+                    <input type="text" value="53711 (Madison, WI)" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-blue-600 focus:outline-none" />
+                    <span class="absolute right-3 top-3 text-xs text-slate-400">📍 Verified</span>
+                  </div>
+                </div>
+
+                <!-- FEATURE HIGHLIGHT -->
+                <div class="bg-blue-50 border border-blue-200 rounded-xl p-3 text-xs text-slate-700 space-y-1">
+                  <div class="font-bold text-blue-950 flex items-center gap-1.5">
+                    <span>✨ Pre-loaded Sandbox Persona:</span>
+                  </div>
+                  <div class="text-slate-600">Sarah Jenkins • 2024 Honda CR-V Hybrid & Madison Home</div>
+                </div>
+
+                <!-- START BUTTON -->
+                <button onclick="setView('quote')" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3.5 rounded-xl shadow-md text-sm transition transform active:scale-95 flex items-center justify-center gap-2">
+                  <span>View Configured Quote Offers</span>
+                  <span>→</span>
+                </button>
+                <p class="text-[11px] text-center text-slate-400">APEX Auto by Midvale Indemnity • APEX Home by Homesite Insurance</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- PRODUCT SHOWCASE SECTION -->
+      <section class="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div class="text-center max-w-3xl mx-auto mb-12">
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Complete Coverage for What Matters Most</h2>
+          <p class="text-slate-600 mt-2 text-sm sm:text-base">Underwritten by American Family Insurance companies with flexible limits, clear deductibles, and deterministic guidance.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          
+          <!-- APEX AUTO CARD -->
+          <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition flex flex-col justify-between">
+            <div>
+              <div class="w-12 h-12 rounded-2xl bg-blue-50 text-blue-900 flex items-center justify-center text-2xl mb-4">🚗</div>
+              <div class="flex items-center gap-2 mb-1">
+                <span class="text-xs font-bold text-red-600 uppercase">Midvale Indemnity</span>
+                <span class="text-slate-300">•</span>
+                <span class="text-xs text-slate-500 font-medium">APEX Auto</span>
+              </div>
+              <h3 class="text-xl font-bold text-slate-900 mb-2">Auto Insurance</h3>
+              <p class="text-xs text-slate-600 leading-relaxed mb-4">Bodily injury & property damage liability, collision, comprehensive, gap assistance, OEM parts, and 24/7 roadside rescue.</p>
+              <ul class="text-xs text-slate-700 space-y-2 mb-6">
+                <li class="flex items-center gap-2"><span>✅</span> <span>Recommended 100/300 Bodily Injury Limits</span></li>
+                <li class="flex items-center gap-2"><span>✅</span> <span>Collision & Comprehensive Deductibles</span></li>
+                <li class="flex items-center gap-2"><span>✅</span> <span>Loan/Lease (Gap) & OEM Parts Coverage</span></li>
+              </ul>
+            </div>
+            <button onclick="setView('quote')" class="w-full bg-slate-100 hover:bg-blue-50 text-blue-900 font-bold py-2.5 rounded-xl text-xs transition">
+              Explore Auto Coverages →
+            </button>
+          </div>
+
+          <!-- APEX HOME CARD -->
+          <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition flex flex-col justify-between">
+            <div>
+              <div class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-900 flex items-center justify-center text-2xl mb-4">🏠</div>
+              <div class="flex items-center gap-2 mb-1">
+                <span class="text-xs font-bold text-red-600 uppercase">Homesite Insurance</span>
+                <span class="text-slate-300">•</span>
+                <span class="text-xs text-slate-500 font-medium">APEX Home</span>
+              </div>
+              <h3 class="text-xl font-bold text-slate-900 mb-2">Homeowners Insurance</h3>
+              <p class="text-xs text-slate-600 leading-relaxed mb-4">Complete dwelling replacement cost, detached structures, personal property, water backup, and equipment breakdown protection.</p>
+              <ul class="text-xs text-slate-700 space-y-2 mb-6">
+                <li class="flex items-center gap-2"><span>✅</span> <span>Extended Replacement Cost Buffer (25%/50%)</span></li>
+                <li class="flex items-center gap-2"><span>✅</span> <span>Water Backup & Sump Pump Overflow</span></li>
+                <li class="flex items-center gap-2"><span>✅</span> <span>All-Perils (AOP) & Wind/Hail Deductibles</span></li>
+              </ul>
+            </div>
+            <button onclick="setView('quote')" class="w-full bg-slate-100 hover:bg-blue-50 text-blue-900 font-bold py-2.5 rounded-xl text-xs transition">
+              Explore Home Coverages →
+            </button>
+          </div>
+
+          <!-- BUNDLE & SAVE CARD -->
+          <div class="bg-gradient-to-br from-blue-900 to-blue-950 text-white rounded-3xl p-6 shadow-md flex flex-col justify-between border-2 border-red-500">
+            <div>
+              <div class="inline-flex items-center gap-1.5 bg-red-600 text-white text-[10px] uppercase font-bold px-2.5 py-1 rounded-full mb-4">
+                ⭐ Most Popular
+              </div>
+              <h3 class="text-xl font-bold mb-2">Auto + Home Bundle</h3>
+              <p class="text-xs text-blue-200 leading-relaxed mb-4">Combine APEX Auto and APEX Home on a single platform for maximum multi-product savings up to 29% per year.</p>
+              <div class="bg-blue-800/80 rounded-2xl p-4 mb-6 border border-blue-700">
+                <div class="text-xs text-blue-300">Average Bundle Savings</div>
+                <div class="text-2xl font-black text-amber-400">$576 / year</div>
+                <div class="text-[11px] text-blue-200 mt-1">Single combined billing & 24/7 Digital Advisor</div>
+              </div>
+            </div>
+            <button onclick="setView('quote')" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2.5 rounded-xl text-xs shadow transition">
+              Customize Bundle Quote →
+            </button>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- DIGITAL COVERAGE ADVISOR SPOTLIGHT SECTION -->
+      <section class="bg-blue-50 border-y border-blue-100 py-16 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto">
+          <div class="bg-white rounded-3xl border border-blue-200 p-8 sm:p-10 shadow-sm grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+            
+            <div class="lg:col-span-6 space-y-4">
+              <div class="inline-flex items-center gap-1.5 bg-blue-100 text-blue-900 text-xs font-bold px-3 py-1 rounded-full">
+                <span>🤖 Phase 1 MVP Feature</span>
+              </div>
+              <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Meet the Digital Coverage Advisor</h2>
+              <p class="text-slate-600 text-sm leading-relaxed">
+                Tired of confusing insurance acronyms and 27-minute page delays? Our chat and voice-integrated assistant provides instant deterministic explanations for all coverages and recalculates your rates on the fly.
+              </p>
+              
+              <div class="space-y-3 pt-2">
+                <div class="flex items-start gap-3">
+                  <div class="w-8 h-8 rounded-xl bg-red-100 text-red-700 flex items-center justify-center font-bold text-sm shrink-0">1</div>
+                  <div>
+                    <h4 class="text-xs font-bold text-slate-900">Intelligent Dead Click Detection</h4>
+                    <p class="text-xs text-slate-500">Automatically detects when you're clicking on confusing coverage terms and offers proactive help.</p>
+                  </div>
+                </div>
+                <div class="flex items-start gap-3">
+                  <div class="w-8 h-8 rounded-xl bg-blue-100 text-blue-900 flex items-center justify-center font-bold text-sm shrink-0">2</div>
+                  <div>
+                    <h4 class="text-xs font-bold text-slate-900">100% Deterministic Compliance</h4>
+                    <p class="text-xs text-slate-500">Every response is strictly verified against AmFam's authoritative FAQ knowledge base.</p>
+                  </div>
+                </div>
+                <div class="flex items-start gap-3">
+                  <div class="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-900 flex items-center justify-center font-bold text-sm shrink-0">3</div>
+                  <div>
+                    <h4 class="text-xs font-bold text-slate-900">Multi-Modal Voice & Chat Support</h4>
+                    <p class="text-xs text-slate-500">Speak or type your questions with natural voice speech synthesis and instant response.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="pt-4">
+                <button onclick="setView('quote'); state.advisor.isOpen=true; renderAdvisorUI();" class="bg-blue-900 hover:bg-blue-800 text-white font-bold px-6 py-3 rounded-xl text-xs shadow transition">
+                  Launch Advisor in Sandbox →
+                </button>
+              </div>
+            </div>
+
+            <!-- ADVISOR MOCK PREVIEW -->
+            <div class="lg:col-span-6">
+              <div class="bg-slate-900 rounded-3xl p-5 shadow-xl text-white max-w-md mx-auto border border-slate-800">
+                <div class="flex items-center justify-between pb-3 border-b border-slate-800 mb-3">
+                  <div class="flex items-center gap-2">
+                    <div class="w-7 h-7 rounded-lg bg-blue-600 flex items-center justify-center text-xs font-bold">AF</div>
+                    <span class="font-bold text-xs text-slate-200">Digital Coverage Advisor</span>
+                  </div>
+                  <span class="text-[10px] bg-emerald-950 text-emerald-400 border border-emerald-800 px-2 py-0.5 rounded-full">Active</span>
+                </div>
+                
+                <div class="space-y-2 text-xs">
+                  <div class="bg-slate-800 text-slate-200 p-3 rounded-2xl rounded-tl-sm border border-slate-700">
+                    👋 Hi Sarah! I noticed you are reviewing Bodily Injury limits. What limit matches your current net worth?
+                  </div>
+                  <div class="bg-blue-600 text-white p-3 rounded-2xl rounded-tr-sm ml-auto max-w-[80%] text-right">
+                    What does 100/300 actually mean?
+                  </div>
+                  <div class="bg-slate-800 text-slate-200 p-3 rounded-2xl rounded-tl-sm border border-slate-700">
+                    It pays up to $100,000 per injured person and $300,000 total per accident. It protects your savings if you are sued.
+                  </div>
+                </div>
+
+                <div class="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between text-[11px] text-slate-400">
+                  <span>⚡ 0ms Latency • Deterministic</span>
+                  <span class="text-blue-400">Interactive Voice Enabled 🔊</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- FOOTER -->
+      <footer class="bg-white border-t border-slate-200 py-8 px-4 text-center text-xs text-slate-500">
+        <p>© 2026 American Family Insurance Company. APEX Auto underwritten by Midvale Indemnity Company. APEX Home underwritten by Homesite Insurance.</p>
+        <p class="mt-1">Internal Sandbox Prototype for Digital Coverage Advisor MVP (Phase 1).</p>
+      </footer>
+    </main>
+
+    <!-- ========================================================================= -->
+    <!-- VIEW 2: APEX QUOTE OFFERS & INTERACTIVE COVERAGE ADVISOR SANDBOX -->
+    <!-- ========================================================================= -->
+    <main id="view-quote" class="view-container flex-grow hidden">
+      
+      <!-- STICKY RATE SUMMARY & RECALCULATE BAR -->
+      <div class="bg-white border-b border-slate-200 px-4 py-3 sticky top-[101px] z-30 shadow-sm">
+        <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-4">
+          
+          <div class="flex items-center gap-4">
+            <div>
+              <span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider block">Estimated Total</span>
+              <div class="flex items-baseline gap-2">
+                <span id="quote-monthly-rate" class="text-2xl sm:text-3xl font-black text-blue-950 dead-click-target" data-deadclick-label="Monthly Rate Display">$142.00</span>
+                <span class="text-xs font-semibold text-slate-500">/ month</span>
+                <span class="text-xs text-slate-400 hidden sm:inline">(or <span id="quote-full-rate">$1,580.00</span>/yr in full)</span>
+              </div>
+            </div>
+
+            <div class="hidden sm:inline-flex items-center gap-1.5 bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold px-3 py-1 rounded-xl">
+              <span>🎉 Bundle Discount Applied (-29%)</span>
+            </div>
+          </div>
+
+          <!-- RECALCULATE RATE ACTION BUTTON -->
+          <div class="flex items-center gap-3">
+            <button id="calc-rate-btn" onclick="recalculateQuoteRate()" class="bg-red-600 hover:bg-red-700 text-white text-xs sm:text-sm font-bold px-5 py-2.5 rounded-xl shadow-md transition transform active:scale-95 flex items-center gap-2">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+              <span>Calculate new rate</span>
+            </button>
+            <button onclick="openEscalationModal()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold px-3 py-2.5 rounded-xl transition hidden md:flex items-center gap-1">
+              <span>📞 Need Agent?</span>
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- QUOTE CONTENT BODY -->
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+        
+        <!-- QUOTE SUMMARY HEADER -->
+        <div class="bg-gradient-to-r from-blue-900 to-blue-950 text-white rounded-3xl p-6 sm:p-8 shadow-sm flex flex-wrap justify-between items-center gap-4">
+          <div>
+            <div class="flex items-center gap-2 mb-1">
+              <span class="bg-red-600 text-white text-[10px] font-bold uppercase px-2 py-0.5 rounded">Quote Ready</span>
+              <span class="text-xs text-blue-200 font-mono">ID: AF-98421-WI</span>
+            </div>
+            <h2 class="text-2xl font-bold">Sarah Jenkins • APEX Auto & Home Bundle</h2>
+            <p class="text-xs text-blue-200 mt-1">2024 Honda CR-V Hybrid EX-L & Madison, WI 53711 Residence</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="triggerProactiveAdvisor('dead_click', 'Bodily Injury 100/300')" class="bg-blue-800 hover:bg-blue-700 text-white text-xs font-semibold px-4 py-2 rounded-xl border border-blue-700 transition">
+              💡 Trigger Advisor Guidance
+            </button>
+          </div>
+        </div>
+
+        <!-- BEHAVIORAL FRICTION TEST BENCH (FOR SANDBOX EVALUATION) -->
+        <div class="bg-amber-50 border border-amber-200 rounded-2xl p-4 text-xs text-amber-900">
+          <div class="font-bold flex items-center gap-2 mb-2 text-amber-950">
+            <span>🧪 Sandbox Behavioral Friction Test Bench (SOW Sec 2.2):</span>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <button onclick="triggerProactiveAdvisor('dead_click', 'Bodily Injury 100/300')" class="bg-white hover:bg-amber-100 border border-amber-300 font-semibold px-3 py-1.5 rounded-lg transition shadow-sm">
+              ⚡ Simulate Dead Clicks on "Bodily Injury 100/300"
+            </button>
+            <button onclick="triggerProactiveAdvisor('dwell_time', 'Deductible Section')" class="bg-white hover:bg-amber-100 border border-amber-300 font-semibold px-3 py-1.5 rounded-lg transition shadow-sm">
+              ⏱️ Simulate 30s Page Dwell / Hesitation
+            </button>
+            <button onclick="state.quote.billing.dirty=true; renderQuoteUI();" class="bg-white hover:bg-amber-100 border border-amber-300 font-semibold px-3 py-1.5 rounded-lg transition shadow-sm">
+              🔄 Trigger Uncalculated Rate Pulse
+            </button>
+            <button onclick="openEscalationModal()" class="bg-white hover:bg-amber-100 border border-amber-300 font-semibold px-3 py-1.5 rounded-lg transition shadow-sm">
+              📞 Trigger Human Escalation Modal
+            </button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          
+          <!-- LEFT COLUMN: AUTO COVERAGES -->
+          <div class="lg:col-span-6 space-y-6">
+            
+            <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-6">
+              <div class="flex items-center justify-between border-b border-slate-100 pb-4">
+                <div class="flex items-center gap-2.5">
+                  <span class="text-xl">🚗</span>
+                  <div>
+                    <h3 class="text-base font-bold text-slate-900">APEX Auto Coverages</h3>
+                    <p class="text-xs text-slate-500">Underwritten by Midvale Indemnity Company</p>
+                  </div>
+                </div>
+                <span class="text-xs font-bold text-blue-900 bg-blue-50 px-2.5 py-1 rounded-lg">Vehicle 1 of 1</span>
+              </div>
+
+              <!-- BODILY INJURY LIABILITY (HIGH FRICTION SIGNAL) -->
+              <div class="space-y-2 p-3 rounded-2xl bg-slate-50 border border-slate-200">
+                <div class="flex justify-between items-start">
+                  <div>
+                    <label class="text-xs font-bold text-slate-900 flex items-center gap-1.5 dead-click-target" data-deadclick-label="Bodily Injury Liability">
+                      <span>Bodily Injury (BI) Liability</span>
+                      <span class="text-blue-600 text-xs cursor-pointer">ℹ️</span>
+                    </label>
+                    <p class="text-[11px] text-slate-500 dead-click-target" data-deadclick-label="BI Description">
+                      Covers medical & legal defense if you injure someone in an at-fault accident.
+                    </p>
+                  </div>
+                  <span class="text-[10px] bg-red-100 text-red-800 font-bold px-2 py-0.5 rounded-full dead-click-target" data-deadclick-label="Recommended 100/300">
+                    Recommended
+                  </span>
+                </div>
+                <select id="select-bodily-injury" onchange="state.quote.auto.bodilyInjury=this.value; state.quote.billing.dirty=true; renderQuoteUI();" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs font-semibold text-slate-900 focus:ring-2 focus:ring-blue-600">
+                  <option value="50/100">$50,000 / $100,000 (State Minimum)</option>
+                  <option value="100/300" selected>$100,000 / $300,000 (Recommended • Asset Protection)</option>
+                  <option value="250/500">$250,000 / $500,000 (High Net Worth Protection)</option>
+                </select>
+              </div>
+
+              <!-- COLLISION DEDUCTIBLE -->
+              <div class="space-y-2 p-3 rounded-2xl bg-slate-50 border border-slate-200">
+                <div class="flex justify-between items-center">
+                  <label class="text-xs font-bold text-slate-900 flex items-center gap-1.5 dead-click-target" data-deadclick-label="Collision Deductible">
+                    <span>Collision Deductible</span>
+                    <span class="text-blue-600 text-xs cursor-pointer">ℹ️</span>
+                  </label>
+                  <span class="text-[11px] text-slate-500">Impact with vehicle/object</span>
+                </div>
+                <select id="select-collision-ded" onchange="state.quote.auto.collisionDeductible=parseInt(this.value); state.quote.billing.dirty=true; renderQuoteUI();" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs font-semibold text-slate-900 focus:ring-2 focus:ring-blue-600">
+                  <option value="250">$250 Deductible (Lower Out of Pocket)</option>
+                  <option value="500" selected>$500 Deductible (Balanced)</option>
+                  <option value="1000">$1,000 Deductible (Lower Premium)</option>
+                </select>
+              </div>
+
+              <!-- COMPREHENSIVE DEDUCTIBLE -->
+              <div class="space-y-2 p-3 rounded-2xl bg-slate-50 border border-slate-200">
+                <div class="flex justify-between items-center">
+                  <label class="text-xs font-bold text-slate-900 flex items-center gap-1.5 dead-click-target" data-deadclick-label="Comprehensive Deductible">
+                    <span>Comprehensive Deductible</span>
+                    <span class="text-blue-600 text-xs cursor-pointer">ℹ️</span>
+                  </label>
+                  <span class="text-[11px] text-slate-500">Theft, hail, glass, animal</span>
+                </div>
+                <select id="select-comp-ded" onchange="state.quote.auto.comprehensiveDeductible=parseInt(this.value); state.quote.billing.dirty=true; renderQuoteUI();" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs font-semibold text-slate-900 focus:ring-2 focus:ring-blue-600">
+                  <option value="250">$250 Deductible</option>
+                  <option value="500" selected>$500 Deductible</option>
+                  <option value="1000">$1,000 Deductible</option>
+                </select>
+              </div>
+
+              <!-- OPTIONAL AUTO ADD-ONS -->
+              <div class="space-y-3 pt-2">
+                <h4 class="text-xs font-bold text-slate-800 uppercase tracking-wider">Optional Auto Add-ons</h4>
+                
+                <label class="flex items-center justify-between p-3 rounded-xl border border-slate-200 hover:bg-slate-50 transition cursor-pointer dead-click-target" data-deadclick-label="Loan or Lease Gap Assistance">
+                  <div class="flex items-center gap-3">
+                    <input id="check-gap-coverage" type="checkbox" checked onchange="state.quote.auto.gapCoverage=this.checked; state.quote.billing.dirty=true; renderQuoteUI();" class="w-4 h-4 text-blue-600 rounded" />
+                    <div>
+                      <div class="text-xs font-bold text-slate-900">Loan / Lease Assistance (Gap)</div>
+                      <div class="text-[11px] text-slate-500">Covers difference between market value & loan balance</div>
+                    </div>
+                  </div>
+                  <span class="text-xs font-semibold text-slate-700">+$5/mo</span>
+                </label>
+
+                <label class="flex items-center justify-between p-3 rounded-xl border border-slate-200 hover:bg-slate-50 transition cursor-pointer dead-click-target" data-deadclick-label="OEM Parts Coverage">
+                  <div class="flex items-center gap-3">
+                    <input id="check-oem-parts" type="checkbox" onchange="state.quote.auto.oemParts=this.checked; state.quote.billing.dirty=true; renderQuoteUI();" class="w-4 h-4 text-blue-600 rounded" />
+                    <div>
+                      <div class="text-xs font-bold text-slate-900">OEM Parts Coverage</div>
+                      <div class="text-[11px] text-slate-500">Factory-original parts on repairs up to 11 yrs</div>
+                    </div>
+                  </div>
+                  <span class="text-xs font-semibold text-slate-700">+$6/mo</span>
+                </label>
+
+                <label class="flex items-center justify-between p-3 rounded-xl border border-slate-200 hover:bg-slate-50 transition cursor-pointer dead-click-target" data-deadclick-label="Emergency Roadside Assistance">
+                  <div class="flex items-center gap-3">
+                    <input id="check-roadside" type="checkbox" checked onchange="state.quote.auto.roadside=this.checked; state.quote.billing.dirty=true; renderQuoteUI();" class="w-4 h-4 text-blue-600 rounded" />
+                    <div>
+                      <div class="text-xs font-bold text-slate-900">Emergency Roadside Assistance</div>
+                      <div class="text-[11px] text-slate-500">Towing, battery jump, flat tire, lockouts</div>
+                    </div>
+                  </div>
+                  <span class="text-xs font-semibold text-emerald-700">Included</span>
+                </label>
+              </div>
+
+            </div>
+
+          </div>
+
+          <!-- RIGHT COLUMN: HOME COVERAGES -->
+          <div class="lg:col-span-6 space-y-6">
+            
+            <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-6">
+              <div class="flex items-center justify-between border-b border-slate-100 pb-4">
+                <div class="flex items-center gap-2.5">
+                  <span class="text-xl">🏠</span>
+                  <div>
+                    <h3 class="text-base font-bold text-slate-900">APEX Home Coverages</h3>
+                    <p class="text-xs text-slate-500">Underwritten by Homesite Insurance</p>
+                  </div>
+                </div>
+                <span class="text-xs font-bold text-amber-900 bg-amber-50 px-2.5 py-1 rounded-lg">Madison, WI</span>
+              </div>
+
+              <!-- DWELLING COVERAGE A -->
+              <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200 space-y-1">
+                <div class="flex justify-between items-center">
+                  <span class="text-xs font-bold text-slate-900 dead-click-target" data-deadclick-label="Dwelling Coverage A">Dwelling (Coverage A)</span>
+                  <span class="text-xs font-bold text-blue-900">$380,000</span>
+                </div>
+                <p class="text-[11px] text-slate-500">Rebuilding cost estimate based on square footage & construction.</p>
+              </div>
+
+              <!-- EXTENDED REPLACEMENT COST -->
+              <div class="space-y-2 p-3 rounded-2xl bg-slate-50 border border-slate-200">
+                <div class="flex justify-between items-center">
+                  <label class="text-xs font-bold text-slate-900 flex items-center gap-1.5 dead-click-target" data-deadclick-label="Extended Replacement Cost">
+                    <span>Extended Replacement Cost Buffer</span>
+                    <span class="text-blue-600 text-xs cursor-pointer">ℹ️</span>
+                  </label>
+                </div>
+                <select id="select-ext-replacement" onchange="state.quote.home.extendedReplacement=this.value; state.quote.billing.dirty=true; renderQuoteUI();" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs font-semibold text-slate-900 focus:ring-2 focus:ring-blue-600">
+                  <option value="25%" selected>25% Buffer ($95,000 extra coverage)</option>
+                  <option value="50%">50% Buffer ($190,000 extra coverage)</option>
+                </select>
+              </div>
+
+              <!-- WATER BACKUP & SUMP PUMP -->
+              <div class="space-y-2 p-3 rounded-2xl bg-slate-50 border border-slate-200">
+                <div class="flex justify-between items-center">
+                  <label class="text-xs font-bold text-slate-900 flex items-center gap-1.5 dead-click-target" data-deadclick-label="Water Backup Coverage">
+                    <span>Water Backup & Sump Overflow</span>
+                    <span class="text-blue-600 text-xs cursor-pointer">ℹ️</span>
+                  </label>
+                  <span class="text-[10px] bg-blue-100 text-blue-900 font-bold px-2 py-0.5 rounded-full">Essential</span>
+                </div>
+                <select id="select-water-backup" onchange="state.quote.home.waterBackup=parseInt(this.value); state.quote.billing.dirty=true; renderQuoteUI();" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs font-semibold text-slate-900 focus:ring-2 focus:ring-blue-600">
+                  <option value="10000" selected>$10,000 Water Backup Limit (+$4/mo)</option>
+                  <option value="25000">$25,000 Water Backup Limit (+$8/mo)</option>
+                  <option value="0">No Water Backup (Not Recommended)</option>
+                </select>
+              </div>
+
+              <!-- DEDUCTIBLES -->
+              <div class="grid grid-cols-2 gap-3 pt-2">
+                <div class="p-3 rounded-xl border border-slate-200 bg-slate-50">
+                  <div class="text-[11px] font-bold text-slate-700 dead-click-target" data-deadclick-label="All Perils AOP Deductible">All-Perils (AOP) Ded</div>
+                  <div class="text-sm font-bold text-slate-900 mt-1">$1,000</div>
+                </div>
+                <div class="p-3 rounded-xl border border-slate-200 bg-slate-50">
+                  <div class="text-[11px] font-bold text-slate-700 dead-click-target" data-deadclick-label="Wind and Hail Deductible">Wind / Hail Ded</div>
+                  <div class="text-sm font-bold text-slate-900 mt-1">1% ($3,800)</div>
+                </div>
+              </div>
+
+              <!-- BIND / CONTINUE BUTTON -->
+              <div class="pt-4 border-t border-slate-100">
+                <button onclick="alert('Proceeding to policy review & payment confirmation.');" class="w-full bg-blue-900 hover:bg-blue-800 text-white font-bold py-3.5 rounded-xl shadow-md text-sm transition">
+                  Review & Bind Policy →
+                </button>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </main>
+
+    <!-- ========================================================================= -->
+    <!-- VIEW 3: CRITICAL USER JOURNEY (CUJ) INTERACTIVE STUDIO -->
+    <!-- ========================================================================= -->
+    <main id="view-cuj" class="view-container flex-grow hidden">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+        
+        <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm">
+          <div class="flex flex-wrap justify-between items-center gap-4 mb-6 pb-6 border-b border-slate-100">
+            <div>
+              <span class="bg-blue-100 text-blue-900 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Executive Presentation</span>
+              <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-2">Critical User Journey (CUJ) Interactive Studio</h2>
+              <p class="text-xs sm:text-sm text-slate-600 mt-1">High-fidelity transcript synthesis, behavioral trigger interception, and live sandbox execution.</p>
+            </div>
+            
+            <!-- CUJ PICKER -->
+            <div class="flex items-center gap-2">
+              <label class="text-xs font-bold text-slate-700">Select CUJ:</label>
+              <select id="cuj-selector" onchange="selectCUJ(this.value)" class="bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs font-semibold text-slate-900 focus:ring-2 focus:ring-blue-600"></select>
+            </div>
+          </div>
+
+          <!-- CUJ DETAIL CARD (RENDERED VIA JS) -->
+          <div id="cuj-detail-card"></div>
+
+          <!-- CUJ SPECIFICATION MATRIX -->
+          <div class="mt-8 pt-8 border-t border-slate-200">
+            <h3 class="text-lg font-bold text-slate-900 mb-4">Phase 1 Critical User Journey Matrix</h3>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-xs border border-slate-200 rounded-xl overflow-hidden">
+                <thead class="bg-slate-100 text-slate-700 font-bold uppercase tracking-wider border-b border-slate-200">
+                  <tr>
+                    <th class="p-3">CUJ ID & Title</th>
+                    <th class="p-3">RUM Friction Baseline</th>
+                    <th class="p-3">Trigger Type</th>
+                    <th class="p-3">Advisor Action</th>
+                    <th class="p-3">Outcome</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 bg-white">
+                  <tr class="hover:bg-slate-50">
+                    <td class="p-3 font-bold text-blue-900">CUJ-001: Bodily Injury 100/300</td>
+                    <td class="p-3 text-slate-600">P95 = 27 min on quote page</td>
+                    <td class="p-3 text-red-600 font-semibold">Dead click & Dwell &gt; 20s</td>
+                    <td class="p-3 text-slate-700">Explains 100/300 asset protection</td>
+                    <td class="p-3 font-bold text-emerald-700">+18% Bind Rate</td>
+                  </tr>
+                  <tr class="hover:bg-slate-50">
+                    <td class="p-3 font-bold text-blue-900">CUJ-002: Deductible &amp; Rate Recalculation</td>
+                    <td class="p-3 text-slate-600">Dead click on static price</td>
+                    <td class="p-3 text-red-600 font-semibold">Dead click intercept</td>
+                    <td class="p-3 text-slate-700">Explains trade-off &amp; recalculates</td>
+                    <td class="p-3 font-bold text-emerald-700">Zero drop-offs</td>
+                  </tr>
+                  <tr class="hover:bg-slate-50">
+                    <td class="p-3 font-bold text-blue-900">CUJ-003: Gap &amp; Water Backup Add-ons</td>
+                    <td class="p-3 text-slate-600">Optional coverage drop-off</td>
+                    <td class="p-3 text-red-600 font-semibold">Hover / Selection hesitation</td>
+                    <td class="p-3 text-slate-700">Explains loan gap &amp; sewer backup</td>
+                    <td class="p-3 font-bold text-emerald-700">+24% Add-on Attach</td>
+                  </tr>
+                  <tr class="hover:bg-slate-50">
+                    <td class="p-3 font-bold text-blue-900">CUJ-004: Seamless Human Escalation</td>
+                    <td class="p-3 text-slate-600">Complex rating dead end</td>
+                    <td class="p-3 text-red-600 font-semibold">Intent classification</td>
+                    <td class="p-3 text-slate-700">Packages CRM &amp; connects 1-800</td>
+                    <td class="p-3 font-bold text-emerald-700">-3.5m Handle Time</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </main>
+
+    <!-- ========================================================================= -->
+    <!-- VIEW 4: COMPREHENSIVE KNOWLEDGE BASE (FAQS) EXPLORER -->
+    <!-- ========================================================================= -->
+    <main id="view-faqs" class="view-container flex-grow hidden">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+        
+        <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm">
+          <div class="flex flex-wrap justify-between items-center gap-4 mb-6 pb-6 border-b border-slate-100">
+            <div>
+              <span class="bg-red-100 text-red-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Authoritative Source of Truth</span>
+              <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-2">Comprehensive FAQ Knowledge Base</h2>
+              <p class="text-xs sm:text-sm text-slate-600 mt-1">100% deterministic FAQ responses for APEX Auto & APEX Home policies.</p>
+            </div>
+            
+            <!-- LIVE SEARCH BAR -->
+            <div class="w-full sm:w-80">
+              <input type="text" id="faq-search-input" onkeyup="renderFAQsUI(currentFaqFilter, this.value)" placeholder="Search 76+ FAQs (e.g. 100/300, Gap, Deductible)..." class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-xs font-medium focus:ring-2 focus:ring-blue-600 focus:outline-none" />
+            </div>
+          </div>
+
+          <!-- CATEGORY FILTER PILLS -->
+          <div class="flex flex-wrap gap-2 mb-6 text-xs">
+            <button onclick="currentFaqFilter='all'; renderFAQsUI('all');" class="px-3.5 py-1.5 rounded-xl font-bold bg-blue-900 text-white">All (76)</button>
+            <button onclick="currentFaqFilter='Liability'; renderFAQsUI('Liability');" class="px-3.5 py-1.5 rounded-xl font-bold bg-slate-100 text-slate-700 hover:bg-blue-50">🚗 Auto Liability</button>
+            <button onclick="currentFaqFilter='Physical Damage'; renderFAQsUI('Physical Damage');" class="px-3.5 py-1.5 rounded-xl font-bold bg-slate-100 text-slate-700 hover:bg-blue-50">🛡️ Physical Damage & Deductibles</button>
+            <button onclick="currentFaqFilter='Optional'; renderFAQsUI('Optional');" class="px-3.5 py-1.5 rounded-xl font-bold bg-slate-100 text-slate-700 hover:bg-blue-50">⭐ Optional Add-ons</button>
+            <button onclick="currentFaqFilter='Home'; renderFAQsUI('Home');" class="px-3.5 py-1.5 rounded-xl font-bold bg-slate-100 text-slate-700 hover:bg-blue-50">🏠 APEX Home Core</button>
+            <button onclick="currentFaqFilter='Bundling'; renderFAQsUI('Bundling');" class="px-3.5 py-1.5 rounded-xl font-bold bg-slate-100 text-slate-700 hover:bg-blue-50">🔗 Bundling & Payments</button>
+          </div>
+
+          <!-- FAQ GRID -->
+          <div id="faqs-list-container" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+
+        </div>
+
+      </div>
+    </main>
+
+    <!-- ========================================================================= -->
+    <!-- VIEW 5: REAL-USER MONITORING (RUM) & TELEMETRY DASHBOARD -->
+    <!-- ========================================================================= -->
+    <main id="view-telemetry" class="view-container flex-grow hidden">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+        
+        <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm">
+          <div class="flex items-center justify-between mb-6 pb-6 border-b border-slate-100">
+            <div>
+              <span class="bg-purple-100 text-purple-900 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Live Telemetry</span>
+              <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-2">Real-User Monitoring (RUM) Telemetry</h2>
+              <p class="text-xs sm:text-sm text-slate-600 mt-1">Live tracking of dead-click interventions, dwell reductions, and deterministic deflection.</p>
+            </div>
+            <button onclick="renderTelemetryUI()" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold px-3 py-2 rounded-xl transition">
+              🔄 Refresh Telemetry
+            </button>
+          </div>
+
+          <!-- KPI STATS CARDS -->
+          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
+            <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4">
+              <div class="text-xs text-slate-500 font-bold">Dwell Time on Quote</div>
+              <div id="stat-dwell-time" class="text-2xl font-black text-slate-900 mt-1">0s</div>
+              <div class="text-[10px] text-emerald-600 mt-1">Target: &lt; 4 mins (was 27m)</div>
+            </div>
+
+            <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4">
+              <div class="text-xs text-slate-500 font-bold">Dead Clicks Intercepted</div>
+              <div id="stat-dead-clicks" class="text-2xl font-black text-red-600 mt-1">0</div>
+              <div class="text-[10px] text-slate-400 mt-1">RUM Interception Rate: 100%</div>
+            </div>
+
+            <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4">
+              <div class="text-xs text-slate-500 font-bold">Advisor Proactive Triggers</div>
+              <div id="stat-advisor-triggers" class="text-2xl font-black text-blue-900 mt-1">0</div>
+              <div class="text-[10px] text-blue-600 mt-1">Contextual Assistance</div>
+            </div>
+
+            <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4">
+              <div class="text-xs text-slate-500 font-bold">FAQ Questions Asked</div>
+              <div id="stat-faqs-asked" class="text-2xl font-black text-purple-900 mt-1">0</div>
+              <div class="text-[10px] text-purple-600 mt-1">Deterministic Retrieval</div>
+            </div>
+
+            <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4">
+              <div class="text-xs text-slate-500 font-bold">Rate Recalculations</div>
+              <div id="stat-rate-calcs" class="text-2xl font-black text-amber-700 mt-1">0</div>
+              <div class="text-[10px] text-amber-600 mt-1">Live Rate Invocations</div>
+            </div>
+          </div>
+
+          <!-- EVENT STREAM -->
+          <div class="space-y-3">
+            <h3 class="text-sm font-bold text-slate-800">Live Client Event Stream</h3>
+            <div id="telemetry-event-stream" class="bg-slate-50 border border-slate-200 rounded-2xl p-3 max-h-80 overflow-y-auto space-y-1"></div>
+          </div>
+
+        </div>
+
+      </div>
+    </main>
+
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- FLOATING DIGITAL COVERAGE ADVISOR WIDGET (CHAT & VOICE) -->
+  <!-- ========================================================================= -->
+  <div class="fixed bottom-6 right-6 z-50 flex flex-col items-end">
+    
+    <!-- EXPANDED CHAT PANEL -->
+    <div id="advisor-widget-panel" class="w-[360px] sm:w-[400px] bg-white rounded-3xl shadow-2xl border border-slate-200 flex flex-col overflow-hidden mb-3 hidden transition-all duration-300 h-[560px]">
+      
+      <!-- WIDGET HEADER -->
+      <div class="bg-gradient-to-r from-blue-900 to-blue-950 text-white p-4 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-xl bg-blue-800 flex items-center justify-center font-bold text-sm shadow-inner border border-blue-700">
+            AF
+          </div>
+          <div>
+            <div class="font-bold text-sm leading-none">Digital Coverage Advisor</div>
+            <div class="text-[10px] text-blue-300 flex items-center gap-1 mt-1">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+              <span>100% Deterministic • Phase 1 MVP</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-1">
+          <!-- VOICE MODE TOGGLE -->
+          <button onclick="state.advisor.isVoiceMode = !state.advisor.isVoiceMode; this.classList.toggle('text-amber-400'); if(!state.advisor.isVoiceMode) stopSpeaking();" class="p-1.5 text-slate-300 hover:text-white rounded-lg transition" title="Toggle Spoken Voice Mode">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/></svg>
+          </button>
+          <!-- CLOSE -->
+          <button onclick="state.advisor.isOpen = false; stopSpeaking(); renderAdvisorUI();" class="p-1.5 text-slate-300 hover:text-white rounded-lg transition">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- VOICE ANIMATION BAR (WHEN SPEAKING) -->
+      <div class="voice-wave-container hidden bg-blue-950 px-4 py-1.5 flex items-center justify-between text-[11px] text-blue-200 border-b border-blue-800">
+        <span class="flex items-center gap-1.5">
+          <span class="voice-bar w-1 bg-amber-400 rounded"></span>
+          <span class="voice-bar w-1 bg-amber-400 rounded"></span>
+          <span class="voice-bar w-1 bg-amber-400 rounded"></span>
+          <span class="voice-bar w-1 bg-amber-400 rounded"></span>
+          <span class="voice-bar w-1 bg-amber-400 rounded"></span>
+          <span class="ml-1 text-amber-300 font-semibold">Speaking response...</span>
+        </span>
+        <button onclick="stopSpeaking()" class="text-slate-400 hover:text-white text-[10px] underline">Stop</button>
+      </div>
+
+      <!-- CHAT MESSAGE SCROLL AREA -->
+      <div id="advisor-chat-messages" class="flex-grow p-4 overflow-y-auto bg-slate-50/50 space-y-3"></div>
+
+      <!-- CHAT INPUT BAR -->
+      <div class="p-3 bg-white border-t border-slate-200">
+        <form onsubmit="event.preventDefault(); const inp = document.getElementById('advisor-text-input'); handleUserMessage(inp.value); inp.value='';">
+          <div class="flex items-center gap-2">
+            <input id="advisor-text-input" type="text" placeholder="Ask about 100/300, deductibles, Gap, rates..." class="flex-grow bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2 text-xs font-medium focus:ring-2 focus:ring-blue-600 focus:outline-none" />
+            <button type="submit" class="bg-blue-900 hover:bg-blue-800 text-white p-2 rounded-xl transition shrink-0 shadow-sm">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+            </button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+
+    <!-- FLOATING LAUNCHER BUTTON -->
+    <button onclick="state.advisor.isOpen = !state.advisor.isOpen; renderAdvisorUI();" class="relative bg-gradient-to-br from-blue-900 to-blue-950 text-white p-4 rounded-full shadow-2xl hover:scale-105 transition transform flex items-center justify-center border-2 border-red-500">
+      <div id="advisor-unread-badge" class="absolute -top-1 -right-1 w-4 h-4 bg-red-600 rounded-full animate-ping"></div>
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
+    </button>
+
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- HUMAN ESCALATION MODAL (SOW Sec 2.1 & 4.3) -->
+  <!-- ========================================================================= -->
+  <div id="escalation-modal" class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-slate-200 relative animate-scale">
+      <button onclick="closeEscalationModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 p-1">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+
+      <div class="text-center mb-6">
+        <div class="w-14 h-14 rounded-2xl bg-red-50 text-red-600 flex items-center justify-center text-3xl mx-auto mb-3 shadow-inner">
+          📞
+        </div>
+        <h3 class="text-xl font-bold text-slate-900">Connect with an AmFam Licensed Agent</h3>
+        <p class="text-xs text-slate-500 mt-1">Direct priority routing with your quote context preserved.</p>
+      </div>
+
+      <div class="bg-blue-50 border border-blue-200 rounded-2xl p-4 mb-6 text-xs space-y-2 text-slate-700">
+        <div class="font-bold text-blue-950 flex items-center justify-between">
+          <span>Quote Context Attached:</span>
+          <span class="font-mono text-[11px] bg-blue-200 text-blue-900 px-2 py-0.5 rounded">ID: AF-98421-WI</span>
+        </div>
+        <div class="text-slate-600">👤 Customer: Sarah Jenkins (Madison, WI)</div>
+        <div class="text-slate-600">🚗 Vehicle: 2024 Honda CR-V Hybrid (BI 100/300, $500 Ded)</div>
+        <div class="text-slate-600">🏠 Property: Madison Single Family ($380k Dwelling)</div>
+      </div>
+
+      <div class="space-y-3">
+        <a href="tel:18006926326" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-xl text-center text-sm shadow flex items-center justify-center gap-2 transition">
+          <span>📞 Click-to-Call 1-800-MY-AMFAM</span>
+        </a>
+        <button onclick="alert('Priority Live Chat agent queue requested. Estimated wait: 45 seconds.'); closeEscalationModal();" class="w-full bg-blue-900 hover:bg-blue-800 text-white font-bold py-3 rounded-xl text-center text-sm shadow transition">
+          💬 Start Priority Live Agent Chat (Wait: &lt;45s)
+        </button>
+      </div>
+
+      <p class="text-[11px] text-center text-slate-400 mt-4">Hours: Monday–Friday 7am–8pm CST • Saturday 8am–4pm CST</p>
+    </div>
+  </div>
+
+  <script>
+    let currentFaqFilter = 'all';
+  </script>
+  <script src="app.js"></script>
+</body>
+</html>

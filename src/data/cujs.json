@@ -1,0 +1,223 @@
+[
+  {
+    "id": "CUJ-001",
+    "title": "Coverage Limit Confusion & Proactive Advisory",
+    "persona": "Sarah Jenkins (First-time auto policy shopper, 2024 Honda CR-V)",
+    "friction_point": "P95 Time on Quote Page = 27 minutes. High abandonment due to confusion between 50/100, 100/300, and 250/500 Bodily Injury limits.",
+    "trigger": "Time on page (>20s dwelling on Liability section) or Dead Clicks on '100/300' limit badge.",
+    "goal": "Clarify liability definitions deterministically and assist user in selecting the optimal coverage matching net worth.",
+    "dialogue": [
+      {
+        "speaker": "System Trigger",
+        "type": "trigger",
+        "text": "User hovered on Bodily Injury 100/300 for 25s with 2 dead clicks on the coverage title.",
+        "action": "Trigger Advisor Proactive Bubble"
+      },
+      {
+        "speaker": "Digital Advisor",
+        "type": "agent",
+        "text": "Hello! I noticed you are reviewing Bodily Injury limits. Would you like a quick breakdown of what 100/300 covers and how to choose the right limit for your needs?",
+        "quick_replies": [
+          "What is 100/300?",
+          "How much do I need?",
+          "What is Property Damage?"
+        ]
+      },
+      {
+        "speaker": "User",
+        "type": "user",
+        "text": "What does 100/300 actually mean, and how do I know if it's enough?"
+      },
+      {
+        "speaker": "Digital Advisor",
+        "type": "agent",
+        "text": "Bodily Injury 100/300 means your policy pays up to $100,000 per injured person, and up to $300,000 total per accident for medical bills, lost wages, and legal defense if you are at fault. A common recommendation is to carry limits at least equal to your net worth to protect your savings.",
+        "tool_call": {
+          "name": "highlight_coverage_option",
+          "params": {
+            "coverage": "bodily_injury",
+            "recommended": "100/300"
+          }
+        },
+        "quick_replies": [
+          "Apply 100/300 ($100k/$300k)",
+          "What about Property Damage?",
+          "Recalculate rate"
+        ]
+      },
+      {
+        "speaker": "User",
+        "type": "user",
+        "text": "Apply 100/300 limit to my quote please."
+      },
+      {
+        "speaker": "Digital Advisor",
+        "type": "agent",
+        "text": "Certainly! I have updated your Bodily Injury limit to 100/300. Click 'Calculate new rate' whenever you are ready to see the revised premium.",
+        "tool_call": {
+          "name": "update_quote_selection",
+          "params": {
+            "coverage": "bodily_injury",
+            "value": "100/300",
+            "status": "updated"
+          }
+        }
+      }
+    ],
+    "business_outcome": "Reduces quote dwell time from 27 min to <4 min; increases bind rate by +18%."
+  },
+  {
+    "id": "CUJ-002",
+    "title": "Deductible Optimization & Rate Recalculation",
+    "persona": "Marcus Vance (Home & Auto Bundle Customer, Budget Conscious)",
+    "friction_point": "User changes Collision deductible from $500 to $1,000, expecting instant rate updates; dead-clicks price header.",
+    "trigger": "Deductible changed + dead click on static premium amount.",
+    "goal": "Educate on the $250 vs $500 vs $1,000 deductible trade-off and trigger rate recalculation.",
+    "dialogue": [
+      {
+        "speaker": "System Trigger",
+        "type": "trigger",
+        "text": "User selected $1,000 deductible and clicked $142/mo total 3 times expecting automatic recalculation.",
+        "action": "Dead Click Interception Trigger"
+      },
+      {
+        "speaker": "Digital Advisor",
+        "type": "agent",
+        "text": "Tip: After adjusting your deductible, click 'Calculate new rate' to refresh your live premium. Would you like me to recalculate your rate now?",
+        "quick_replies": [
+          "Calculate new rate now",
+          "How to choose deductible?",
+          "Compare $500 vs $1000"
+        ]
+      },
+      {
+        "speaker": "User",
+        "type": "user",
+        "text": "How do I choose between a $500 and $1,000 deductible?"
+      },
+      {
+        "speaker": "Digital Advisor",
+        "type": "agent",
+        "text": "A higher deductible like $1,000 lowers your monthly premium but means you pay more out of pocket if you file a claim. If you have an emergency fund to cover $1,000, it can save you money each year. If cash flow is tighter, a $500 deductible provides more predictable costs.",
+        "quick_replies": [
+          "Calculate new rate ($1,000 ded)",
+          "Keep $500 deductible",
+          "Show payment options"
+        ]
+      },
+      {
+        "speaker": "User",
+        "type": "user",
+        "text": "Calculate new rate now."
+      },
+      {
+        "speaker": "Digital Advisor",
+        "type": "agent",
+        "text": "Rate recalculated! Your new monthly premium is $128/month (saving $14/month with a $1,000 deductible).",
+        "tool_call": {
+          "name": "recalculate_rate",
+          "params": {
+            "new_monthly": 128,
+            "savings": 14
+          }
+        }
+      }
+    ],
+    "business_outcome": "Eliminates dead click frustration and prevents drop-off during premium recalculation."
+  },
+  {
+    "id": "CUJ-003",
+    "title": "Optional Coverage Clarification (Gap & Water Backup)",
+    "persona": "David & Elena Ramirez (Homeowners & Lease Holders)",
+    "friction_point": "Users skip high-value protections (Loan/Lease Gap, Water Backup) due to lack of jargon understanding.",
+    "trigger": "User unchecks 'Loan/Lease Assistance' or hovers over 'Water Backup' info icon.",
+    "goal": "Provide clear, concise explanation of what standard policies exclude and why add-ons provide essential peace of mind.",
+    "dialogue": [
+      {
+        "speaker": "Digital Advisor",
+        "type": "agent",
+        "text": "Hello! I noticed you are reviewing optional coverages. Would you like a quick summary of what Loan or Lease Assistance (Gap) and Water Backup cover?",
+        "quick_replies": [
+          "What is Loan/Lease Assistance?",
+          "What is Water Backup?",
+          "What is OEM Parts?"
+        ]
+      },
+      {
+        "speaker": "User",
+        "type": "user",
+        "text": "What is Water Backup and do I really need it for my home?"
+      },
+      {
+        "speaker": "Digital Advisor",
+        "type": "agent",
+        "text": "Water Backup covers damage caused by water backing up through sewers or drains, or by a sump pump overflow. Standard homeowners policies typically exclude this peril. It is available in limits from $5,000 to $25,000.",
+        "quick_replies": [
+          "Add $10,000 Water Backup",
+          "What about Gap coverage?",
+          "What does Dwelling cover?"
+        ]
+      },
+      {
+        "speaker": "User",
+        "type": "user",
+        "text": "What is Loan/Lease Assistance on the car?"
+      },
+      {
+        "speaker": "Digital Advisor",
+        "type": "agent",
+        "text": "If your vehicle is totaled, standard insurance pays current market value \u2014 which may be less than what you owe on your loan or lease. Loan or Lease Assistance covers that difference. It requires Comprehensive and Collision coverage.",
+        "quick_replies": [
+          "Include Gap Coverage ($4/mo)",
+          "Looks good, let's proceed"
+        ]
+      }
+    ],
+    "business_outcome": "Increases policy coverage adequacy and boosts optional rider cross-sell by +24%."
+  },
+  {
+    "id": "CUJ-004",
+    "title": "Seamless Human Escalation & Agent Handoff",
+    "persona": "Robert Chen (Complex Multi-Property / Commercial Vehicle Inquirer)",
+    "friction_point": "User has complex underwriting questions outside deterministic Phase 1 scope; needs immediate live agent transfer without repeating details.",
+    "trigger": "User query exceeds standard FAQ or explicitly requests agent consultation.",
+    "goal": "Provide instant, compliant routing to licensed AmFam agent with seamless context handoff.",
+    "dialogue": [
+      {
+        "speaker": "User",
+        "type": "user",
+        "text": "I have an antique truck and a detached commercial woodworking studio on my property. Can I add those to this quote?"
+      },
+      {
+        "speaker": "Digital Advisor",
+        "type": "agent",
+        "text": "For specialty vehicles and commercial structures, a licensed American Family Insurance agent can customize your policy with exact commercial endorsements to ensure full protection. Would you like to connect with an agent now?",
+        "quick_replies": [
+          "Call 1-800-MY-AMFAM",
+          "Request Live Chat Agent",
+          "Schedule Agent Callback"
+        ]
+      },
+      {
+        "speaker": "User",
+        "type": "user",
+        "text": "Yes, connect me with an agent."
+      },
+      {
+        "speaker": "Digital Advisor",
+        "type": "agent",
+        "text": "Certainly! I have packaged your quote details (Quote #AF-9921, Madison WI, 2024 CR-V & Single Family Home) and connected you to our priority licensed team. Tap below to call or initiate live agent chat.",
+        "tool_call": {
+          "name": "trigger_escalation",
+          "params": {
+            "quote_id": "AF-9921-X",
+            "destination": "1-800-692-6326",
+            "reason": "Specialty Vehicle & Commercial Structure Ingestion",
+            "wait_time_sec": 45
+          }
+        }
+      }
+    ],
+    "business_outcome": "Zero dead ends for high-value leads; reduces customer handle time by 3.5 minutes via warm context transfer."
+  }
+]
