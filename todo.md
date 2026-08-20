@@ -5,7 +5,9 @@
 - [x] Initialize virtual environment with `cxas-scrapi` and `cxas` CLI
 - [x] Configure `gecx-config.json` with GCP project `gecx-amfam` and App `amfam-digital-coverage-advisor`
 - [x] Ingest & verify customer source of truth in `faq.md`
-- [ ] GCP Project `gecx-amfam` provisioned with required APIs enabled (`ces.googleapis.com`, `dialogflow.googleapis.com`)
+- [x] GCP Project `gecx-amfam` provisioned with required APIs enabled (`ces.googleapis.com`, `dialogflow.googleapis.com`)
+- [x] Create CXAS App shell `projects/gecx-amfam/locations/us/apps/amfam-digital-coverage-advisor`
+
 
 ## Gate 1: Gather Requirements & Formalize CUJs
 - [ ] Formalize Level 1 & 2 Coverage Understanding scope
