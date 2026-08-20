@@ -1,0 +1,19 @@
+# Python & Virtualenv
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+env/
+venv/
+
+# IDE & OS
+.DS_Store
+.idea/
+.vscode/
+*.swp
+
+# Reports & Cache
+.pytest_cache/
+.coverage
+htmlcov/
+*.log

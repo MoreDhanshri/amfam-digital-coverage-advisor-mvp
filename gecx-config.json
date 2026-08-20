@@ -1,0 +1,10 @@
+{
+  "gcp_project_id": "gecx-amfam",
+  "location": "us",
+  "app_name": "amfam-digital-coverage-advisor",
+  "deployed_app_id": "amfam-digital-coverage-advisor",
+  "app_dir": "cxas_app/amfam_digital_coverage_advisor",
+  "model": "gemini-3-flash",
+  "modality": "text",
+  "default_channel": "text"
+}
