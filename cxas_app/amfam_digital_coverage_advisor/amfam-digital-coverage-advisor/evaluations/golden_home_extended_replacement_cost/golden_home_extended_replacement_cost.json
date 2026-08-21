@@ -1,0 +1,46 @@
+{
+  "name": "b4a43113-a752-4c1c-aef9-44f2a070cac6",
+  "displayName": "golden_home_extended_replacement_cost",
+  "tags": ["P0", "HIGH", "home", "replacement_cost", "HOM-07", "home_coverage_goldens"],
+  "golden": {
+    "turns": [{
+      "steps": [{
+        "userInput": {
+          "variables": {
+            "active_tab": "home",
+            "user_state": "FL"
+          }
+        }
+      }, {
+        "userInput": {
+          "text": "\u003cevent\u003ewelcome\u003c/event\u003e"
+        }
+      }, {
+        "expectation": {
+          "agentResponse": {
+            "role": "agent",
+            "chunks": [{
+              "text": "Hello! I am your American Family Digital Coverage Advisor. I can help you understand your auto and home coverages, deductibles, limits, and bundling discounts. How can I assist you today?"
+            }]
+          }
+        }
+      }]
+    }, {
+      "steps": [{
+        "userInput": {
+          "text": "What is extended replacement cost coverage?"
+        }
+      }, {
+        "expectation": {
+          "agentResponse": {
+            "role": "agent",
+            "chunks": [{
+              "text": "Extended Replacement Cost provides an additional buffer (25% or 50% above your Coverage A Dwelling limit) if rebuilding costs exceed initial estimates due to surge inflation, rising material costs, or labor shortages following a major disaster."
+            }]
+          }
+        }
+      }]
+    }],
+    "evaluationExpectations": ["eval_exp_ed810dad"]
+  }
+}

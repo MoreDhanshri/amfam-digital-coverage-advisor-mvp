@@ -1,0 +1,46 @@
+{
+  "name": "b575844c-1a13-40ae-9096-b804de3c3e3b",
+  "displayName": "golden_home_deductibles_wind_hail",
+  "tags": ["P0", "NO-GO", "home", "deductibles", "HOM-06", "home_coverage_goldens"],
+  "golden": {
+    "turns": [{
+      "steps": [{
+        "userInput": {
+          "variables": {
+            "active_tab": "home",
+            "user_state": "FL"
+          }
+        }
+      }, {
+        "userInput": {
+          "text": "\u003cevent\u003ewelcome\u003c/event\u003e"
+        }
+      }, {
+        "expectation": {
+          "agentResponse": {
+            "role": "agent",
+            "chunks": [{
+              "text": "Hello! I am your American Family Digital Coverage Advisor. I can help you understand your auto and home coverages, deductibles, limits, and bundling discounts. How can I assist you today?"
+            }]
+          }
+        }
+      }]
+    }, {
+      "steps": [{
+        "userInput": {
+          "text": "What is the difference between AOP and Wind/Hail deductibles?"
+        }
+      }, {
+        "expectation": {
+          "agentResponse": {
+            "role": "agent",
+            "chunks": [{
+              "text": "The All-Perils (AOP) deductible is the standard flat amount ($500 to $5,000) you pay out of pocket before insurance covers most claims. In many states, a separate Wind/Hail deductible applies specifically to wind or hail damage, often calculated as a percentage of your Dwelling coverage (e.g., 1% or 2%) and must be at least equal to your AOP deductible."
+            }]
+          }
+        }
+      }]
+    }],
+    "evaluationExpectations": ["eval_exp_d8cdfb73"]
+  }
+}

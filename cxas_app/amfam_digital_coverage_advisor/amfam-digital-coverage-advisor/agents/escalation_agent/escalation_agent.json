@@ -1,0 +1,9 @@
+{
+  "name": "escalation_agent",
+  "displayName": "escalation_agent",
+  "instruction": "agents/escalation_agent/instruction.txt",
+  "tools": ["end_session"],
+  "beforeModelCallbacks": [{
+    "pythonCode": "agents/escalation_agent/before_model_callbacks/before_model_callbacks_01/python_code.py"
+  }]
+}

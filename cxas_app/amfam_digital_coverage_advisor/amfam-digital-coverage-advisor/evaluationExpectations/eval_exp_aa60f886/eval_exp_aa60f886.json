@@ -1,0 +1,7 @@
+{
+  "name": "73cc1df6-261c-4529-9865-8eaa0e000730",
+  "displayName": "eval_exp_aa60f886",
+  "llmCriteria": {
+    "prompt": "The agent must list Credit/Debit and EFT payment methods and explain 1-pay vs monthly installments."
+  }
+}

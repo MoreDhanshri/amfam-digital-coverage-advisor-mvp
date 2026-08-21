@@ -1,0 +1,7 @@
+{
+  "name": "74873c32-1ff1-45a0-94e6-80184becefe2",
+  "displayName": "eval_exp_7c2977e3",
+  "llmCriteria": {
+    "prompt": "The agent must contrast Replacement Cost (new items) with Actual Cash Value (depreciated worth)."
+  }
+}

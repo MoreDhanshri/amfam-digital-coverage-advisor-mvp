@@ -1,0 +1,7 @@
+{
+  "name": "7ac3eff5-2cb5-42b9-a49b-06362a57e8f0",
+  "displayName": "eval_exp_108fad7c",
+  "llmCriteria": {
+    "prompt": "The agent must explain that 100k is the per-person limit and 300k is the per-accident limit."
+  }
+}

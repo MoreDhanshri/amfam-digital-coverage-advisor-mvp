@@ -1,0 +1,7 @@
+{
+  "name": "dd040c67-e0c9-4f8e-a907-4d183fc50633",
+  "displayName": "eval_exp_f16d3414",
+  "llmCriteria": {
+    "prompt": "The agent must explain the trade-off between higher deductibles/lower premiums vs lower deductibles/predictable out-of-pocket costs."
+  }
+}

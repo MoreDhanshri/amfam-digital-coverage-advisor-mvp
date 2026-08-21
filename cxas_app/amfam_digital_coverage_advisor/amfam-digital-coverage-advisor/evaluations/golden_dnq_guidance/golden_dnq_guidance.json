@@ -1,0 +1,46 @@
+{
+  "name": "d04e3389-d777-4e22-998a-4dc287b57ee0",
+  "displayName": "golden_dnq_guidance",
+  "tags": ["P0", "NO-GO", "dnq", "support", "BND-03", "bundling_general_goldens"],
+  "golden": {
+    "turns": [{
+      "steps": [{
+        "userInput": {
+          "variables": {
+            "active_tab": "bundle",
+            "user_state": "MN"
+          }
+        }
+      }, {
+        "userInput": {
+          "text": "\u003cevent\u003ewelcome\u003c/event\u003e"
+        }
+      }, {
+        "expectation": {
+          "agentResponse": {
+            "role": "agent",
+            "chunks": [{
+              "text": "Hello! I am your American Family Digital Coverage Advisor. I can help you understand your auto and home coverages, deductibles, limits, and bundling discounts. How can I assist you today?"
+            }]
+          }
+        }
+      }]
+    }, {
+      "steps": [{
+        "userInput": {
+          "text": "What does it mean if I get a Does Not Qualify message?"
+        }
+      }, {
+        "expectation": {
+          "agentResponse": {
+            "role": "agent",
+            "chunks": [{
+              "text": "A Does Not Qualify (DNQ) message means that based on the details provided, we are unable to offer an automated policy through this online platform at this time. However, our licensed support team is available to assist you with customized alternative coverage options."
+            }]
+          }
+        }
+      }]
+    }],
+    "evaluationExpectations": ["eval_exp_3766d898"]
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "name": "71131bc8-5824-4abf-841b-654d9918f714",
+  "displayName": "golden_home_underwriting_company",
+  "tags": ["P1", "MEDIUM", "home", "underwriting", "HOM-12", "home_coverage_goldens"],
+  "golden": {
+    "turns": [{
+      "steps": [{
+        "userInput": {
+          "variables": {
+            "active_tab": "home",
+            "user_state": "FL"
+          }
+        }
+      }, {
+        "userInput": {
+          "text": "\u003cevent\u003ewelcome\u003c/event\u003e"
+        }
+      }, {
+        "expectation": {
+          "agentResponse": {
+            "role": "agent",
+            "chunks": [{
+              "text": "Hello! I am your American Family Digital Coverage Advisor. I can help you understand your auto and home coverages, deductibles, limits, and bundling discounts. How can I assist you today?"
+            }]
+          }
+        }
+      }]
+    }, {
+      "steps": [{
+        "userInput": {
+          "text": "Who underwrites the APEX Home policy?"
+        }
+      }, {
+        "expectation": {
+          "agentResponse": {
+            "role": "agent",
+            "chunks": [{
+              "text": "Your APEX Home policy is underwritten by Homesite Insurance, an American Family Insurance company."
+            }]
+          }
+        }
+      }]
+    }],
+    "evaluationExpectations": ["eval_exp_fd0371db"]
+  }
+}

@@ -1,0 +1,81 @@
+{
+    "name": "amfam-digital-coverage-advisor",
+    "displayName": "amfam-digital-coverage-advisor",
+    "description": "AmFam Digital Coverage Advisor MVP Phase 1 - Deterministic coverage explanation for Auto and Home",
+    "rootAgent": "root_advisor",
+    "loggingSettings": {
+        "conversationLoggingSettings": {
+            "retentionWindow": "31536000s"
+        }
+    },
+    "modelSettings": {},
+    "variableDeclarations": [
+        {
+            "name": "_action_trigger",
+            "description": "Internal action trigger for deterministic callbacks",
+            "schema": {
+                "type": "STRING",
+                "default": ""
+            }
+        },
+        {
+            "name": "_escalation_reason",
+            "description": "Internal reason for escalation",
+            "schema": {
+                "type": "STRING",
+                "default": ""
+            }
+        },
+        {
+            "name": "active_tab",
+            "description": "Current active quote tab on the frontend (auto or home)",
+            "schema": {
+                "type": "STRING",
+                "default": ""
+            }
+        },
+        {
+            "name": "current_topic",
+            "description": "Active conversation topic",
+            "schema": {
+                "type": "STRING",
+                "default": ""
+            }
+        },
+        {
+            "name": "quote_id",
+            "description": "Quote session identifier",
+            "schema": {
+                "type": "STRING",
+                "default": ""
+            }
+        },
+        {
+            "name": "user_state",
+            "description": "User geographic state for state-specific nuances",
+            "schema": {
+                "type": "STRING",
+                "default": ""
+            }
+        }
+    ],
+    "languageSettings": {
+        "defaultLanguageCode": "en-US"
+    },
+    "evaluationMetricsThresholds": {
+        "goldenEvaluationMetricsThresholds": {
+            "turnLevelMetricsThresholds": {
+                "semanticSimilaritySuccessThreshold": 2,
+                "overallToolInvocationCorrectnessThreshold": 1.0
+            },
+            "toolMatchingSettings": {
+                "extraToolCallBehavior": "ALLOW"
+            }
+        },
+        "goldenHallucinationMetricBehavior": "DISABLED"
+    },
+    "timeZoneSettings": {
+        "timeZone": "America/Chicago"
+    },
+    "toolExecutionMode": "PARALLEL"
+}

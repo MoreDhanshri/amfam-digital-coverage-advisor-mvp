@@ -1,0 +1,7 @@
+{
+  "name": "19b2030e-880b-47d6-a022-cc732cf9acb9",
+  "displayName": "eval_exp_bef2a95d",
+  "llmCriteria": {
+    "prompt": "The agent must mention that both require Comprehensive and Collision."
+  }
+}

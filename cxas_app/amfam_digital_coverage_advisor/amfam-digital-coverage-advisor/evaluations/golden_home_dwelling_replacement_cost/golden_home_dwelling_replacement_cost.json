@@ -1,0 +1,46 @@
+{
+  "name": "d81934f4-3c16-431b-b1f4-8697bca25ba5",
+  "displayName": "golden_home_dwelling_replacement_cost",
+  "tags": ["P0", "NO-GO", "home", "dwelling", "HOM-01", "home_coverage_goldens"],
+  "golden": {
+    "turns": [{
+      "steps": [{
+        "userInput": {
+          "variables": {
+            "active_tab": "home",
+            "user_state": "FL"
+          }
+        }
+      }, {
+        "userInput": {
+          "text": "\u003cevent\u003ewelcome\u003c/event\u003e"
+        }
+      }, {
+        "expectation": {
+          "agentResponse": {
+            "role": "agent",
+            "chunks": [{
+              "text": "Hello! I am your American Family Digital Coverage Advisor. I can help you understand your auto and home coverages, deductibles, limits, and bundling discounts. How can I assist you today?"
+            }]
+          }
+        }
+      }]
+    }, {
+      "steps": [{
+        "userInput": {
+          "text": "What is Dwelling Coverage A and how is it determined?"
+        }
+      }, {
+        "expectation": {
+          "agentResponse": {
+            "role": "agent",
+            "chunks": [{
+              "text": "Dwelling coverage (Coverage A) pays to repair or rebuild your home\u0027s physical structure if it is damaged by a covered peril. The coverage amount is calculated based on the estimated replacement cost to rebuild your home from the ground up, not its real estate market value or purchase price."
+            }]
+          }
+        }
+      }]
+    }],
+    "evaluationExpectations": ["eval_exp_eea88989"]
+  }
+}

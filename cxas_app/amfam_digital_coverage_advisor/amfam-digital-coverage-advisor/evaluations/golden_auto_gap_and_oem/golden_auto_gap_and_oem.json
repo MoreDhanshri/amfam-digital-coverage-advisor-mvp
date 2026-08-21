@@ -1,0 +1,46 @@
+{
+  "name": "1abe2d45-a114-4bc0-a58e-03868c2839f6",
+  "displayName": "golden_auto_gap_and_oem",
+  "tags": ["P1", "HIGH", "auto", "addons", "AUT-08", "auto_coverage_goldens"],
+  "golden": {
+    "turns": [{
+      "steps": [{
+        "userInput": {
+          "variables": {
+            "active_tab": "auto",
+            "user_state": "WI"
+          }
+        }
+      }, {
+        "userInput": {
+          "text": "\u003cevent\u003ewelcome\u003c/event\u003e"
+        }
+      }, {
+        "expectation": {
+          "agentResponse": {
+            "role": "agent",
+            "chunks": [{
+              "text": "Hello! I am your American Family Digital Coverage Advisor. I can help you understand your auto and home coverages, deductibles, limits, and bundling discounts. How can I assist you today?"
+            }]
+          }
+        }
+      }]
+    }, {
+      "steps": [{
+        "userInput": {
+          "text": "What is OEM coverage and loan gap assistance?"
+        }
+      }, {
+        "expectation": {
+          "agentResponse": {
+            "role": "agent",
+            "chunks": [{
+              "text": "OEM (Original Equipment Manufacturer) Parts coverage ensures your vehicle is repaired using original factory parts rather than aftermarket alternatives (available for vehicles up to 11 model years old). Loan or Lease Assistance (Gap) covers the difference between your vehicle\u0027s market value payout and what you still owe on your loan or lease if totaled. Both coverages require Comprehensive and Collision."
+            }]
+          }
+        }
+      }]
+    }],
+    "evaluationExpectations": ["eval_exp_24a5eb22", "eval_exp_bef2a95d"]
+  }
+}

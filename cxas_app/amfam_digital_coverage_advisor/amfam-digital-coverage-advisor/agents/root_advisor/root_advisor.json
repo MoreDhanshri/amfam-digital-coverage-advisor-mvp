@@ -1,0 +1,13 @@
+{
+  "name": "root_advisor",
+  "displayName": "root_advisor",
+  "instruction": "agents/root_advisor/instruction.txt",
+  "tools": ["end_session", "set_session_state"],
+  "childAgents": ["auto_coverage_agent", "bundling_general_agent", "escalation_agent", "home_coverage_agent"],
+  "beforeModelCallbacks": [{
+    "pythonCode": "agents/root_advisor/before_model_callbacks/before_model_callbacks_01/python_code.py"
+  }],
+  "afterModelCallbacks": [{
+    "pythonCode": "agents/root_advisor/after_model_callbacks/after_model_callbacks_01/python_code.py"
+  }]
+}

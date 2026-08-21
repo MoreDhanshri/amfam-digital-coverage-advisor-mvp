@@ -1,0 +1,7 @@
+{
+  "name": "1fff21c0-c2cf-41dd-8a03-40501976eb2a",
+  "displayName": "eval_exp_77b474e5",
+  "llmCriteria": {
+    "prompt": "The agent must distinguish Comprehensive (non-collision perils) from Collision (impact with vehicles or objects)."
+  }
+}

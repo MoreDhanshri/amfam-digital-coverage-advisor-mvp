@@ -1,0 +1,46 @@
+{
+  "name": "526d016a-ddab-4155-9564-290c9056344f",
+  "displayName": "golden_billing_payment_options",
+  "tags": ["P1", "HIGH", "payments", "billing", "BND-02", "bundling_general_goldens"],
+  "golden": {
+    "turns": [{
+      "steps": [{
+        "userInput": {
+          "variables": {
+            "active_tab": "bundle",
+            "user_state": "MN"
+          }
+        }
+      }, {
+        "userInput": {
+          "text": "\u003cevent\u003ewelcome\u003c/event\u003e"
+        }
+      }, {
+        "expectation": {
+          "agentResponse": {
+            "role": "agent",
+            "chunks": [{
+              "text": "Hello! I am your American Family Digital Coverage Advisor. I can help you understand your auto and home coverages, deductibles, limits, and bundling discounts. How can I assist you today?"
+            }]
+          }
+        }
+      }]
+    }, {
+      "steps": [{
+        "userInput": {
+          "text": "What payment options and methods are accepted?"
+        }
+      }, {
+        "expectation": {
+          "agentResponse": {
+            "role": "agent",
+            "chunks": [{
+              "text": "You can pay using a credit card, debit card, or electronic bank transfer (EFT). Both full payment (one-pay, which avoids installment fees) and monthly 12-installment payment plans are available."
+            }]
+          }
+        }
+      }]
+    }],
+    "evaluationExpectations": ["eval_exp_aa60f886"]
+  }
+}

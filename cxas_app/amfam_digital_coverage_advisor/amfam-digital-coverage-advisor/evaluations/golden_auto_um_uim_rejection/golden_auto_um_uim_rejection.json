@@ -1,0 +1,46 @@
+{
+  "name": "c317225b-04b9-4504-acf5-508cf505f70c",
+  "displayName": "golden_auto_um_uim_rejection",
+  "tags": ["P0", "HIGH", "auto", "uninsured", "AUT-03", "auto_coverage_goldens"],
+  "golden": {
+    "turns": [{
+      "steps": [{
+        "userInput": {
+          "variables": {
+            "active_tab": "auto",
+            "user_state": "WI"
+          }
+        }
+      }, {
+        "userInput": {
+          "text": "\u003cevent\u003ewelcome\u003c/event\u003e"
+        }
+      }, {
+        "expectation": {
+          "agentResponse": {
+            "role": "agent",
+            "chunks": [{
+              "text": "Hello! I am your American Family Digital Coverage Advisor. I can help you understand your auto and home coverages, deductibles, limits, and bundling discounts. How can I assist you today?"
+            }]
+          }
+        }
+      }]
+    }, {
+      "steps": [{
+        "userInput": {
+          "text": "Can I reject uninsured motorist coverage?"
+        }
+      }, {
+        "expectation": {
+          "agentResponse": {
+            "role": "agent",
+            "chunks": [{
+              "text": "In some states you may reject UM or UIM coverage in writing, but in certain states such as Nebraska, South Dakota, New Hampshire, and Minnesota, rejection is not permitted by state law. The option to reject will only appear on your quote if your state permits it."
+            }]
+          }
+        }
+      }]
+    }],
+    "evaluationExpectations": ["eval_exp_69b12f3e"]
+  }
+}

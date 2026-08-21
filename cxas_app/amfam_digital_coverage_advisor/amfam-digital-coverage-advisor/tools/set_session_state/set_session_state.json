@@ -1,0 +1,10 @@
+{
+  "name": "set_session_state",
+  "pythonFunction": {
+    "name": "set_session_state",
+    "pythonCode": "tools/set_session_state/python_function/python_code.py",
+    "description": "Write trigger, escalation, or topic variables to session state.\n\nArgs:\n    _action_trigger: Action trigger (e.g., \u0027escalate\u0027, \u0027farewell\u0027).\n    _escalation_reason: Reason for escalation (e.g., \u0027dynamic_rating\u0027, \u0027competitor_comparison\u0027).\n    current_topic: Topic being discussed (e.g., \u0027auto_liability\u0027, \u0027home_dwelling\u0027).\n\nReturns:\n    dict: Confirmation status of updated variables."
+  },
+  "executionType": "SYNCHRONOUS",
+  "displayName": "set_session_state"
+}

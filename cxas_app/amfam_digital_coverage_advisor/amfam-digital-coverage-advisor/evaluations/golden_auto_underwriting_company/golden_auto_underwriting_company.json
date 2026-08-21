@@ -1,0 +1,46 @@
+{
+  "name": "5eea2a9e-e5e0-43aa-9c3d-ca04bb79c7d2",
+  "displayName": "golden_auto_underwriting_company",
+  "tags": ["P1", "MEDIUM", "auto", "underwriting", "AUT-11", "auto_coverage_goldens"],
+  "golden": {
+    "turns": [{
+      "steps": [{
+        "userInput": {
+          "variables": {
+            "active_tab": "auto",
+            "user_state": "WI"
+          }
+        }
+      }, {
+        "userInput": {
+          "text": "\u003cevent\u003ewelcome\u003c/event\u003e"
+        }
+      }, {
+        "expectation": {
+          "agentResponse": {
+            "role": "agent",
+            "chunks": [{
+              "text": "Hello! I am your American Family Digital Coverage Advisor. I can help you understand your auto and home coverages, deductibles, limits, and bundling discounts. How can I assist you today?"
+            }]
+          }
+        }
+      }]
+    }, {
+      "steps": [{
+        "userInput": {
+          "text": "Who underwrites the APEX Auto policy?"
+        }
+      }, {
+        "expectation": {
+          "agentResponse": {
+            "role": "agent",
+            "chunks": [{
+              "text": "Your APEX Auto policy is underwritten by Midvale Indemnity Company, an American Family Insurance company."
+            }]
+          }
+        }
+      }]
+    }],
+    "evaluationExpectations": ["eval_exp_8252e90e"]
+  }
+}

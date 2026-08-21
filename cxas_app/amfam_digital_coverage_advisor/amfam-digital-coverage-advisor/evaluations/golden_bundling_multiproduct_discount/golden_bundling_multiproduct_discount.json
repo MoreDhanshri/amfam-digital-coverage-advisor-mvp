@@ -1,0 +1,46 @@
+{
+  "name": "9e529a40-538b-42aa-b847-1e304ec6d2ba",
+  "displayName": "golden_bundling_multiproduct_discount",
+  "tags": ["P0", "NO-GO", "bundling", "discounts", "BND-01", "bundling_general_goldens"],
+  "golden": {
+    "turns": [{
+      "steps": [{
+        "userInput": {
+          "variables": {
+            "active_tab": "bundle",
+            "user_state": "MN"
+          }
+        }
+      }, {
+        "userInput": {
+          "text": "\u003cevent\u003ewelcome\u003c/event\u003e"
+        }
+      }, {
+        "expectation": {
+          "agentResponse": {
+            "role": "agent",
+            "chunks": [{
+              "text": "Hello! I am your American Family Digital Coverage Advisor. I can help you understand your auto and home coverages, deductibles, limits, and bundling discounts. How can I assist you today?"
+            }]
+          }
+        }
+      }]
+    }, {
+      "steps": [{
+        "userInput": {
+          "text": "How does bundling auto and home save me money?"
+        }
+      }, {
+        "expectation": {
+          "agentResponse": {
+            "role": "agent",
+            "chunks": [{
+              "text": "When you quote and purchase both an auto and home policy together in a single flow, a multi-product discount is automatically applied to both policies, delivering meaningful savings on your total insurance cost."
+            }]
+          }
+        }
+      }]
+    }],
+    "evaluationExpectations": ["eval_exp_502bf830"]
+  }
+}

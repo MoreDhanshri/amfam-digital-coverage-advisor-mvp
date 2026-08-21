@@ -1,0 +1,7 @@
+{
+  "name": "d0acfef5-b5ac-466b-863c-2f6df2c71939",
+  "displayName": "eval_exp_927e2134",
+  "llmCriteria": {
+    "prompt": "The agent must direct user to Calculate new rate button or escalate to 1-800-MYAMFAM."
+  }
+}

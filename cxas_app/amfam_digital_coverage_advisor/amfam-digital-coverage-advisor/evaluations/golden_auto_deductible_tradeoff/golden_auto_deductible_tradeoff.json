@@ -1,0 +1,46 @@
+{
+  "name": "77621235-aa62-485d-bb3e-ffa8553d8e1d",
+  "displayName": "golden_auto_deductible_tradeoff",
+  "tags": ["P1", "HIGH", "auto", "deductibles", "AUT-05", "auto_coverage_goldens"],
+  "golden": {
+    "turns": [{
+      "steps": [{
+        "userInput": {
+          "variables": {
+            "active_tab": "auto",
+            "user_state": "WI"
+          }
+        }
+      }, {
+        "userInput": {
+          "text": "\u003cevent\u003ewelcome\u003c/event\u003e"
+        }
+      }, {
+        "expectation": {
+          "agentResponse": {
+            "role": "agent",
+            "chunks": [{
+              "text": "Hello! I am your American Family Digital Coverage Advisor. I can help you understand your auto and home coverages, deductibles, limits, and bundling discounts. How can I assist you today?"
+            }]
+          }
+        }
+      }]
+    }, {
+      "steps": [{
+        "userInput": {
+          "text": "How do I choose between a $250, $500, or $1,000 deductible?"
+        }
+      }, {
+        "expectation": {
+          "agentResponse": {
+            "role": "agent",
+            "chunks": [{
+              "text": "A higher deductible (like $1,000) lowers your monthly premium but means you pay more out of pocket if you file a claim. If you have emergency savings, a higher deductible is a smart trade-off. If cash flow is tighter, a lower deductible ($250 or $500) provides predictable costs. You can click \u0027Calculate new rate\u0027 on your quote page to see how changing your deductible affects your rate."
+            }]
+          }
+        }
+      }]
+    }],
+    "evaluationExpectations": ["eval_exp_f16d3414", "eval_exp_03d2ad36"]
+  }
+}

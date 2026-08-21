@@ -1,0 +1,7 @@
+{
+  "name": "e87967fa-a325-4c13-b9a0-d062ba83dca3",
+  "displayName": "eval_exp_b1463df8",
+  "llmCriteria": {
+    "prompt": "The agent must define Property Damage coverage as paying for damage to other vehicles or property."
+  }
+}

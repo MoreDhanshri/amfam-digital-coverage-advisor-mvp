@@ -1,0 +1,46 @@
+{
+  "name": "753f8219-d095-4e29-b958-2ba7006ee5c3",
+  "displayName": "golden_auto_bi_pd_definition",
+  "tags": ["P0", "NO-GO", "auto", "liability", "AUT-01", "auto_coverage_goldens"],
+  "golden": {
+    "turns": [{
+      "steps": [{
+        "userInput": {
+          "variables": {
+            "active_tab": "auto",
+            "user_state": "WI"
+          }
+        }
+      }, {
+        "userInput": {
+          "text": "\u003cevent\u003ewelcome\u003c/event\u003e"
+        }
+      }, {
+        "expectation": {
+          "agentResponse": {
+            "role": "agent",
+            "chunks": [{
+              "text": "Hello! I am your American Family Digital Coverage Advisor. I can help you understand your auto and home coverages, deductibles, limits, and bundling discounts. How can I assist you today?"
+            }]
+          }
+        }
+      }]
+    }, {
+      "steps": [{
+        "userInput": {
+          "text": "What is bodily injury and property damage liability?"
+        }
+      }, {
+        "expectation": {
+          "agentResponse": {
+            "role": "agent",
+            "chunks": [{
+              "text": "Bodily Injury (BI) covers costs if you injure someone else in an accident, including their medical bills, lost wages, and legal defense if they sue you. Property Damage (PD) pays for damage you cause to someone else\u0027s vehicle or property, such as a fence or building, in an at-fault accident. Both are required in most states to protect your personal assets."
+            }]
+          }
+        }
+      }]
+    }],
+    "evaluationExpectations": ["eval_exp_84bc1ed0", "eval_exp_b1463df8"]
+  }
+}

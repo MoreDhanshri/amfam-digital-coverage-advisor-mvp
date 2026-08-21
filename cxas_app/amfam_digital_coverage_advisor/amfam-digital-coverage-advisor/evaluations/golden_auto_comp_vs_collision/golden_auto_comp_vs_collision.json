@@ -1,0 +1,46 @@
+{
+  "name": "3f6866e8-361e-4afb-89e4-e9d583642be8",
+  "displayName": "golden_auto_comp_vs_collision",
+  "tags": ["P0", "NO-GO", "auto", "physical_damage", "AUT-04", "auto_coverage_goldens"],
+  "golden": {
+    "turns": [{
+      "steps": [{
+        "userInput": {
+          "variables": {
+            "active_tab": "auto",
+            "user_state": "WI"
+          }
+        }
+      }, {
+        "userInput": {
+          "text": "\u003cevent\u003ewelcome\u003c/event\u003e"
+        }
+      }, {
+        "expectation": {
+          "agentResponse": {
+            "role": "agent",
+            "chunks": [{
+              "text": "Hello! I am your American Family Digital Coverage Advisor. I can help you understand your auto and home coverages, deductibles, limits, and bundling discounts. How can I assist you today?"
+            }]
+          }
+        }
+      }]
+    }, {
+      "steps": [{
+        "userInput": {
+          "text": "What is the difference between comprehensive and collision?"
+        }
+      }, {
+        "expectation": {
+          "agentResponse": {
+            "role": "agent",
+            "chunks": [{
+              "text": "Comprehensive covers damage to your vehicle from non-collision events such as theft, vandalism, fire, hail, flooding, or hitting an animal. Collision covers damage when your vehicle hits another vehicle or object, regardless of who is at fault. Most lenders require both if your car is financed or leased."
+            }]
+          }
+        }
+      }]
+    }],
+    "evaluationExpectations": ["eval_exp_77b474e5"]
+  }
+}

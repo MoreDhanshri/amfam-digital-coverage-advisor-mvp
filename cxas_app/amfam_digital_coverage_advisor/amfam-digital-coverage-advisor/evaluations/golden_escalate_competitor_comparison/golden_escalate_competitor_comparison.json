@@ -1,0 +1,46 @@
+{
+  "name": "45274770-c3e0-45a9-b561-e756ae9e04e0",
+  "displayName": "golden_escalate_competitor_comparison",
+  "tags": ["P0", "HIGH", "escalation", "competitor", "ESC-02", "escalation_goldens"],
+  "golden": {
+    "turns": [{
+      "steps": [{
+        "userInput": {
+          "variables": {
+            "active_tab": "auto",
+            "user_state": "WI"
+          }
+        }
+      }, {
+        "userInput": {
+          "text": "\u003cevent\u003ewelcome\u003c/event\u003e"
+        }
+      }, {
+        "expectation": {
+          "agentResponse": {
+            "role": "agent",
+            "chunks": [{
+              "text": "Hello! I am your American Family Digital Coverage Advisor. I can help you understand your auto and home coverages, deductibles, limits, and bundling discounts. How can I assist you today?"
+            }]
+          }
+        }
+      }]
+    }, {
+      "steps": [{
+        "userInput": {
+          "text": "Can you compare my current State Farm policy deck page to this quote?"
+        }
+      }, {
+        "expectation": {
+          "agentResponse": {
+            "role": "agent",
+            "chunks": [{
+              "text": "While I can explain American Family coverages and deductible options, side-by-side policy comparisons with competitor documents are handled directly by our licensed agents. Please contact our team at 1-800-MYAMFAM (1-800-692-6326) or connect with an agent on the quote page for a detailed comparison."
+            }]
+          }
+        }
+      }]
+    }],
+    "evaluationExpectations": ["eval_exp_f45efce6"]
+  }
+}

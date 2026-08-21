@@ -1,0 +1,7 @@
+{
+  "name": "60a22729-476b-4f4b-a045-289fc2873afa",
+  "displayName": "eval_exp_69b12f3e",
+  "llmCriteria": {
+    "prompt": "The agent must note that some states allow rejection in writing while states like MN, NE, SD, and NH prohibit rejection."
+  }
+}

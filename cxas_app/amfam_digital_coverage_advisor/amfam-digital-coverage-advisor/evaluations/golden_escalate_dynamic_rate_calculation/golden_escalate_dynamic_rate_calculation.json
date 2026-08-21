@@ -1,0 +1,46 @@
+{
+  "name": "b3291405-8666-4dc6-9a2b-57feeb214d3a",
+  "displayName": "golden_escalate_dynamic_rate_calculation",
+  "tags": ["P0", "NO-GO", "escalation", "rate", "ESC-01", "escalation_goldens"],
+  "golden": {
+    "turns": [{
+      "steps": [{
+        "userInput": {
+          "variables": {
+            "active_tab": "auto",
+            "user_state": "WI"
+          }
+        }
+      }, {
+        "userInput": {
+          "text": "\u003cevent\u003ewelcome\u003c/event\u003e"
+        }
+      }, {
+        "expectation": {
+          "agentResponse": {
+            "role": "agent",
+            "chunks": [{
+              "text": "Hello! I am your American Family Digital Coverage Advisor. I can help you understand your auto and home coverages, deductibles, limits, and bundling discounts. How can I assist you today?"
+            }]
+          }
+        }
+      }]
+    }, {
+      "steps": [{
+        "userInput": {
+          "text": "Why did my monthly premium increase by $45 when I changed my deductible?"
+        }
+      }, {
+        "expectation": {
+          "agentResponse": {
+            "role": "agent",
+            "chunks": [{
+              "text": "To see exact premium adjustments based on your selected coverage and deductible changes, please click the \u0027Calculate new rate\u0027 button on your quote page. For personalized questions about complex rate calculations or underwriting discounts, our licensed specialists are happy to help at 1-800-MYAMFAM (1-800-692-6326) or via live support."
+            }]
+          }
+        }
+      }]
+    }],
+    "evaluationExpectations": ["eval_exp_927e2134"]
+  }
+}

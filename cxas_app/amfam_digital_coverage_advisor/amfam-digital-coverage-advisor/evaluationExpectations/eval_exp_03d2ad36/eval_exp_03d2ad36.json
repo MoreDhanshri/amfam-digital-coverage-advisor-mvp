@@ -1,0 +1,7 @@
+{
+  "name": "845168a9-b10f-4e0f-a902-0d5b2115d170",
+  "displayName": "eval_exp_03d2ad36",
+  "llmCriteria": {
+    "prompt": "The agent must mention the \u0027Calculate new rate\u0027 button."
+  }
+}

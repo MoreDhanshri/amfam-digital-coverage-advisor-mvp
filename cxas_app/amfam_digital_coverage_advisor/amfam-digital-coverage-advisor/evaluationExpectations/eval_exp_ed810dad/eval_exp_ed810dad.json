@@ -1,0 +1,7 @@
+{
+  "name": "6a153f34-8444-4f83-a283-fb4bd36b5020",
+  "displayName": "eval_exp_ed810dad",
+  "llmCriteria": {
+    "prompt": "The agent must explain the 25% or 50% buffer above Dwelling limits."
+  }
+}
