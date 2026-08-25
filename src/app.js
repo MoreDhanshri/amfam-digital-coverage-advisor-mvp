@@ -267,12 +267,65 @@ function speakVoice(text) {
   window.speechSynthesis.speak(utterance);
 }
 
+// Session Management & Live CXAS Agent Connection
+state.sessionId = 'amfam-web-' + Math.random().toString(36).substring(2, 9) + '-' + Date.now();
+state.isLiveAgentConnected = false;
+state.agentMetadata = null;
+
 function updateVoiceUI() {
   const bars = document.querySelectorAll('.voice-wave-bar-wrapper');
   bars.forEach(el => {
     if (state.bubble.isSpeaking) el.classList.remove('hidden');
     else el.classList.add('hidden');
   });
+}
+
+function showTypingIndicator() {
+  removeTypingIndicator();
+  const container = document.getElementById('advisor-messages-list');
+  if (!container) return;
+
+  const typingEl = document.createElement('div');
+  typingEl.id = 'agent-typing-indicator';
+  typingEl.className = 'flex flex-col items-start mb-3 animate-pulse';
+  typingEl.innerHTML = `
+    <div class="bg-white text-slate-600 border border-blue-200 rounded-2xl rounded-tl-xs px-3.5 py-2 text-xs flex items-center gap-2 shadow-xs">
+      <span class="w-2 h-2 rounded-full bg-blue-600 animate-bounce"></span>
+      <span class="w-2 h-2 rounded-full bg-blue-600 animate-bounce" style="animation-delay: 0.15s"></span>
+      <span class="w-2 h-2 rounded-full bg-blue-600 animate-bounce" style="animation-delay: 0.3s"></span>
+      <span class="text-[11px] font-semibold text-blue-900 ml-1">Live CXAS Agent is formulating response...</span>
+    </div>
+  `;
+  container.appendChild(typingEl);
+  container.scrollTop = container.scrollHeight;
+}
+
+function removeTypingIndicator() {
+  const el = document.getElementById('agent-typing-indicator');
+  if (el) el.remove();
+}
+
+function updateAgentStatusUI() {
+  const topPill = document.getElementById('agent-connection-pill');
+  const advisorBadge = document.getElementById('advisor-status-badge');
+
+  if (state.isLiveAgentConnected) {
+    if (topPill) {
+      topPill.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span> <span>Live CXAS Agent: <strong>amfam-faq-advisor</strong> (gecx-amfam)</span>`;
+      topPill.className = "text-emerald-300 font-bold flex items-center gap-1.5 text-[11px]";
+    }
+    if (advisorBadge) {
+      advisorBadge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> <span>Live GCP Agent (amfam-faq-advisor • Temp 0.0)</span>`;
+    }
+  } else {
+    if (topPill) {
+      topPill.innerHTML = `<span class="w-2 h-2 rounded-full bg-amber-400"></span> <span>Deterministic FAQ Engine (Standalone)</span>`;
+      topPill.className = "text-amber-300 font-semibold flex items-center gap-1.5 text-[11px]";
+    }
+    if (advisorBadge) {
+      advisorBadge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-blue-300"></span> <span>Deterministic Knowledge Base (Verbatim Mode)</span>`;
+    }
+  }
 }
 
 // Add Advisor Message
@@ -299,14 +352,14 @@ function renderAdvisorMessages() {
           AF
         </div>
         <h4 class="font-extrabold text-slate-900 text-sm mb-1">AmFam Digital Coverage Advisor</h4>
-        <p class="text-xs text-slate-500 mb-4">Phase 1 Sandbox MVP • 100% Deterministic Knowledge Base</p>
+        <p class="text-xs text-slate-500 mb-4">Connected to Live GCP CXAS Agent • 100% Verbatim Fidelity</p>
         
         <div class="bg-blue-50/80 border border-blue-200 rounded-2xl p-3.5 text-xs text-slate-700 text-left mb-4 shadow-sm">
-          👋 Welcome to American Family Insurance! I can explain coverage limits, deductibles, optional riders like Gap & Water Backup, or connect you with a local agent.
+          👋 Welcome to American Family Insurance! Ask me any question about coverage limits (100/300), Comprehensive vs Collision, deductible trade-offs, Gap, Water Backup, or multi-policy bundling.
         </div>
 
         <div class="text-left space-y-2">
-          <p class="text-[11px] font-bold text-slate-600 uppercase tracking-wider">Suggested Questions:</p>
+          <p class="text-[11px] font-bold text-slate-600 uppercase tracking-wider">Suggested Inquiries:</p>
           <button onclick="handleUserPrompt('What is Bodily Injury 100/300?')" class="w-full text-xs bg-white hover:bg-blue-50 text-blue-900 border border-slate-200 rounded-xl p-2.5 text-left font-medium transition flex items-center justify-between shadow-2xs">
             <span>🚗 What is Bodily Injury 100/300?</span>
             <span class="text-slate-400">→</span>
@@ -319,7 +372,7 @@ function renderAdvisorMessages() {
             <span>🏠 What is Water Backup coverage?</span>
             <span class="text-slate-400">→</span>
           </button>
-          <button onclick="handleUserPrompt('Can I quote auto and home together?')" class="w-full text-xs bg-white hover:bg-blue-50 text-blue-900 border border-slate-200 rounded-xl p-2.5 text-left font-medium transition flex items-center justify-between shadow-2xs">
+          <button onclick="handleUserPrompt('How does bundling save me money?')" class="w-full text-xs bg-white hover:bg-blue-50 text-blue-900 border border-slate-200 rounded-xl p-2.5 text-left font-medium transition flex items-center justify-between shadow-2xs">
             <span>🔗 How much do I save by bundling?</span>
             <span class="text-slate-400">→</span>
           </button>
@@ -343,8 +396,8 @@ function renderAdvisorMessages() {
             ` : ''}
           </div>
           ${m.toolAction ? `
-            <div class="mt-2 pt-2 border-t border-slate-100 text-[10px] font-mono text-blue-700 bg-blue-50 p-1.5 rounded">
-              ⚡ Action: ${m.toolAction}
+            <div class="mt-2 pt-1.5 border-t border-slate-100 text-[10px] font-mono text-emerald-700 bg-emerald-50 p-1.5 rounded flex items-center gap-1">
+              <span>⚡</span> <span>${m.toolAction}</span>
             </div>
           ` : ''}
         </div>
@@ -367,47 +420,92 @@ function renderAdvisorMessages() {
   }, 50);
 }
 
-// User Prompt Handler
-function handleUserPrompt(text) {
+// Local In-Browser Deterministic FAQ Search (Fallback)
+function handleLocalFallback(q) {
+  const lower = q.toLowerCase();
+  if (lower.includes('agent') || lower.includes('human') || lower.includes('call') || lower.includes('speak') || lower.includes('commercial')) {
+    const resp = "I can connect you directly with a licensed American Family Insurance agent right now. Click below to call 1-800-MY-AMFAM or request a priority callback.";
+    addMessage('agent', resp, ["📞 Call 1-800-MY-AMFAM (1-800-692-6326)", "Schedule Agent Callback", "Back to Coverages"], "escalate_to_agent (1-800-692-6326)");
+    if (state.bubble.isVoiceMode) speakVoice(resp);
+    return;
+  }
+
+  const match = searchFAQ(q);
+  if (match) {
+    addMessage('agent', match.answer, [
+      "What is Bodily Injury 100/300?",
+      "How to choose deductible?",
+      "Speak with an Agent"
+    ], `lookup_coverage_faq (${match.category})`);
+    if (state.bubble.isVoiceMode) speakVoice(match.answer);
+  } else {
+    const fallback = "I'm your Digital Coverage Advisor. I can explain auto & home coverages, liability limits, deductibles, and discounts. How can I help you today?";
+    addMessage('agent', fallback, [
+      "What is Bodily Injury 100/300?",
+      "What is Water Backup?",
+      "Speak with an Agent"
+    ]);
+    if (state.bubble.isVoiceMode) speakVoice(fallback);
+  }
+}
+
+// User Prompt Handler — Sends requests to Live CXAS Agent backend
+async function handleUserPrompt(text) {
   if (!text || !text.trim()) return;
   const q = text.trim();
 
   // If advisor closed, open it
   toggleAdvisor(true);
 
+  // Add User Message
   addMessage('user', q);
 
-  // Check for Human Escalation
-  const lower = q.toLowerCase();
-  if (lower.includes('agent') || lower.includes('human') || lower.includes('call') || lower.includes('speak') || lower.includes('commercial')) {
-    setTimeout(() => {
-      const resp = "I can connect you directly with a licensed American Family Insurance agent right now. Click below to call 1-800-MY-AMFAM or request a priority callback.";
-      addMessage('agent', resp, ["📞 Call 1-800-MY-AMFAM (1-800-692-6326)", "Schedule Agent Callback", "Back to Coverages"], "trigger_escalation (1-800-692-6326)");
-      if (state.bubble.isVoiceMode) speakVoice(resp);
-    }, 250);
-    return;
+  // Show typing indicator
+  showTypingIndicator();
+
+  // Try calling the live CXAS agent on GCP
+  try {
+    const response = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        session_id: state.sessionId,
+        message: q
+      })
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      removeTypingIndicator();
+
+      if (data.status === 'success' && data.reply) {
+        let toolDesc = null;
+        if (data.tool_calls && data.tool_calls.length > 0) {
+          const tc = data.tool_calls[0];
+          const action = tc.action || 'tool';
+          const qk = tc.args?.question_key ? `key='${tc.args.question_key}'` : '';
+          toolDesc = `CXAS Tool: ${action}(${qk})`;
+        }
+
+        const quickReplies = [
+          "🚗 What is Bodily Injury 100/300?",
+          "🛡️ How to choose deductible?",
+          "🏠 What is Water Backup?",
+          "📞 Speak with an Agent"
+        ];
+
+        addMessage('agent', data.reply, quickReplies, toolDesc);
+        if (state.bubble.isVoiceMode) speakVoice(data.reply);
+        return;
+      }
+    }
+  } catch (err) {
+    console.warn("Live CXAS API call failed, falling back to local deterministic FAQ engine:", err);
   }
 
-  // Deterministic FAQ Search
-  const match = searchFAQ(q);
-  setTimeout(() => {
-    if (match) {
-      addMessage('agent', match.answer, [
-        "What is Bodily Injury 100/300?",
-        "How to choose deductible?",
-        "Speak with an Agent"
-      ], `knowledge_retrieval (${match.category})`);
-      if (state.bubble.isVoiceMode) speakVoice(match.answer);
-    } else {
-      const fallback = "I'm your Digital Coverage Advisor. I can explain auto & home coverages, liability limits, deductibles, and discounts. How can I help you today?";
-      addMessage('agent', fallback, [
-        "What is Bodily Injury 100/300?",
-        "What is Water Backup?",
-        "Speak with an Agent"
-      ]);
-      if (state.bubble.isVoiceMode) speakVoice(fallback);
-    }
-  }, 200);
+  // Fallback to local deterministic search if backend is unavailable
+  removeTypingIndicator();
+  handleLocalFallback(q);
 }
 
 // Initialize on page load
@@ -419,8 +517,22 @@ async function init() {
     console.log("Loaded fallback inline FAQs");
   }
 
+  // Check live agent backend status
+  try {
+    const statusRes = await fetch('/api/status');
+    if (statusRes.ok) {
+      state.agentMetadata = await statusRes.json();
+      state.isLiveAgentConnected = true;
+      console.log("Connected to Live CXAS Agent:", state.agentMetadata);
+    }
+  } catch (e) {
+    console.log("Running in standalone/offline mode");
+  }
+  updateAgentStatusUI();
+
   // Start 5-second countdown immediately on page visit/refresh
   startBubbleCountdown();
 }
 
 window.addEventListener('DOMContentLoaded', init);
+
