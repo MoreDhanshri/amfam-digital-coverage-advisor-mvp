@@ -395,11 +395,6 @@ function renderAdvisorMessages() {
               </button>
             ` : ''}
           </div>
-          ${m.toolAction ? `
-            <div class="mt-2 pt-1.5 border-t border-slate-100 text-[10px] font-mono text-emerald-700 bg-emerald-50 p-1.5 rounded flex items-center gap-1">
-              <span>⚡</span> <span>${m.toolAction}</span>
-            </div>
-          ` : ''}
         </div>
         <span class="text-[10px] text-slate-400 px-1 mt-0.5">${m.time}</span>
         ${m.quickReplies && m.quickReplies.length > 0 ? `
@@ -425,7 +420,7 @@ function handleLocalFallback(q) {
   const lower = q.toLowerCase();
   if (lower.includes('agent') || lower.includes('human') || lower.includes('call') || lower.includes('speak') || lower.includes('commercial')) {
     const resp = "I can connect you directly with a licensed American Family Insurance agent right now. Click below to call 1-800-MY-AMFAM or request a priority callback.";
-    addMessage('agent', resp, ["📞 Call 1-800-MY-AMFAM (1-800-692-6326)", "Schedule Agent Callback", "Back to Coverages"], "escalate_to_agent (1-800-692-6326)");
+    addMessage('agent', resp, ["📞 Call 1-800-MY-AMFAM (1-800-692-6326)", "Schedule Agent Callback", "Back to Coverages"]);
     if (state.bubble.isVoiceMode) speakVoice(resp);
     return;
   }
@@ -436,7 +431,7 @@ function handleLocalFallback(q) {
       "What is Bodily Injury 100/300?",
       "How to choose deductible?",
       "Speak with an Agent"
-    ], `lookup_coverage_faq (${match.category})`);
+    ]);
     if (state.bubble.isVoiceMode) speakVoice(match.answer);
   } else {
     const fallback = "I'm your Digital Coverage Advisor. I can explain auto & home coverages, liability limits, deductibles, and discounts. How can I help you today?";
@@ -479,14 +474,6 @@ async function handleUserPrompt(text) {
       removeTypingIndicator();
 
       if (data.status === 'success' && data.reply) {
-        let toolDesc = null;
-        if (data.tool_calls && data.tool_calls.length > 0) {
-          const tc = data.tool_calls[0];
-          const action = tc.action || 'tool';
-          const qk = tc.args?.question_key ? `key='${tc.args.question_key}'` : '';
-          toolDesc = `CXAS Tool: ${action}(${qk})`;
-        }
-
         const quickReplies = [
           "🚗 What is Bodily Injury 100/300?",
           "🛡️ How to choose deductible?",
@@ -494,7 +481,7 @@ async function handleUserPrompt(text) {
           "📞 Speak with an Agent"
         ];
 
-        addMessage('agent', data.reply, quickReplies, toolDesc);
+        addMessage('agent', data.reply, quickReplies);
         if (state.bubble.isVoiceMode) speakVoice(data.reply);
         return;
       }
