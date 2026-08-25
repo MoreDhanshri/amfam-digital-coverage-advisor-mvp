@@ -25,6 +25,8 @@ STRICT COMPLIANCE REQUIREMENT:
 """
 
 from typing import Any, Dict, Optional
+import difflib
+import re
 
 # Canonical FAQ Knowledge Base mapping question keys to exact Question and Answer texts.
 FAQ_DATABASE: Dict[str, Dict[str, str]] = {
@@ -475,42 +477,104 @@ def lookup_coverage_faq(
             - 'action': instructions directing the agent to output exact_answer verbatim
     """
     clean_key = (question_key or "").strip().lower()
-
-    if clean_key in FAQ_DATABASE:
-        faq_item = FAQ_DATABASE[clean_key]
-        return {
-            "status": "success",
-            "question_key": clean_key,
-            "category": faq_item["category"],
-            "question": faq_item["question"],
-            "exact_answer": faq_item["answer"],
-            "action": "Output the exact_answer text VERBATIM. Do not modify, summarize, or add conversational preamble.",
-        }
-
-    # Fallback key matching for normalized or underscored keys
     normalized_key = clean_key.replace("-", "_").replace(" ", "_")
-    if normalized_key in FAQ_DATABASE:
-        faq_item = FAQ_DATABASE[normalized_key]
+
+    # Common shorthand, typo, and conversational aliases
+    faq_aliases = {
+        "gap": "gap_loan_lease_assistance",
+        "gap_coverage": "gap_loan_lease_assistance",
+        "gap_insurance": "gap_loan_lease_assistance",
+        "loan_lease": "gap_loan_lease_assistance",
+        "loan_lease_assistance": "gap_loan_lease_assistance",
+        "gap_loan_leas_assistance": "gap_loan_lease_assistance",
+        "gap_loan_lease": "gap_loan_lease_assistance",
+        "underwater_car_loan": "gap_loan_lease_assistance",
+        "financed_car_totaled": "gap_loan_lease_assistance",
+        "roadside": "roadside_assistance_era",
+        "roadside_assistance": "roadside_assistance_era",
+        "era": "roadside_assistance_era",
+        "emergency_roadside_assistance": "roadside_assistance_era",
+        "oem": "oem_parts_coverage",
+        "oem_parts": "oem_parts_coverage",
+        "dnq": "does_not_qualify_dnq",
+        "recalculate_rate": "auto_recalculate_rate",
+        "recalculate_premium": "auto_recalculate_rate",
+        "recalculate": "auto_recalculate_rate",
+        "rate_refresh": "auto_recalculate_rate",
+        "rate_button": "auto_recalculate_rate",
+        "dwelling": "dwelling_coverage_a",
+        "dwelling_coverage": "dwelling_coverage_a",
+        "coverage_a": "dwelling_coverage_a",
+        "coverage_b": "other_structures_b",
+        "other_structures": "other_structures_b",
+        "coverage_c": "personal_property_c",
+        "personal_property": "personal_property_c",
+        "coverage_d": "loss_of_use_d",
+        "loss_of_use": "loss_of_use_d",
+        "coverage_e": "personal_liability_e",
+        "personal_liability": "personal_liability_e",
+        "coverage_f": "medical_payments_f",
+        "medical_payments": "medical_payments_f",
+        "water_backup": "water_backup_coverage",
+        "service_line": "service_line_coverage",
+        "equipment_breakdown": "equipment_breakdown_coverage",
+        "earthquake": "earthquake_coverage",
+        "ordinance_law": "ordinance_of_law",
+        "identity_theft": "identity_fraud_expense",
+        "identity_fraud": "identity_fraud_expense",
+        "scheduled_property": "scheduled_personal_property",
+        "mold": "mold_property_protection",
+        "mine_subsidence": "mine_subsidence_coverage",
+        "animal_liability": "animal_liability_coverage",
+        "dog_liability": "animal_liability_coverage",
+        "pool_liability": "pool_liability_coverage",
+        "swimming_pool": "pool_liability_coverage",
+        "libel_slander": "personal_injury_libel_coverage",
+        "personal_injury_endorsement": "personal_injury_libel_coverage",
+        "bundling": "how_bundling_saves_money",
+        "bundle_discount": "how_bundling_saves_money",
+        "auto_home_bundle": "how_bundling_saves_money",
+        "payment_options": "payment_methods_accepted",
+        "payment_methods": "payment_methods_accepted",
+    }
+
+    target_key = None
+    if clean_key in FAQ_DATABASE:
+        target_key = clean_key
+    elif normalized_key in FAQ_DATABASE:
+        target_key = normalized_key
+    elif normalized_key in faq_aliases:
+        target_key = faq_aliases[normalized_key]
+    else:
+        # Check substring match against database keys
+        for k in FAQ_DATABASE:
+            if k in normalized_key or normalized_key in k:
+                target_key = k
+                break
+        # Check substring match against aliases
+        if not target_key:
+            for alias, resolved in faq_aliases.items():
+                if alias in normalized_key or normalized_key in alias:
+                    target_key = resolved
+                    break
+        # Fuzzy match with difflib across keys and aliases
+        if not target_key:
+            all_candidates = list(FAQ_DATABASE.keys()) + list(faq_aliases.keys())
+            close_matches = difflib.get_close_matches(normalized_key, all_candidates, n=1, cutoff=0.55)
+            if close_matches:
+                match = close_matches[0]
+                target_key = faq_aliases.get(match, match)
+
+    if target_key and target_key in FAQ_DATABASE:
+        faq_item = FAQ_DATABASE[target_key]
         return {
             "status": "success",
-            "question_key": normalized_key,
+            "question_key": target_key,
             "category": faq_item["category"],
             "question": faq_item["question"],
             "exact_answer": faq_item["answer"],
             "action": "Output the exact_answer text VERBATIM. Do not modify, summarize, or add conversational preamble.",
         }
-
-    # Substring search across keys if key was slightly misformatted
-    for k, v in FAQ_DATABASE.items():
-        if k in normalized_key or normalized_key in k:
-            return {
-                "status": "success",
-                "question_key": k,
-                "category": v["category"],
-                "question": v["question"],
-                "exact_answer": v["answer"],
-                "action": "Output the exact_answer text VERBATIM. Do not modify, summarize, or add conversational preamble.",
-            }
 
     # If not found in FAQ database
     return {

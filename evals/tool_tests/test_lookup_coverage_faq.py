@@ -58,6 +58,18 @@ def test_underwriters_exact_match():
     assert "Homesite Insurance" in res["exact_answer"]
 
 
+def test_fuzzy_and_alias_match():
+    """Test alias and typo matching."""
+    res = lookup_coverage_faq("gap_loan_leas_assistance")
+    assert res["status"] == "success"
+    assert res["question_key"] == "gap_loan_lease_assistance"
+    assert "Loan/Lease Assistance covers that gap" in res["exact_answer"]
+
+    res_alias = lookup_coverage_faq("gap")
+    assert res_alias["status"] == "success"
+    assert res_alias["question_key"] == "gap_loan_lease_assistance"
+
+
 def test_not_found_fallback():
     """Test graceful fallback for unknown questions."""
     res = lookup_coverage_faq("unknown_topic_xyz")
@@ -71,5 +83,6 @@ if __name__ == "__main__":
     test_comprehensive_coverage_exact_match()
     test_wind_hail_deductible_exact_match()
     test_underwriters_exact_match()
+    test_fuzzy_and_alias_match()
     test_not_found_fallback()
     print("All tool tests passed successfully!")

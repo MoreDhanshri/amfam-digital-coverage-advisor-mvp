@@ -1,0 +1,91 @@
+conversations:
+  - conversation: diverse_phrasing_bodily_injury_colloquial
+    turns:
+      - user: "Why do I have to pay for bodily injury? What does it actually do if someone gets hurt?"
+        agent: "Bodily Injury covers costs if you injure someone else in an accident — including their medical bills, lost wages, and legal fees if they sue you. It is required in most states and protects your personal assets."
+        tool_calls:
+          - action: lookup_coverage_faq
+            args:
+              question_key: "bodily_injury_liability"
+    expectations:
+      - "The agent must classify the colloquial query as bodily_injury_liability"
+      - "The agent must return the exact official Bodily Injury text verbatim"
+    tags: [P0, BLOCKER, diverse-phrasing, auto-liability, exact-match]
+
+  - conversation: diverse_phrasing_property_damage_fence_mailbox
+    turns:
+      - user: "If I back into my neighbor's mailbox or crash into someone's fence, does insurance pay for it?"
+        agent: "Property Damage pays for damage you cause to someone else's vehicle or property (e.g., a fence, building, or parked car) in an at-fault accident."
+        tool_calls:
+          - action: lookup_coverage_faq
+            args:
+              question_key: "property_damage_liability"
+    expectations:
+      - "The agent must map mailbox and fence damage to property_damage_liability"
+      - "The agent must return the exact Property Damage answer character-for-character"
+    tags: [P0, BLOCKER, diverse-phrasing, auto-liability, exact-match]
+
+  - conversation: diverse_phrasing_100_300_slash_numbers
+    turns:
+      - user: "I'm looking at the numbers 100/300 on my quote. What do those slash numbers mean?"
+        agent: "The first number ($100,000) is the maximum paid per person injured; the second ($300,000) is the maximum paid per accident regardless of how many people are injured."
+        tool_calls:
+          - action: lookup_coverage_faq
+            args:
+              question_key: "bodily_injury_limits_100_300"
+    expectations:
+      - "The agent must map 100/300 notation query to bodily_injury_limits_100_300"
+      - "The agent must explain the per-person and per-accident limits verbatim"
+    tags: [P0, BLOCKER, diverse-phrasing, auto-limits, exact-match]
+
+  - conversation: diverse_phrasing_comprehensive_deer_tree
+    turns:
+      - user: "If a tree branch crushes my hood or a deer jumps out in front of my car, which coverage pays for that?"
+        agent: "Comprehensive covers damage to your vehicle from events other than a collision — such as theft, vandalism, fire, hail, flooding, or hitting an animal."
+        tool_calls:
+          - action: lookup_coverage_faq
+            args:
+              question_key: "comprehensive_coverage"
+    expectations:
+      - "The agent must invoke lookup_coverage_faq with comprehensive_coverage"
+      - "The agent must provide the exact Comprehensive coverage definition verbatim"
+    tags: [P0, BLOCKER, diverse-phrasing, auto-damage, exact-match]
+
+  - conversation: diverse_phrasing_gap_financed_car
+    turns:
+      - user: "If my financed car gets totaled and I owe more than what the car is worth, does insurance cover the remaining loan?"
+        agent: "If your vehicle is totaled, your insurance payout is based on the car's current market value — which may be less than what you still owe on your loan or lease. Loan/Lease Assistance covers that gap. It requires both Comprehensive and Collision."
+        tool_calls:
+          - action: lookup_coverage_faq
+            args:
+              question_key: "gap_loan_lease_assistance"
+    expectations:
+      - "The agent must map underwater car loan question to gap_loan_lease_assistance"
+      - "The agent must return the exact Gap definition verbatim"
+    tags: [P1, HIGH, diverse-phrasing, auto-addons, exact-match]
+
+  - conversation: diverse_phrasing_roadside_flat_tire_lockout
+    turns:
+      - user: "Does this policy help if I lock my keys inside the car or get a flat tire on the side of the road?"
+        agent: "ERA covers services like towing, flat tire changes, battery jump-starts, and lockout assistance. Costco Executive members may have this defaulted to \"Included\" on their quote."
+        tool_calls:
+          - action: lookup_coverage_faq
+            args:
+              question_key: "roadside_assistance_era"
+    expectations:
+      - "The agent must map flat tire and lockout questions to roadside_assistance_era"
+      - "The agent must return the exact Roadside Assistance text verbatim"
+    tags: [P1, HIGH, diverse-phrasing, auto-addons, exact-match]
+
+  - conversation: diverse_phrasing_rate_refresh_button
+    turns:
+      - user: "I changed my deductible on the page but the monthly price didn't change at all. How do I see the new price?"
+        agent: "After modifying any coverage, click the \"Calculate new rate\" button to see your updated premium. The page will not automatically refresh until you trigger a recalculation."
+        tool_calls:
+          - action: lookup_coverage_faq
+            args:
+              question_key: "auto_recalculate_rate"
+    expectations:
+      - "The agent must map unchanged rate inquiry to auto_recalculate_rate"
+      - "The agent must provide exact rate recalculation instructions verbatim"
+    tags: [P0, BLOCKER, diverse-phrasing, auto-navigation, exact-match]

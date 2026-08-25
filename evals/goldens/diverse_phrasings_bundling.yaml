@@ -1,0 +1,52 @@
+conversations:
+  - conversation: diverse_phrasing_bundling_discount_savings
+    turns:
+      - user: "How much do I save if I buy both home and auto insurance together on here?"
+        agent: "When you purchase both an auto and home policy together, a multi-product discount is applied to both policies. This is one of the most significant discounts available and can result in meaningful savings on your total insurance cost."
+        tool_calls:
+          - action: lookup_coverage_faq
+            args:
+              question_key: "how_bundling_saves_money"
+    expectations:
+      - "The agent must map bundle discount inquiries to how_bundling_saves_money"
+      - "The agent must explain the multi-product discount verbatim"
+    tags: [P0, BLOCKER, diverse-phrasing, bundling, exact-match]
+
+  - conversation: diverse_phrasing_underwriters_separate_companies
+    turns:
+      - user: "Are APEX Auto and APEX Home run by different companies?"
+        agent: "APEX Auto is underwritten by Midvale Indemnity Company and APEX Home is underwritten by Homesite Insurance. Both are American Family Insurance companies and are offered together as a bundle on this platform."
+        tool_calls:
+          - action: lookup_coverage_faq
+            args:
+              question_key: "difference_apex_auto_and_home"
+    expectations:
+      - "The agent must map underwriter identity questions to difference_apex_auto_and_home"
+      - "The agent must name Midvale Indemnity Company and Homesite Insurance verbatim"
+    tags: [P0, BLOCKER, diverse-phrasing, underwriting, exact-match]
+
+  - conversation: diverse_phrasing_dnq_rejection_error
+    turns:
+      - user: "I got an error saying Does Not Qualify. What does that mean?"
+        agent: "A DNQ message means that based on the information provided, we are unable to offer you a policy through this platform at this time. Our team may be able to assist you with alternative options — please contact us for guidance."
+        tool_calls:
+          - action: lookup_coverage_faq
+            args:
+              question_key: "does_not_qualify_dnq"
+    expectations:
+      - "The agent must map DNQ explanation inquiries to does_not_qualify_dnq"
+      - "The agent must provide the exact DNQ message explanation"
+    tags: [P0, BLOCKER, diverse-phrasing, general-policy, exact-match]
+
+  - conversation: diverse_phrasing_close_browser_tab_saved
+    turns:
+      - user: "If I close my web browser tab right now, will I lose my quote or is it saved?"
+        agent: "Yes. Your quote is automatically saved. You can return to it using the same link or by logging into your account."
+        tool_calls:
+          - action: lookup_coverage_faq
+            args:
+              question_key: "is_quote_saved_if_leave"
+    expectations:
+      - "The agent must map closing browser tab / leaving page to is_quote_saved_if_leave"
+      - "The agent must confirm automatic quote saving verbatim"
+    tags: [P1, HIGH, diverse-phrasing, navigation, exact-match]

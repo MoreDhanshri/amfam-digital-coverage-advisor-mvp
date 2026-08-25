@@ -1,0 +1,78 @@
+conversations:
+  - conversation: diverse_phrasing_dwelling_rebuild_vs_market
+    turns:
+      - user: "Why is my Dwelling Coverage A amount different from what I paid for the house on Zillow?"
+        agent: "Dwelling coverage pays to repair or rebuild your home's structure if it is damaged by a covered peril. The amount is based on the estimated replacement cost to rebuild your home — not its market value or what you paid for it."
+        tool_calls:
+          - action: lookup_coverage_faq
+            args:
+              question_key: "dwelling_coverage_a"
+    expectations:
+      - "The agent must map market value vs rebuild cost questions to dwelling_coverage_a"
+      - "The agent must provide the exact Dwelling coverage replacement cost explanation"
+    tags: [P0, BLOCKER, diverse-phrasing, home-core, exact-match]
+
+  - conversation: diverse_phrasing_personal_property_rcv_vs_acv
+    turns:
+      - user: "Should I pick depreciated value or replacement cost for my stuff?"
+        agent: "Replacement Cost pays to replace your items with new ones of similar kind and quality. Depreciated Value (Actual Cash Value) pays what your items are worth today, accounting for age and wear. Replacement Cost provides more complete protection but costs more."
+        tool_calls:
+          - action: lookup_coverage_faq
+            args:
+              question_key: "replacement_cost_vs_depreciated_value"
+    expectations:
+      - "The agent must map 'for my stuff' query to replacement_cost_vs_depreciated_value"
+      - "The agent must return the exact comparison verbatim"
+    tags: [P0, BLOCKER, diverse-phrasing, home-core, exact-match]
+
+  - conversation: diverse_phrasing_wind_hail_percentage_deductible
+    turns:
+      - user: "Why does my quote show a 1% or 2% wind and hail deductible instead of my normal $1000 deductible?"
+        agent: "A Wind/Hail deductible applies specifically to damage caused by windstorms or hail. In many states it is a mandatory separate deductible, often expressed as a percentage of your Dwelling coverage (e.g., 1% or 2% of Coverage A). It must be equal to or greater than your AOP deductible."
+        tool_calls:
+          - action: lookup_coverage_faq
+            args:
+              question_key: "wind_hail_deductible"
+    expectations:
+      - "The agent must map percentage deductible question to wind_hail_deductible"
+      - "The agent must return the exact official Wind/Hail deductible wording"
+    tags: [P0, BLOCKER, diverse-phrasing, home-deductibles, exact-match]
+
+  - conversation: diverse_phrasing_water_backup_sump_pump_sewer
+    turns:
+      - user: "If my basement sump pump overflows or sewer backs up into my drain, does regular home insurance cover that?"
+        agent: "Water Backup covers damage caused by water backing up through sewers or drains, or by a sump pump overflow. Standard homeowners policies typically exclude this. It is available in limits from $5,000 to $25,000 depending on your state."
+        tool_calls:
+          - action: lookup_coverage_faq
+            args:
+              question_key: "water_backup_coverage"
+    expectations:
+      - "The agent must map sump pump overflow and sewer drain questions to water_backup_coverage"
+      - "The agent must deliver the exact Water Backup answer verbatim"
+    tags: [P1, HIGH, diverse-phrasing, home-addons, exact-match]
+
+  - conversation: diverse_phrasing_service_line_underground_pipe
+    turns:
+      - user: "Who pays if the underground water or sewer pipe between the street and my house breaks?"
+        agent: "Service Line coverage pays to repair or replace underground utility lines (water, sewer, electrical, gas, internet) that run from the street to your home if they are damaged. These lines are typically your responsibility as a homeowner and are not covered by the utility company."
+        tool_calls:
+          - action: lookup_coverage_faq
+            args:
+              question_key: "service_line_coverage"
+    expectations:
+      - "The agent must map underground pipe damage to service_line_coverage"
+      - "The agent must return the exact Service Line explanation"
+    tags: [P1, HIGH, diverse-phrasing, home-addons, exact-match]
+
+  - conversation: diverse_phrasing_equipment_breakdown_hvac
+    turns:
+      - user: "Does this cover if my HVAC air conditioning unit or refrigerator compressor suddenly dies?"
+        agent: "Equipment Breakdown covers the sudden and accidental mechanical or electrical failure of home systems and appliances — such as your HVAC, water heater, refrigerator, or washer/dryer. It is different from a home warranty and covers the cost of repair or replacement."
+        tool_calls:
+          - action: lookup_coverage_faq
+            args:
+              question_key: "equipment_breakdown_coverage"
+    expectations:
+      - "The agent must map HVAC and appliance mechanical failure to equipment_breakdown_coverage"
+      - "The agent must deliver the exact Equipment Breakdown text verbatim"
+    tags: [P1, HIGH, diverse-phrasing, home-addons, exact-match]

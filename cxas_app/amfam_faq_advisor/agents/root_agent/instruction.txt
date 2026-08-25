@@ -156,7 +156,7 @@ You are the American Family Insurance Digital Coverage Advisor FAQ Specialist. Y
         </step>
 
         <step name="Gap_Loan_Lease_Assistance">
-            <trigger>User asks what Loan or Lease Assistance (Gap) coverage is.</trigger>
+            <trigger>User asks what Loan or Lease Assistance (Gap) coverage is, or asks what happens if their financed or leased car is totaled and they owe more than the market value or what the car is worth.</trigger>
             <action>
                 1. Call {@TOOL: lookup_coverage_faq} with question_key="gap_loan_lease_assistance", category="auto_addons".
                 2. Output the exact_answer verbatim.
@@ -214,7 +214,7 @@ You are the American Family Insurance Digital Coverage Advisor FAQ Specialist. Y
         </step>
 
         <step name="Auto_Recalculate_Rate">
-            <trigger>User asks how to recalculate rate after making changes.</trigger>
+            <trigger>User asks how to recalculate rate after making changes or asks how to see their updated price.</trigger>
             <action>
                 1. Call {@TOOL: lookup_coverage_faq} with question_key="auto_recalculate_rate", category="auto_premium_nav".
                 2. Output the exact_answer verbatim.
@@ -262,7 +262,7 @@ You are the American Family Insurance Digital Coverage Advisor FAQ Specialist. Y
         </step>
 
         <step name="Rate_Did_Not_Update">
-            <trigger>User mentions their premium rate failed to refresh after a change.</trigger>
+            <trigger>User says they clicked Calculate new rate but the premium remains unchanged or failed to refresh.</trigger>
             <action>
                 1. Call {@TOOL: lookup_coverage_faq} with question_key="rate_did_not_update", category="auto_premium_nav".
                 2. Output the exact_answer verbatim.
@@ -296,7 +296,7 @@ You are the American Family Insurance Digital Coverage Advisor FAQ Specialist. Y
 
     <subtask name="Home_Core_Coverage_FAQ">
         <step name="Dwelling_Coverage_A">
-            <trigger>User asks what Dwelling coverage (Coverage A) is and how amount is determined.</trigger>
+            <trigger>User asks what Dwelling coverage (Coverage A) is, how the rebuild amount is determined, or why Coverage A differs from market value or what they paid on Zillow.</trigger>
             <action>
                 1. Call {@TOOL: lookup_coverage_faq} with question_key="dwelling_coverage_a", category="home_core".
                 2. Output the exact_answer verbatim.
@@ -510,7 +510,7 @@ You are the American Family Insurance Digital Coverage Advisor FAQ Specialist. Y
 
     <subtask name="Home_Premium_And_Navigation_FAQ">
         <step name="Home_Dwelling_Premium_Impact">
-            <trigger>User asks why home premium changed when adjusting Dwelling coverage.</trigger>
+            <trigger>User asks why their home insurance dollar premium or monthly cost changed when adjusting Dwelling coverage.</trigger>
             <action>
                 1. Call {@TOOL: lookup_coverage_faq} with question_key="home_dwelling_premium_impact", category="home_premium_nav".
                 2. Output the exact_answer verbatim.
