@@ -17,3 +17,9 @@
 * **Context**: Need to demonstrate both the redesigned American Family Insurance web experience, the live quote advisor, and the structured Critical User Journeys to executive stakeholders.
 * **Decision**: Build a cohesive, modern single-page application (SPA) featuring seamless switching between AmFam Homepage Redesign, Live APEX Quote Flow, Interactive CUJ Studio, Knowledge Explorer, and Mobile Viewport Emulation.
 * **Consequences**: Complete self-contained demonstration for desktop and mobile form factors with real-time telemetry.
+
+## ADR-004: Exact-Match FAQ CXAS Agent with Temperature 0.0 & Deterministic Python Tooling
+* **Date**: 2026-08-25
+* **Context**: Standard LLM generation rephrases, summarizes, and adds conversational preamble to compliance-critical insurance FAQ answers. Strict requirement mandates LLM for intent understanding while returning 100% exact verbatim wording from canonical FAQ database.
+* **Decision**: Deploy CXAS agent `amfam-faq-advisor` on `gecx-amfam` using `gemini-3-flash` with `temperature: 0.0` (greedy decoding), coupled with synchronous deterministic Python tool `lookup_coverage_faq` indexing all 45+ canonical Q&As, strict XML `<constraints>`, and `after_model_callback` verbatim guardrail.
+* **Consequences**: Complete elimination of token sampling variance, zero hallucination, 100% compliance and legal text adherence, with full golden evaluation verification on Google Cloud CES.

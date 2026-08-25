@@ -1,0 +1,66 @@
+conversations:
+  - conversation: auto_liability_bodily_injury
+    turns:
+      - user: "What is Bodily Injury (BI) liability coverage and why do I need it?"
+        agent: "Bodily Injury covers costs if you injure someone else in an accident — including their medical bills, lost wages, and legal fees if they sue you. It is required in most states and protects your personal assets."
+        tool_calls:
+          - action: lookup_coverage_faq
+            args:
+              question_key: "bodily_injury_liability"
+    expectations:
+      - "The agent must invoke lookup_coverage_faq with bodily_injury_liability"
+      - "The agent must deliver the exact verbatim answer without paraphrasing or conversational preamble"
+    tags: [P0, BLOCKER, auto-liability, exact-match]
+
+  - conversation: auto_liability_property_damage
+    turns:
+      - user: "What does Property Damage liability cover?"
+        agent: "Property Damage pays for damage you cause to someone else's vehicle or property (e.g., a fence, building, or parked car) in an at-fault accident."
+        tool_calls:
+          - action: lookup_coverage_faq
+            args:
+              question_key: "property_damage_liability"
+    expectations:
+      - "The agent must invoke lookup_coverage_faq with property_damage_liability"
+      - "The agent must provide the exact official property damage explanation"
+    tags: [P0, BLOCKER, auto-liability, exact-match]
+
+  - auto_physical_damage_comprehensive:
+    conversation: auto_physical_damage_comprehensive
+    turns:
+      - user: "What is Comprehensive coverage and what does it cover?"
+        agent: "Comprehensive covers damage to your vehicle from events other than a collision — such as theft, vandalism, fire, hail, flooding, or hitting an animal."
+        tool_calls:
+          - action: lookup_coverage_faq
+            args:
+              question_key: "comprehensive_coverage"
+    expectations:
+      - "The agent must invoke lookup_coverage_faq with comprehensive_coverage"
+      - "The agent must return the exact verbatim definition"
+    tags: [P0, BLOCKER, auto-damage, exact-match]
+
+  - conversation: auto_collision_deductible_selection
+    turns:
+      - user: "How do I choose between a $250, $500, or $1,000 deductible for Comprehensive or Collision?"
+        agent: "A higher deductible lowers your premium but means you pay more out of pocket when you file a claim. If you have savings to cover a higher deductible, it can be a smart trade-off. If cash flow is tight, a lower deductible provides more predictable costs."
+        tool_calls:
+          - action: lookup_coverage_faq
+            args:
+              question_key: "how_to_choose_deductible"
+    expectations:
+      - "The agent must invoke lookup_coverage_faq with how_to_choose_deductible"
+      - "The agent must explain the trade-off with exact canonical wording"
+    tags: [P0, BLOCKER, auto-deductibles, exact-match]
+
+  - conversation: auto_gap_loan_lease_assistance
+    turns:
+      - user: "What is Loan or Lease Assistance (Gap) coverage?"
+        agent: "If your vehicle is totaled, your insurance payout is based on the car's current market value — which may be less than what you still owe on your loan or lease. Loan/Lease Assistance covers that gap. It requires both Comprehensive and Collision."
+        tool_calls:
+          - action: lookup_coverage_faq
+            args:
+              question_key: "gap_loan_lease_assistance"
+    expectations:
+      - "The agent must invoke lookup_coverage_faq with gap_loan_lease_assistance"
+      - "The agent must deliver the exact Gap insurance definition"
+    tags: [P1, HIGH, auto-addons, exact-match]

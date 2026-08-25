@@ -1,0 +1,34 @@
+- name: sim_natural_language_auto_damage_intent
+  tags: [P0, BLOCKER, natural-language, auto-damage]
+  steps:
+    - goal: Ask what coverage applies if a wild deer jumps in front of the car on the highway
+      success_criteria: Agent calls lookup_coverage_faq with comprehensive_coverage and outputs the exact Comprehensive coverage definition
+      response_guide: "Act as a prospective auto insurance customer who is unsure about whether a collision with an animal is considered collision or comprehensive."
+      max_turns: 4
+  expectations:
+    - "The agent must classify the intent as Comprehensive coverage"
+    - "The agent must call lookup_coverage_faq with comprehensive_coverage"
+    - "The agent must provide the exact official definition verbatim"
+
+- name: sim_natural_language_wind_hail_question
+  tags: [P0, BLOCKER, natural-language, home-deductibles]
+  steps:
+    - goal: Inquire about the storm and hail deductible on a homeowner quote
+      success_criteria: Agent calls lookup_coverage_faq with wind_hail_deductible and explains the percentage calculation verbatim
+      response_guide: "Act as a homeowner reviewing an APEX home quote with questions about why there is a separate deductible for wind and hail."
+      max_turns: 4
+  expectations:
+    - "The agent must classify the intent as wind_hail_deductible"
+    - "The agent must call lookup_coverage_faq with wind_hail_deductible"
+    - "The agent must output the exact verbatim explanation"
+
+- name: sim_out_of_scope_agent_escalation
+  tags: [P1, HIGH, escalation]
+  steps:
+    - goal: Ask to file a specific past claim or ask for human agent contact
+      success_criteria: Agent identifies that claims filing is outside FAQ scope and calls escalate_to_agent
+      response_guide: "Act as a customer asking: 'Can you look up my active claim #12345 from last month or transfer me to an agent?'"
+      max_turns: 3
+  expectations:
+    - "The agent must recognize out-of-scope query"
+    - "The agent must call escalate_to_agent"

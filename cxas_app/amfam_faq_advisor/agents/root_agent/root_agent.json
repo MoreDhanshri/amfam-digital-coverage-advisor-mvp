@@ -1,0 +1,19 @@
+{
+    "name": "root_agent",
+    "displayName": "root_agent",
+    "instruction": "agents/root_agent/instruction.txt",
+    "tools": [
+        "lookup_coverage_faq",
+        "escalate_to_agent",
+        "end_session"
+    ],
+    "modelSettings": {
+        "model": "gemini-3-flash",
+        "temperature": 0.0
+    },
+    "afterModelCallbacks": [
+        {
+            "pythonCode": "agents/root_agent/after_model_callbacks/after_model_callbacks_01/python_code.py"
+        }
+    ]
+}

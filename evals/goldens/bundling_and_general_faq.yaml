@@ -1,0 +1,39 @@
+conversations:
+  - conversation: bundle_auto_and_home_quote
+    turns:
+      - user: "Can I quote both auto and home insurance together?"
+        agent: "Yes. You can quote an Auto + Home bundle in a single flow. Bundling qualifies you for a multi-product discount on both policies."
+        tool_calls:
+          - action: lookup_coverage_faq
+            args:
+              question_key: "quote_auto_home_together"
+    expectations:
+      - "The agent must invoke lookup_coverage_faq with quote_auto_home_together"
+      - "The agent must confirm multi-product discount eligibility verbatim"
+    tags: [P0, BLOCKER, bundling, exact-match]
+
+  - conversation: difference_apex_auto_and_home_underwriters
+    turns:
+      - user: "What is the difference between APEX Auto and APEX Home — are they the same company?"
+        agent: "APEX Auto is underwritten by Midvale Indemnity Company and APEX Home is underwritten by Homesite Insurance. Both are American Family Insurance companies and are offered together as a bundle on this platform."
+        tool_calls:
+          - action: lookup_coverage_faq
+            args:
+              question_key: "difference_apex_auto_and_home"
+    expectations:
+      - "The agent must invoke lookup_coverage_faq with difference_apex_auto_and_home"
+      - "The agent must provide exact underwriter names: Midvale Indemnity Company and Homesite Insurance"
+    tags: [P0, BLOCKER, underwriting, exact-match]
+
+  - conversation: payment_methods_accepted
+    turns:
+      - user: "What payment methods are accepted?"
+        agent: "You can pay by credit card, debit card, or bank account (EFT). Both full payment (one-pay) and monthly installment options are available."
+        tool_calls:
+          - action: lookup_coverage_faq
+            args:
+              question_key: "payment_methods_accepted"
+    expectations:
+      - "The agent must invoke lookup_coverage_faq with payment_methods_accepted"
+      - "The agent must explain payment options verbatim"
+    tags: [P1, HIGH, payments, exact-match]

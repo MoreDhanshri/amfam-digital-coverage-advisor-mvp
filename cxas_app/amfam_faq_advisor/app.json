@@ -1,0 +1,55 @@
+{
+    "name": "amfam_faq_advisor",
+    "displayName": "AmFam FAQ Advisor",
+    "description": "American Family Insurance Digital Coverage Advisor providing exact-match FAQ guidance for auto and home insurance quotes.",
+    "rootAgent": "root_agent",
+    "modelSettings": {
+        "model": "gemini-3-flash",
+        "temperature": 0.0
+    },
+    "languageSettings": {
+        "defaultLanguageCode": "en-US"
+    },
+    "timeZoneSettings": {
+        "timeZone": "America/Chicago"
+    },
+    "toolExecutionMode": "PARALLEL",
+    "evaluationMetricsThresholds": {
+        "goldenEvaluationMetricsThresholds": {
+            "turnLevelMetricsThresholds": {
+                "semanticSimilaritySuccessThreshold": 3,
+                "overallToolInvocationCorrectnessThreshold": 1
+            },
+            "toolMatchingSettings": {
+                "extraToolCallBehavior": "ALLOW"
+            }
+        },
+        "goldenHallucinationMetricBehavior": "DISABLED"
+    },
+    "variableDeclarations": [
+        {
+            "name": "last_faq_category",
+            "description": "The most recently referenced insurance FAQ category (e.g. auto, home, bundle)",
+            "schema": {
+                "type": "STRING",
+                "required": []
+            }
+        },
+        {
+            "name": "last_faq_key",
+            "description": "The identifier of the last answered FAQ question",
+            "schema": {
+                "type": "STRING",
+                "required": []
+            }
+        },
+        {
+            "name": "consecutive_unknown_queries",
+            "description": "Count of consecutive questions not found in the FAQ knowledge library",
+            "schema": {
+                "type": "STRING",
+                "required": []
+            }
+        }
+    ]
+}

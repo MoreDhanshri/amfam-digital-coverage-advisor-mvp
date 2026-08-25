@@ -1,0 +1,52 @@
+conversations:
+  - conversation: home_dwelling_coverage_a
+    turns:
+      - user: "What is Dwelling coverage (Coverage A) and how is the amount determined?"
+        agent: "Dwelling coverage pays to repair or rebuild your home's structure if it is damaged by a covered peril. The amount is based on the estimated replacement cost to rebuild your home — not its market value or what you paid for it."
+        tool_calls:
+          - action: lookup_coverage_faq
+            args:
+              question_key: "dwelling_coverage_a"
+    expectations:
+      - "The agent must invoke lookup_coverage_faq with dwelling_coverage_a"
+      - "The agent must provide the exact Dwelling coverage replacement cost explanation"
+    tags: [P0, BLOCKER, home-core, exact-match]
+
+  - conversation: home_personal_property_rcv_vs_acv
+    turns:
+      - user: "Should I choose \"Replacement Cost\" or \"Depreciated Value\" for my personal property?"
+        agent: "Replacement Cost pays to replace your items with new ones of similar kind and quality. Depreciated Value (Actual Cash Value) pays what your items are worth today, accounting for age and wear. Replacement Cost provides more complete protection but costs more."
+        tool_calls:
+          - action: lookup_coverage_faq
+            args:
+              question_key: "replacement_cost_vs_depreciated_value"
+    expectations:
+      - "The agent must invoke lookup_coverage_faq with replacement_cost_vs_depreciated_value"
+      - "The agent must deliver the exact verbatim comparison"
+    tags: [P0, BLOCKER, home-core, exact-match]
+
+  - conversation: home_wind_hail_deductible
+    turns:
+      - user: "What is a Wind/Hail deductible and how is it different from my standard deductible?"
+        agent: "A Wind/Hail deductible applies specifically to damage caused by windstorms or hail. In many states it is a mandatory separate deductible, often expressed as a percentage of your Dwelling coverage (e.g., 1% or 2% of Coverage A). It must be equal to or greater than your AOP deductible."
+        tool_calls:
+          - action: lookup_coverage_faq
+            args:
+              question_key: "wind_hail_deductible"
+    expectations:
+      - "The agent must invoke lookup_coverage_faq with wind_hail_deductible"
+      - "The agent must explain the Wind/Hail percentage calculation verbatim"
+    tags: [P0, BLOCKER, home-deductibles, exact-match]
+
+  - conversation: home_water_backup_coverage
+    turns:
+      - user: "What is Water Backup coverage and do I need it?"
+        agent: "Water Backup covers damage caused by water backing up through sewers or drains, or by a sump pump overflow. Standard homeowners policies typically exclude this. It is available in limits from $5,000 to $25,000 depending on your state."
+        tool_calls:
+          - action: lookup_coverage_faq
+            args:
+              question_key: "water_backup_coverage"
+    expectations:
+      - "The agent must invoke lookup_coverage_faq with water_backup_coverage"
+      - "The agent must provide exact verbatim coverage details"
+    tags: [P1, HIGH, home-addons, exact-match]

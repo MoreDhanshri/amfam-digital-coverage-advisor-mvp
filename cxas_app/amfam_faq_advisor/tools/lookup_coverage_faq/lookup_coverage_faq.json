@@ -1,0 +1,10 @@
+{
+    "name": "lookup_coverage_faq",
+    "displayName": "lookup_coverage_faq",
+    "executionType": "SYNCHRONOUS",
+    "pythonFunction": {
+        "name": "lookup_coverage_faq",
+        "pythonCode": "tools/lookup_coverage_faq/python_function/python_code.py",
+        "description": "Retrieves the exact, verified American Family Insurance FAQ answer for auto coverages, home coverages, deductibles, add-ons, bundling, payments, and rate calculations."
+    }
+}
