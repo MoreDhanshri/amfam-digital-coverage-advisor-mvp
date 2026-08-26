@@ -1,3 +1,6 @@
+common_session_parameters:
+  last_faq_category: "home"
+
 conversations:
   - conversation: home_dwelling_coverage_a
     turns:

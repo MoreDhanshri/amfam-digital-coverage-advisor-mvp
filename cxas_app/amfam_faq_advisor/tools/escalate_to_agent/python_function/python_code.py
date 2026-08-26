@@ -45,7 +45,9 @@ def escalate_to_agent(
         "status": "success",
         "escalation_status": "transferred",
         "transfer_queue": "amfam_apex_coverage_specialists",
+        "phone_number": "1-800-MY-AMFAM (1-800-692-6326)",
+        "hours_of_operation": "Mon-Fri 8:00 AM - 8:00 PM CST, Sat 8:30 AM - 5:00 PM CST",
         "reason": reason,
         "customer_context": customer_context or "AmFam Digital Coverage Advisor quote assistance",
-        "agent_action": "Inform the customer that you are connecting them with a licensed American Family Insurance agent right now.",
+        "agent_action": "Inform the customer that you can connect them directly with a licensed American Family Insurance specialist, and provide phone number 1-800-MY-AMFAM (1-800-692-6326) and priority callback options.",
     }

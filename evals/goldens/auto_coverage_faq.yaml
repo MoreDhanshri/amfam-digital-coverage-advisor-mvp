@@ -1,3 +1,6 @@
+common_session_parameters:
+  last_faq_category: "auto"
+
 conversations:
   - conversation: auto_liability_bodily_injury
     turns:

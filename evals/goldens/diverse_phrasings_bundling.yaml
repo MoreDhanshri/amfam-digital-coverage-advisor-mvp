@@ -1,3 +1,6 @@
+common_session_parameters:
+  last_faq_category: "bundle"
+
 conversations:
   - conversation: diverse_phrasing_bundling_discount_savings
     turns:

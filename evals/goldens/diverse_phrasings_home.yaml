@@ -1,3 +1,6 @@
+common_session_parameters:
+  last_faq_category: "home"
+
 conversations:
   - conversation: diverse_phrasing_dwelling_rebuild_vs_market
     turns:

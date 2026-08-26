@@ -1,3 +1,6 @@
+common_session_parameters:
+  last_faq_category: "auto"
+
 conversations:
   - conversation: diverse_phrasing_bodily_injury_colloquial
     turns:

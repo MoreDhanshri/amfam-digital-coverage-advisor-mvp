@@ -102,7 +102,7 @@ function getFreshSessionGreeting() {
     {
       id: "msg-welcome",
       sender: "agent",
-      text: "👋 Hi there! I'm your American Family Digital Coverage Advisor. How can I help you today? You can chat with me or talk with your voice here to ask about auto & home coverage limits, deductibles, or policy finalization.",
+      text: "👋 Hi there! I'm your American Family Digital Coverage Advisor. How can I help you today? Ask me any question about auto & home coverage limits, deductibles, optional add-ons, or multi-policy bundling.",
       time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       quickReplies: [
         "🚗 What is Bodily Injury 100/300?",
@@ -265,7 +265,7 @@ function resetSession() {
     {
       id: "msg-reset-welcome",
       sender: "agent",
-      text: "👋 Hello! I have started a fresh session (" + state.session.id + "). I'm your American Family Digital Coverage Advisor. How can I help you today? You can chat with me or talk with your voice here.",
+      text: "👋 Hi there! I'm your American Family Digital Coverage Advisor. How can I help you today? Ask me any question about auto & home coverage limits, deductibles, optional add-ons, or multi-policy bundling.",
       time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       quickReplies: [
         "🚗 What is Bodily Injury 100/300?",
@@ -640,11 +640,6 @@ function renderAdvisorMessages() {
               </button>
             ` : ''}
           </div>
-          ${m.toolAction ? `
-            <div class="mt-2 pt-2 border-t border-slate-100 text-[10px] font-mono text-blue-700 bg-blue-50 p-1.5 rounded">
-              ⚡ ${m.toolAction}
-            </div>
-          ` : ''}
         </div>
         <span class="text-[10px] text-slate-400 px-1 mt-0.5">${m.time}</span>
         ${m.quickReplies && m.quickReplies.length > 0 ? `
@@ -665,8 +660,124 @@ function renderAdvisorMessages() {
   }, 50);
 }
 
-// User Prompt Handler
-function handleUserPrompt(text) {
+// SMART CONTEXTUAL NEXT QUESTION SUGGESTIONS
+function getSmartNextSuggestions(topicOrKey = "", query = "") {
+  const clean = (topicOrKey || query || "").toLowerCase();
+
+  // Auto Liability & Limits
+  if (clean.includes("bodily") || clean.includes("liability") || clean.includes("100/300") || clean.includes("um") || clean.includes("uim") || clean.includes("property_damage")) {
+    return [
+      "🚗 How much liability coverage do I need?",
+      "🛡️ What is Comprehensive vs Collision?",
+      "💰 How to choose deductible ($500 vs $1,000)?",
+      "🔗 How much do I save by bundling?"
+    ];
+  }
+
+  // Physical Damage & Deductibles
+  if (clean.includes("comprehensive") || clean.includes("collision") || clean.includes("deductible") || clean.includes("physical_damage")) {
+    return [
+      "🚘 What is Loan or Lease (Gap) coverage?",
+      "🛞 What is Emergency Roadside Assistance (ERA)?",
+      "🔄 How do I recalculate rate after changing deductible?",
+      "💵 Monthly installments vs paying in full?"
+    ];
+  }
+
+  // Auto Add-Ons & Endorsements
+  if (clean.includes("gap") || clean.includes("roadside") || clean.includes("era") || clean.includes("oem") || clean.includes("rental") || clean.includes("pip") || clean.includes("medical")) {
+    return [
+      "✨ What is New Car Replacement?",
+      "🩺 What is Medical Expense / PIP?",
+      "🔄 How do I recalculate my updated rate?",
+      "📞 Speak with an Agent"
+    ];
+  }
+
+  // Home Core Coverages
+  if (clean.includes("dwelling") || clean.includes("structures") || clean.includes("personal_property") || clean.includes("loss_of_use") || clean.includes("replacement_cost") || clean.includes("coverage_a")) {
+    return [
+      "🏠 Replacement Cost vs Depreciated Value?",
+      "🌪️ What is Wind/Hail Deductible?",
+      "💧 What is Water Backup coverage?",
+      "🔌 What is Service Line coverage?"
+    ];
+  }
+
+  // Home Endorsements & Perils
+  if (clean.includes("water_backup") || clean.includes("service_line") || clean.includes("equipment") || clean.includes("mold") || clean.includes("earthquake") || clean.includes("ordinance")) {
+    return [
+      "⚡ What is Equipment Breakdown?",
+      "🛡️ Extended Replacement Cost (25% or 50%)?",
+      "🔗 How does bundling auto and home save money?",
+      "📞 Speak with an Agent"
+    ];
+  }
+
+  // Bundling, Underwriting, Billing & DNQ
+  if (clean.includes("bundl") || clean.includes("rate") || clean.includes("underwrit") || clean.includes("dnq") || clean.includes("payment") || clean.includes("quote") || clean.includes("leave")) {
+    return [
+      "🏢 Who underwrites APEX Auto and Home?",
+      "💳 What payment methods are accepted?",
+      "💾 Is my quote saved if I leave the page?",
+      "✅ Next steps to finalize quote"
+    ];
+  }
+
+  // Human Escalation
+  if (clean.includes("agent") || clean.includes("human") || clean.includes("escalat") || clean.includes("call") || clean.includes("claim")) {
+    return [
+      "📞 Call 1-800-MY-AMFAM (1-800-692-6326)",
+      "📅 Schedule Agent Callback",
+      "🚗 Return to Auto Coverages",
+      "🏠 Return to Home Coverages"
+    ];
+  }
+
+  // Default / Initial Welcome Suggestions
+  return [
+    "🚗 What is Bodily Injury 100/300?",
+    "🛡️ How do I choose between $500 and $1,000 deductible?",
+    "🏠 What is Water Backup coverage?",
+    "🔗 How much do I save by bundling?"
+  ];
+}
+
+// ESCALATION MODAL HANDLERS
+function openClickToCallModal() {
+  const modal = document.getElementById('click-to-call-modal');
+  if (modal) modal.classList.remove('hidden');
+}
+
+function closeClickToCallModal() {
+  const modal = document.getElementById('click-to-call-modal');
+  if (modal) modal.classList.add('hidden');
+}
+
+function openScheduleCallbackModal() {
+  const modal = document.getElementById('schedule-callback-modal');
+  if (modal) modal.classList.remove('hidden');
+}
+
+function closeScheduleCallbackModal() {
+  const modal = document.getElementById('schedule-callback-modal');
+  if (modal) modal.classList.add('hidden');
+}
+
+function submitCallbackRequest() {
+  const name = document.getElementById('cb-name')?.value || 'Sarah Jenkins';
+  const phone = document.getElementById('cb-phone')?.value || '(608) 555-0194';
+  const time = document.getElementById('cb-time')?.value || 'Afternoon (12:00 PM - 4:00 PM CST)';
+  
+  closeScheduleCallbackModal();
+  
+  const confirmMsg = `✅ Priority callback scheduled! A licensed American Family specialist will call ${name} at ${phone} during the ${time} window with your quote details (Ref: #AF-98421-WI) ready.`;
+  addMessage('agent', confirmMsg, getSmartNextSuggestions('escalation'));
+  if (state.voice.isVoiceMode) speakVoice(confirmMsg);
+}
+
+// User Prompt Handler — Direct Integration with Live CXAS Agent
+async function handleUserPrompt(text) {
   if (!text || !text.trim()) return;
   const q = text.trim();
 
@@ -676,41 +787,68 @@ function handleUserPrompt(text) {
     return;
   }
 
-  toggleAdvisor(true);
-  addMessage('user', q);
-
-  // Check for Human Escalation
-  const lower = q.toLowerCase();
-  if (lower.includes('agent') || lower.includes('human') || lower.includes('call') || lower.includes('speak') || lower.includes('commercial')) {
-    setTimeout(() => {
-      const resp = "I can connect you directly with a licensed American Family Insurance agent right now. Click below to call 1-800-MY-AMFAM (1-800-692-6326) or request a priority callback.";
-      addMessage('agent', resp, ["📞 Call 1-800-MY-AMFAM", "Schedule Agent Callback", "Review Coverage Finalization"], "Action: trigger_escalation (1-800-692-6326)");
-      if (state.voice.isVoiceMode) speakVoice(resp);
-    }, 250);
+  // Intercept Click-to-Call Actions
+  if (q.includes("Call 1-800") || q.includes("Call Now")) {
+    openClickToCallModal();
     return;
   }
 
-  // Deterministic FAQ Search
-  const match = searchFAQ(q);
-  setTimeout(() => {
-    if (match) {
-      addMessage('agent', match.answer, [
-        "What is Bodily Injury 100/300?",
-        "How to choose deductible?",
-        "What is Water Backup?",
-        "Speak with an Agent"
-      ], `FAQ: ${match.category} • ${match.subcategory}`);
-      if (state.voice.isVoiceMode) speakVoice(match.answer);
-    } else {
-      const fallback = "I'm your Digital Coverage Advisor. I can explain auto & home coverages, liability limits, deductibles, and discounts. How can I help you today?";
-      addMessage('agent', fallback, [
-        "What is Bodily Injury 100/300?",
-        "What is Water Backup?",
-        "Speak with an Agent"
-      ]);
-      if (state.voice.isVoiceMode) speakVoice(fallback);
+  // Intercept Schedule Callback Actions
+  if (q.includes("Schedule Agent Callback") || q.includes("Schedule Callback")) {
+    openScheduleCallbackModal();
+    return;
+  }
+
+  toggleAdvisor(true);
+  addMessage('user', q);
+
+  // Check for Human Escalation Intent
+  const lower = q.toLowerCase();
+  const isEscalation = lower.includes('agent') || lower.includes('human') || lower.includes('call') || lower.includes('speak') || lower.includes('commercial') || lower.includes('claim');
+
+  // Try calling the live CXAS agent on GCP
+  try {
+    const response = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        session_id: state.session.id,
+        message: q
+      })
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      if (data.status === 'success' && data.reply) {
+        const matchedKey = data.tool_calls?.[0]?.args?.question_key || (isEscalation ? "agent" : q);
+        const smartSuggestions = getSmartNextSuggestions(matchedKey, q);
+
+        addMessage('agent', data.reply, smartSuggestions);
+        if (state.voice.isVoiceMode) speakVoice(data.reply);
+        return;
+      }
     }
-  }, 200);
+  } catch (err) {
+    console.warn("Live CXAS API call failed, using deterministic in-browser engine:", err);
+  }
+
+  // Fallback to local deterministic FAQ engine
+  if (isEscalation) {
+    const resp = "I can connect you directly with a licensed American Family Insurance specialist right now. You can call us at 1-800-MY-AMFAM (1-800-692-6326) or request a priority callback.";
+    addMessage('agent', resp, getSmartNextSuggestions("agent", q));
+    if (state.voice.isVoiceMode) speakVoice(resp);
+    return;
+  }
+
+  const match = searchFAQ(q);
+  if (match) {
+    addMessage('agent', match.answer, getSmartNextSuggestions(match.question_key || match.category, q));
+    if (state.voice.isVoiceMode) speakVoice(match.answer);
+  } else {
+    const fallback = "I'm your Digital Coverage Advisor. I can explain auto & home coverages, liability limits, deductibles, and discounts. How can I help you today?";
+    addMessage('agent', fallback, getSmartNextSuggestions("default", q));
+    if (state.voice.isVoiceMode) speakVoice(fallback);
+  }
 }
 
 // Interactive Coverage Explainer Launcher (For Finalization Table items)
@@ -759,7 +897,7 @@ async function init() {
     console.log("Loaded fallback inline FAQs");
   }
 
-  // Set fresh session greeting on every page refresh
+  // Set clean initial session greeting on page load (NO technical session ID text)
   state.advisor.messages = getFreshSessionGreeting();
   renderAdvisorMessages();
 
@@ -767,7 +905,7 @@ async function init() {
   initFemaleVoice();
   initSpeechRecognition();
 
-  // Start 10-Second Countdown (Bubble starts HIDDEN)
+  // Start 5-Second Countdown
   startBubbleCountdown();
 }
 

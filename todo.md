@@ -39,12 +39,15 @@
 - [x] Execute platform evaluation runs across the expanded test suite (`cxas run`) — 29/29 tests PASS (100%)
 - [x] Compile comprehensive pass/fail and verbatim fidelity verification report
 
-### Digital Coverage Advisor Web Platform & Interactive Finalization Sandbox Sprint
-- [x] Exact replica of `amfam.com` front page with official branding, roofline curve, and product tiles
-- [x] Integrated Policy Finalization & Review Interface (`#AF-849204-TX`) matching customer FAQ numbers
-- [x] 10-Second Timer: Chat bubble hidden on page refresh/initial load, auto-populates with glow & jump after 10s or on manual trigger
-- [x] Fresh Session & Greeting initialized on every page refresh
-- [x] Full two-way voice conversation loop (Web Speech API STT + Natural Female Voice TTS)
-- [x] Microphone Mute/Unmute toggle and session reset (🔄) capabilities
-- [x] Interactive policy table explainer popups linked directly to FAQ advisor
+### Human Agent Escalation & Dynamic Follow-Up Experience Sprint
+- [x] Integrate full human escalation modal flows:
+  - [x] Modal 1: Click-to-Call (Toll-Free `1-800-MY-AMFAM` / `1-800-692-6326`, Operating hours Mon-Fri 8am-8pm CST / Sat 8:30am-5pm CST, Quote Ref `#AF-98421-WI`)
+  - [x] Modal 2: Schedule Priority Callback (Customer name, phone, preferred time window, direct transfer confirmation)
+- [x] Enrich `escalate_to_agent` tool and agent instructions (`instruction.txt`) with compliant contact info
+- [x] Author golden evaluation tests for live agent handoff and complex claims escalation
+- [x] Implement dynamic context-aware smart next question suggestions (`getSmartNextSuggestions`) across Auto, Home, Bundling, and Escalation
+- [x] Sanitize session initialization and refresh greetings — eliminated all raw session IDs (`SES-...`) from chat bubbles
+- [x] Validate zero-warning CXAS linter status (`cxas lint` 0 errors, 0 warnings across all 7 evaluation suites)
+- [x] Git commit and push all updates to feature branch
+
 

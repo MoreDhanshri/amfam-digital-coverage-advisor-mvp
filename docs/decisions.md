@@ -23,3 +23,10 @@
 * **Context**: Standard LLM generation rephrases, summarizes, and adds conversational preamble to compliance-critical insurance FAQ answers. Strict requirement mandates LLM for intent understanding while returning 100% exact verbatim wording from canonical FAQ database.
 * **Decision**: Deploy CXAS agent `amfam-faq-advisor` on `gecx-amfam` using `gemini-3-flash` with `temperature: 0.0` (greedy decoding), coupled with synchronous deterministic Python tool `lookup_coverage_faq` indexing all 45+ canonical Q&As, strict XML `<constraints>`, and `after_model_callback` verbatim guardrail.
 * **Consequences**: Complete elimination of token sampling variance, zero hallucination, 100% compliance and legal text adherence, with full golden evaluation verification on Google Cloud CES.
+
+## ADR-005: Human Escalation Modals, Smart Follow-Up Chips & Clean Session Initialization
+* **Date**: 2026-08-26
+* **Context**: Requirement for full human agent escalation path (Click-to-Call modal and Priority Scheduled Callback modal) with quote context (#AF-98421-WI), dynamic topic-based next suggestion bubbles, and natural conversational greeting without session ID artifacts.
+* **Decision**: Integrate dual-path escalation modals in frontend (`src/index.html` & `src/app.js`), update `escalate_to_agent` tool and agent instructions to provide `1-800-MY-AMFAM` toll-free contact and operating hours, implement `getSmartNextSuggestions()` for dynamic 4-chip topic routing, and sanitize `resetSession()` to emit natural advisor greetings without raw session identifiers.
+* **Consequences**: Seamless end-to-end customer support journey from digital FAQ clarification to live licensed agent transfer with pre-routed quote state.
+

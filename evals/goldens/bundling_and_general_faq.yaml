@@ -1,3 +1,6 @@
+common_session_parameters:
+  last_faq_category: "bundle"
+
 conversations:
   - conversation: bundle_auto_and_home_quote
     turns:
@@ -37,3 +40,29 @@ conversations:
       - "The agent must invoke lookup_coverage_faq with payment_methods_accepted"
       - "The agent must explain payment options verbatim"
     tags: [P1, HIGH, payments, exact-match]
+
+  - conversation: speak_with_licensed_agent
+    turns:
+      - user: "I want to speak with a licensed agent right now."
+        agent: "I can connect you directly with a licensed American Family Insurance specialist right now. You can reach us at 1-800-MY-AMFAM or request a priority callback."
+        tool_calls:
+          - action: escalate_to_agent
+            args:
+              reason: "customer_requested_agent"
+    expectations:
+      - "The agent must invoke escalate_to_agent when the user requests a human representative"
+      - "The agent must provide the 1-800-MY-AMFAM phone number and callback options"
+    tags: [P0, BLOCKER, escalation, exact-match]
+
+  - conversation: complex_claims_assistance_escalation
+    turns:
+      - user: "I need to speak with customer service about an existing open claim."
+        agent: "I can connect you directly with a licensed American Family Insurance specialist right now. You can reach us at 1-800-MY-AMFAM or request a priority callback."
+        tool_calls:
+          - action: escalate_to_agent
+            args:
+              reason: "customer_requested_agent"
+    expectations:
+      - "The agent must route claims inquiries to escalate_to_agent"
+      - "The agent must provide contact number 1-800-MY-AMFAM"
+    tags: [P1, HIGH, escalation, exact-match]
