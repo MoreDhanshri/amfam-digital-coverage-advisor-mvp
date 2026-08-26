@@ -14,7 +14,7 @@
 </head>
 <body class="bg-white text-slate-900 min-h-screen flex flex-col font-sans antialiased selection:bg-red-100 selection:text-red-900">
 
-  <!-- TOP SANDBOX SIMULATION STATUS & 5-SECOND TIMER BAR -->
+  <!-- TOP SANDBOX SIMULATION STATUS & 10-SECOND TIMER BAR -->
   <div class="bg-slate-900 text-white px-4 py-2 text-xs flex flex-wrap justify-between items-center sticky top-0 z-50 border-b border-slate-800">
     <div class="flex items-center gap-3">
       <span class="inline-flex items-center gap-1.5 font-bold text-red-400">
@@ -25,13 +25,16 @@
       <span class="text-slate-300 hidden sm:inline">APEX Auto &amp; Home Bundle • Quote #AF-849204-TX</span>
     </div>
 
-    <!-- 5-SECOND TRIGGER CONTROLS -->
+    <!-- 10-SECOND TRIGGER CONTROLS & RESET -->
     <div class="flex items-center gap-2">
-      <div id="bubble-timer-badge" class="bg-emerald-900/80 text-emerald-200 border border-emerald-700 px-2.5 py-1 rounded-full text-[11px] font-bold flex items-center gap-1.5 shadow-sm">
-        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span> <span>Advisor Active</span>
+      <div id="bubble-timer-badge" class="bg-red-900/80 text-red-200 border border-red-700 px-2.5 py-1 rounded-full text-[11px] font-bold flex items-center gap-1.5 shadow-sm animate-pulse">
+        ⏱️ Chat Bubble Populates in <strong>10s</strong>
       </div>
       <button onclick="resetBubbleTimer()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-[11px] font-semibold px-2.5 py-1 rounded-md border border-slate-700 transition">
-        🔄 Re-test 5s Trigger
+        🔄 Re-test 10s Trigger
+      </button>
+      <button onclick="populateChatBubble()" class="bg-red-600 hover:bg-red-700 text-white text-[11px] font-bold px-2.5 py-1 rounded-md transition shadow-xs">
+        ⚡ Pop Now
       </button>
     </div>
   </div>
@@ -231,7 +234,7 @@
     </section>
 
     <!-- ========================================================================= -->
-    <!-- MOCK POLICY FINALIZATION & REVIEW INTERFACE (ADDED DIRECTLY BELOW) -->
+    <!-- MOCK POLICY FINALIZATION & REVIEW INTERFACE (MATCHING EXACT FAQ NUMBERS) -->
     <!-- ========================================================================= -->
     <section class="py-12 px-4 sm:px-8 max-w-6xl mx-auto">
       
@@ -269,7 +272,7 @@
           
           <div class="bg-blue-950/80 border border-blue-700/60 rounded-2xl p-3 text-right">
             <div class="text-[11px] text-blue-300">Total Combined Binder Due</div>
-            <div class="text-2xl font-black text-amber-300">$189.25 <span class="text-xs text-white font-normal">/ mo</span></div>
+            <div class="text-2xl font-black text-amber-300">$142.00 <span class="text-xs text-white font-normal">/ mo</span></div>
             <div class="text-[10px] text-emerald-400">Includes $297.00 Bundle Savings</div>
           </div>
         </div>
@@ -282,15 +285,20 @@
               <div class="w-8 h-8 rounded-xl bg-blue-900 text-white flex items-center justify-center font-bold text-xs shrink-0">AF</div>
               <div>
                 <span class="font-bold text-[#002F6C]">Questions before binding?</span>
-                <span class="text-slate-600"> Click any coverage limit or deductible below to ask your Digital Coverage Advisor.</span>
+                <span class="text-slate-600"> Click any coverage limit or deductible below to get instant deterministic answers or talk to your Advisor.</span>
               </div>
             </div>
-            <button onclick="toggleAdvisor(true)" class="bg-[#002F6C] hover:bg-[#0A58CA] text-white font-bold px-3.5 py-2 rounded-xl text-xs whitespace-nowrap transition shadow-2xs">
-              Open Advisor 💬
-            </button>
+            <div class="flex items-center gap-2">
+              <button onclick="toggleVoiceMode()" class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold px-3 py-2 rounded-xl text-xs whitespace-nowrap transition flex items-center gap-1.5 shadow-2xs">
+                <span>🎙️ Talk to Advisor</span>
+              </button>
+              <button onclick="toggleAdvisor(true)" class="bg-[#002F6C] hover:bg-[#0A58CA] text-white font-bold px-3 py-2 rounded-xl text-xs whitespace-nowrap transition shadow-2xs">
+                Open Chat 💬
+              </button>
+            </div>
           </div>
 
-          <!-- 1. POLICY SUMMARY -->
+          <!-- 1. POLICY SUMMARY (MATCHING FAQ NUMBERS) -->
           <div>
             <h3 class="text-base font-extrabold text-[#002F6C] flex items-center gap-2 mb-4">
               <span class="w-6 h-6 rounded-lg bg-blue-100 text-[#002F6C] flex items-center justify-center text-xs">1</span>
@@ -299,7 +307,7 @@
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
               
-              <!-- AUTO PROTECTION CARD -->
+              <!-- AUTO PROTECTION CARD (APEX AUTO - MIDVALE INDEMNITY) -->
               <div class="border border-slate-200 rounded-2xl p-5 bg-white shadow-2xs space-y-4">
                 <div class="flex justify-between items-start border-b border-slate-100 pb-3">
                   <div>
@@ -307,45 +315,49 @@
                     <h4 class="text-sm font-bold text-slate-900">2023 Honda CR-V (VIN: 7FA...901)</h4>
                     <p class="text-[11px] text-slate-500">Underwritten by Midvale Indemnity Company</p>
                   </div>
-                  <span class="text-xs font-bold text-[#002F6C] bg-blue-50 px-2.5 py-1 rounded-lg">$642.00 (6 Mo)</span>
+                  <span class="text-xs font-bold text-[#002F6C] bg-blue-50 px-2.5 py-1 rounded-lg">$584.00 (6 Mo)</span>
                 </div>
 
                 <div class="space-y-2.5 text-xs">
-                  <div class="flex justify-between items-center p-2 rounded-xl bg-slate-50 hover:bg-blue-50/50 transition cursor-pointer" onclick="explainCoverage('What is the difference between Bodily Injury limits like 100/300 or 250/500?');">
+                  <!-- BODILY INJURY 100/300 EXACT MATCH -->
+                  <div class="flex justify-between items-center p-2.5 rounded-xl bg-slate-50 hover:bg-blue-50/60 transition cursor-pointer border border-transparent hover:border-blue-200" onclick="explainCoverage('What is the difference between Bodily Injury limits like 100/300?');">
                     <div>
-                      <span class="font-bold text-slate-900">$250k/$500k Bodily Injury (BI)</span>
-                      <span class="text-[11px] text-slate-500 block">Max per person / max per accident</span>
+                      <span class="font-bold text-slate-900">$100,000 / $300,000 (100/300) Bodily Injury (BI)</span>
+                      <span class="text-[11px] text-slate-500 block">$100k max per person • $300k max per accident</span>
                     </div>
                     <span class="text-blue-600 font-semibold text-[11px]">Explain ℹ️</span>
                   </div>
 
-                  <div class="flex justify-between items-center p-2 rounded-xl bg-slate-50 hover:bg-blue-50/50 transition cursor-pointer" onclick="explainCoverage('What does Property Damage (PD) liability cover?');">
+                  <!-- PROPERTY DAMAGE 100K -->
+                  <div class="flex justify-between items-center p-2.5 rounded-xl bg-slate-50 hover:bg-blue-50/60 transition cursor-pointer border border-transparent hover:border-blue-200" onclick="explainCoverage('What does Property Damage (PD) liability cover?');">
                     <div>
-                      <span class="font-bold text-slate-900">$100k Property Damage (PD)</span>
-                      <span class="text-[11px] text-slate-500 block">Damage to third-party vehicles &amp; property</span>
+                      <span class="font-bold text-slate-900">$100,000 Property Damage (PD) Liability</span>
+                      <span class="text-[11px] text-slate-500 block">Damage to third-party vehicles and property</span>
                     </div>
                     <span class="text-blue-600 font-semibold text-[11px]">Explain ℹ️</span>
                   </div>
 
+                  <!-- COMPREHENSIVE & COLLISION $500 DEDUCTIBLE -->
                   <div class="grid grid-cols-2 gap-2">
-                    <div class="p-2 rounded-xl bg-slate-50 hover:bg-blue-50/50 transition cursor-pointer" onclick="explainCoverage('What is Comprehensive coverage and what does it cover?');">
+                    <div class="p-2.5 rounded-xl bg-slate-50 hover:bg-blue-50/60 transition cursor-pointer border border-transparent hover:border-blue-200" onclick="explainCoverage('What is Comprehensive coverage and what does it cover?');">
                       <span class="text-[10px] text-slate-500 block">Comprehensive Ded</span>
                       <span class="font-bold text-slate-900">$500 Deductible</span>
                     </div>
-                    <div class="p-2 rounded-xl bg-slate-50 hover:bg-blue-50/50 transition cursor-pointer" onclick="explainCoverage('How do I choose between a $250, $500, or $1,000 deductible for Comprehensive or Collision?');">
+                    <div class="p-2.5 rounded-xl bg-slate-50 hover:bg-blue-50/60 transition cursor-pointer border border-transparent hover:border-blue-200" onclick="explainCoverage('How do I choose between a $250, $500, or $1,000 deductible for Comprehensive or Collision?');">
                       <span class="text-[10px] text-slate-500 block">Collision Ded</span>
                       <span class="font-bold text-slate-900">$500 Deductible</span>
                     </div>
                   </div>
 
-                  <div class="flex justify-between items-center pt-2 text-[11px] text-slate-600">
-                    <span>Includes: Loan/Lease (Gap), Roadside Assistance</span>
-                    <button onclick="explainCoverage('What is Loan or Lease Assistance (Gap) coverage?');" class="text-blue-600 hover:underline">Gap Info</button>
+                  <!-- OPTIONAL AUTO RIDERS FROM FAQ -->
+                  <div class="flex flex-wrap justify-between items-center pt-2 text-[11px] text-slate-600 border-t border-slate-100 gap-2">
+                    <span>Includes: Loan/Lease (Gap), OEM Parts, Roadside (ERA)</span>
+                    <button onclick="explainCoverage('What is Loan or Lease Assistance (Gap) coverage?');" class="text-blue-600 hover:underline font-semibold">Learn more →</button>
                   </div>
                 </div>
               </div>
 
-              <!-- HOMEOWNERS PROTECTION CARD -->
+              <!-- HOMEOWNERS PROTECTION CARD (APEX HOME - HOMESITE INSURANCE) -->
               <div class="border border-slate-200 rounded-2xl p-5 bg-white shadow-2xs space-y-4">
                 <div class="flex justify-between items-start border-b border-slate-100 pb-3">
                   <div>
@@ -353,40 +365,47 @@
                     <h4 class="text-sm font-bold text-slate-900">1428 Elm Ridge Ct, Austin, TX</h4>
                     <p class="text-[11px] text-slate-500">Underwritten by Homesite Insurance Company</p>
                   </div>
-                  <span class="text-xs font-bold text-[#002F6C] bg-blue-50 px-2.5 py-1 rounded-lg">$1,280.00 (12 Mo)</span>
+                  <span class="text-xs font-bold text-[#002F6C] bg-blue-50 px-2.5 py-1 rounded-lg">$1,120.00 (12 Mo)</span>
                 </div>
 
                 <div class="space-y-2.5 text-xs">
-                  <div class="flex justify-between items-center p-2 rounded-xl bg-slate-50 hover:bg-blue-50/50 transition cursor-pointer" onclick="explainCoverage('What is Dwelling coverage (Coverage A) and how is the amount determined?');">
+                  <!-- DWELLING COVERAGE A $380K -->
+                  <div class="flex justify-between items-center p-2.5 rounded-xl bg-slate-50 hover:bg-blue-50/60 transition cursor-pointer border border-transparent hover:border-blue-200" onclick="explainCoverage('What is Dwelling coverage (Coverage A) and how is the amount determined?');">
                     <div>
-                      <span class="font-bold text-slate-900">$450k Dwelling (Coverage A)</span>
-                      <span class="text-[11px] text-slate-500 block">Estimated structure replacement cost</span>
+                      <span class="font-bold text-slate-900">$380,000 Dwelling (Coverage A)</span>
+                      <span class="text-[11px] text-slate-500 block">Structure rebuilding cost estimate</span>
                     </div>
                     <span class="text-blue-600 font-semibold text-[11px]">Explain ℹ️</span>
                   </div>
 
-                  <div class="flex justify-between items-center p-2 rounded-xl bg-slate-50 hover:bg-blue-50/50 transition cursor-pointer" onclick="explainCoverage('What is Personal Liability coverage (Coverage E)?');">
-                    <div>
-                      <span class="font-bold text-slate-900">$300k Personal Liability</span>
-                      <span class="text-[11px] text-slate-500 block">Protects against injury &amp; property lawsuits</span>
-                    </div>
-                    <span class="text-blue-600 font-semibold text-[11px]">Explain ℹ️</span>
-                  </div>
-
+                  <!-- OTHER STRUCTURES $38K (10%) & LOSS OF USE $150K -->
                   <div class="grid grid-cols-2 gap-2">
-                    <div class="p-2 rounded-xl bg-slate-50 hover:bg-blue-50/50 transition cursor-pointer" onclick="explainCoverage('What is a Wind/Hail deductible and how is it different from my standard deductible?');">
-                      <span class="text-[10px] text-slate-500 block">Wind / Hail Ded</span>
-                      <span class="font-bold text-slate-900">1% ($4,500)</span>
+                    <div class="p-2.5 rounded-xl bg-slate-50 hover:bg-blue-50/60 transition cursor-pointer border border-transparent hover:border-blue-200" onclick="explainCoverage('What is Other Structures coverage (Coverage B)?');">
+                      <span class="text-[10px] text-slate-500 block">Other Structures (B)</span>
+                      <span class="font-bold text-slate-900">$38,000 (10%)</span>
                     </div>
-                    <div class="p-2 rounded-xl bg-slate-50 hover:bg-blue-50/50 transition cursor-pointer" onclick="explainCoverage('What is the All-Perils (AOP) deductible?');">
-                      <span class="text-[10px] text-slate-500 block">All Peril Ded</span>
-                      <span class="font-bold text-slate-900">$1,500 Deductible</span>
+                    <div class="p-2.5 rounded-xl bg-slate-50 hover:bg-blue-50/60 transition cursor-pointer border border-transparent hover:border-blue-200" onclick="explainCoverage('What is Loss of Use coverage (Coverage D)?');">
+                      <span class="text-[10px] text-slate-500 block">Loss of Use (D)</span>
+                      <span class="font-bold text-slate-900">$150,000 Std</span>
                     </div>
                   </div>
 
-                  <div class="flex justify-between items-center pt-2 text-[11px] text-slate-600">
-                    <span>Includes: $25k Water Backup, 25% Extended Replacement</span>
-                    <button onclick="explainCoverage('What is Water Backup coverage and do I need it?');" class="text-blue-600 hover:underline">Water Backup Info</button>
+                  <!-- PERIL DEDUCTIBLES: 1% WIND/HAIL ($3,800) & $1,000 AOP -->
+                  <div class="grid grid-cols-2 gap-2">
+                    <div class="p-2.5 rounded-xl bg-slate-50 hover:bg-blue-50/60 transition cursor-pointer border border-transparent hover:border-blue-200" onclick="explainCoverage('What is a Wind/Hail deductible and how is it different from my standard deductible?');">
+                      <span class="text-[10px] text-slate-500 block">Wind / Hail Ded</span>
+                      <span class="font-bold text-slate-900">1% ($3,800)</span>
+                    </div>
+                    <div class="p-2.5 rounded-xl bg-slate-50 hover:bg-blue-50/60 transition cursor-pointer border border-transparent hover:border-blue-200" onclick="explainCoverage('What is the All-Perils (AOP) deductible?');">
+                      <span class="text-[10px] text-slate-500 block">All Peril (AOP) Ded</span>
+                      <span class="font-bold text-slate-900">$1,000 Ded</span>
+                    </div>
+                  </div>
+
+                  <!-- WATER BACKUP & EXTENDED REPLACEMENT -->
+                  <div class="flex flex-wrap justify-between items-center pt-2 text-[11px] text-slate-600 border-t border-slate-100 gap-2">
+                    <span>Includes: $10,000 Water Backup, 25% Extended Replacement</span>
+                    <button onclick="explainCoverage('What is Water Backup coverage and do I need it?');" class="text-blue-600 hover:underline font-semibold">Water Backup Info →</button>
                   </div>
                 </div>
               </div>
@@ -441,25 +460,31 @@
               <div class="bg-slate-50 p-4 border-b border-slate-200 flex flex-wrap justify-between items-center gap-2">
                 <div>
                   <span class="text-slate-500 font-medium">Total Combined Annual Cost:</span>
-                  <span class="font-bold text-slate-900 text-sm ml-1">$2,271.00</span>
+                  <span class="font-bold text-slate-900 text-sm ml-1">$1,704.00</span>
                 </div>
                 <div>
-                  <span class="text-slate-500 font-medium">Payment Frequency:</span>
-                  <span class="font-bold text-[#002F6C] bg-blue-50 px-2 py-0.5 rounded ml-1">Monthly Installments (12-pay)</span>
+                  <span class="text-slate-500 font-medium">Payment Plan:</span>
+                  <span class="font-bold text-[#002F6C] bg-blue-50 px-2 py-0.5 rounded ml-1">Monthly Installments ($142.00 / mo)</span>
                 </div>
               </div>
 
               <div class="divide-y divide-slate-100 bg-white">
                 <div class="p-4 flex justify-between items-center">
                   <span class="font-bold text-slate-900">Due Today (Binder Payment):</span>
-                  <span class="font-extrabold text-[#002F6C] text-base">$189.25</span>
+                  <span class="font-extrabold text-[#002F6C] text-base">$142.00</span>
                 </div>
                 <div class="p-4 flex justify-between items-center">
                   <span class="text-slate-700">Future Monthly Auto-Draft:</span>
-                  <span class="font-bold text-slate-800">$189.25 / month (starting Oct 1, 2026)</span>
+                  <span class="font-bold text-slate-800">$142.00 / month (starting Oct 1, 2026)</span>
                 </div>
                 <div class="p-4 flex justify-between items-center">
-                  <span class="text-slate-700">Payment Method Selected:</span>
+                  <span class="text-slate-700">Payment Option Savings:</span>
+                  <span class="text-emerald-700 font-semibold cursor-pointer hover:underline" onclick="explainCoverage('What is the difference between paying monthly and paying in full?');">
+                    Pay in Full ($1,580.00) saves $124.00 in installment fees ℹ️
+                  </span>
+                </div>
+                <div class="p-4 flex justify-between items-center">
+                  <span class="text-slate-700">Payment Method:</span>
                   <span class="font-bold text-slate-800">💳 Visa ending in 4821</span>
                 </div>
               </div>
@@ -540,14 +565,14 @@
   </footer>
 
   <!-- ========================================================================= -->
-  <!-- DIGITAL COVERAGE ADVISOR WIDGET (MATCHING EXACT ATTACHED SCREENSHOT) -->
+  <!-- DIGITAL COVERAGE ADVISOR WIDGET (TWO-WAY VOICE + MUTE + RESET SESSION) -->
   <!-- ========================================================================= -->
   <div id="chat-bubble-container" class="fixed bottom-6 right-6 z-50 flex flex-col items-end">
     
-    <!-- EXPANDED ADVISOR CHAT PANEL (MATCHING SCREENSHOT UI) -->
-    <div id="advisor-chat-panel" class="w-[360px] sm:w-[410px] bg-white rounded-2xl shadow-2xl border border-slate-300 flex flex-col overflow-hidden mb-3 h-[560px] transition-all duration-200">
+    <!-- EXPANDED ADVISOR CHAT PANEL -->
+    <div id="advisor-chat-panel" class="w-[360px] sm:w-[420px] bg-white rounded-2xl shadow-2xl border border-slate-300 flex flex-col overflow-hidden mb-3 h-[580px] transition-all duration-200">
       
-      <!-- HEADER WITH GCP AGENT SUBTITLE AS IN SCREENSHOT -->
+      <!-- HEADER WITH RESET SESSION & TWO-WAY VOICE TOGGLE -->
       <div class="bg-[#002F6C] text-white px-4 py-3 flex items-center justify-between shadow-xs">
         <div class="flex items-center gap-3">
           <div class="w-8 h-8 rounded-full bg-[#0A58CA] flex items-center justify-center font-bold text-xs shadow-inner border border-blue-400">
@@ -555,42 +580,67 @@
           </div>
           <div>
             <div class="font-bold text-sm sm:text-base leading-none text-white">Digital Coverage Advisor</div>
+            <div class="text-[10px] text-blue-200 mt-1">100% Deterministic Knowledge Base</div>
           </div>
         </div>
 
-        <div class="flex items-center gap-2">
-          <!-- VOICE TOGGLE -->
-          <button onclick="state.bubble.isVoiceMode = !state.bubble.isVoiceMode; this.classList.toggle('text-amber-300'); if(!state.bubble.isVoiceMode && ('speechSynthesis' in window)) window.speechSynthesis.cancel();" class="text-blue-200 hover:text-white p-1 transition" title="Toggle Voice">
+        <div class="flex items-center gap-1.5">
+          <!-- RESET SESSION BUTTON -->
+          <button onclick="resetSession()" class="text-blue-200 hover:text-white p-1.5 rounded-lg hover:bg-blue-800 transition" title="Reset Conversation & Session">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+          </button>
+          
+          <!-- TWO-WAY VOICE TOGGLE (FEMALE NATURAL VOICE + STT) -->
+          <button id="voice-mode-toggle-btn" onclick="toggleVoiceMode()" class="text-blue-200 hover:text-white p-1.5 rounded-lg hover:bg-blue-800 transition" title="Toggle Two-Way Voice Mode (Continuous Talk & Listen)">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/></svg>
           </button>
+          
           <!-- CLOSE -->
-          <button onclick="toggleAdvisor(false)" class="text-blue-200 hover:text-white p-1 transition">
+          <button onclick="toggleAdvisor(false)" class="text-blue-200 hover:text-white p-1.5 rounded-lg hover:bg-blue-800 transition">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
           </button>
         </div>
       </div>
 
-      <!-- VOICE BAR INDICATOR -->
-      <div class="voice-wave-bar-wrapper hidden bg-[#0C2340] px-4 py-1 flex items-center justify-between text-[10px] text-blue-200 border-b border-blue-900">
-        <span class="flex items-center gap-1">
-          <span class="voice-bar w-1 bg-amber-400 rounded"></span>
-          <span class="voice-bar w-1 bg-amber-400 rounded"></span>
-          <span class="voice-bar w-1 bg-amber-400 rounded"></span>
-          <span class="voice-bar w-1 bg-amber-400 rounded"></span>
-          <span class="voice-bar w-1 bg-amber-400 rounded"></span>
-          <span class="ml-1 text-amber-300 font-semibold">Speaking response...</span>
-        </span>
-        <button onclick="if('speechSynthesis' in window) window.speechSynthesis.cancel(); state.bubble.isSpeaking=false; updateVoiceUI();" class="text-slate-400 hover:text-white text-[10px] underline">Stop</button>
+      <!-- LIVE TWO-WAY VOICE BANNER (SPEAKING / LISTENING / MUTED STATE) -->
+      <div id="voice-status-banner" class="hidden bg-[#0C2340] px-4 py-2 flex items-center justify-between text-xs text-blue-200 border-b border-blue-900">
+        <div id="voice-status-text" class="flex items-center gap-2 text-[11px]">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+          <span class="text-emerald-300 font-semibold">Listening... Speak now</span>
+        </div>
+        
+        <div class="flex items-center gap-2">
+          <!-- MUTE / UNMUTE TOGGLE BUTTON -->
+          <button id="voice-mute-btn" onclick="toggleMute()" class="bg-blue-800 hover:bg-blue-700 text-blue-100 px-2 py-1 rounded text-[10px] font-semibold transition flex items-center gap-1">
+            🎙️ <span>Mute</span>
+          </button>
+          <button onclick="toggleVoiceMode()" class="text-slate-400 hover:text-white text-[10px] underline">Exit Voice</button>
+        </div>
       </div>
 
-      <!-- MESSAGES SCROLL (MATCHING SCREENSHOT CHAT HISTORY) -->
+      <!-- INTERIM VOICE SPEECH PREVIEW -->
+      <div id="voice-interim-display" class="hidden bg-blue-950/90 text-amber-200 px-4 py-1.5 text-[11px] font-mono italic border-b border-blue-800 truncate"></div>
+
+      <!-- SESSION RESET CONFIRMATION TOAST -->
+      <div id="session-reset-toast" class="hidden bg-emerald-700 text-white text-[11px] px-3 py-1.5 text-center font-semibold">
+        ✨ Session reset successfully! Started a new conversation.
+      </div>
+
+      <!-- MESSAGES SCROLL -->
       <div id="advisor-messages-list" class="flex-grow p-4 overflow-y-auto bg-[#F8FAFC] space-y-3"></div>
 
-      <!-- INPUT BAR -->
+      <!-- INPUT BAR WITH VOICE MIC TRIGGER -->
       <div class="p-3 bg-white border-t border-slate-200">
         <form onsubmit="event.preventDefault(); const inp = document.getElementById('chat-text-inp'); handleUserPrompt(inp.value); inp.value='';">
           <div class="flex items-center gap-2">
             <input id="chat-text-inp" type="text" placeholder="Ask about 100/300, deductibles, water backup..." class="flex-grow bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2 text-xs font-medium focus:ring-2 focus:ring-[#0A58CA] focus:outline-none" />
+            
+            <!-- MIC BUTTON (QUICK VOICE INPUT / STT TRIGGER) -->
+            <button id="voice-mic-main-btn" type="button" onclick="if(!state.voice.isVoiceMode) toggleVoiceMode(); else if(state.voice.isMuted) toggleMute(); else startListening();" class="p-2 rounded-xl text-blue-100 bg-blue-800 hover:bg-blue-700 transition shrink-0 shadow-xs" title="Talk to Advisor">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/></svg>
+            </button>
+
+            <!-- SEND BUTTON -->
             <button type="submit" class="bg-[#002F6C] hover:bg-[#0A58CA] text-white p-2 rounded-xl transition shrink-0 shadow-xs">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
             </button>
@@ -633,7 +683,7 @@
         </div>
         <div class="flex justify-between">
           <span class="text-slate-500">Monthly Auto-Draft:</span>
-          <span class="font-bold text-emerald-700">$189.25 / mo</span>
+          <span class="font-bold text-emerald-700">$142.00 / mo</span>
         </div>
       </div>
 

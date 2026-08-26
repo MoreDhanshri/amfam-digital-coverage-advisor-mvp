@@ -1,21 +1,40 @@
 /**
  * American Family Insurance - Official Finalization Page & Digital Coverage Advisor
- * With 5-Second Automated Glowing & Jumping Chat Bubble
+ * Features:
+ * - 10-Second Automated Populating & Jumping Chat Bubble
+ * - Interactive Back-and-Forth Voice Mode (Speech Recognition STT + Natural Female Voice TTS)
+ * - Microphone Mute / Unmute Toggle
+ * - Session & Conversation Reset
+ * - Policy Finalization Data perfectly aligned with AmFam FAQs (BI 100/300, etc.)
  */
 
 // Application State
 const state = {
+  session: {
+    id: "SES-" + Date.now().toString(36).toUpperCase(),
+    startTime: new Date().toLocaleTimeString()
+  },
+
   // Chat Bubble State
   bubble: {
     isPopulated: false,
-    isOpen: true, // Default open or toggleable, pops up with animation at 5s
-    countdownSeconds: 5,
-    timerId: null,
-    isVoiceMode: false,
-    isSpeaking: false
+    isOpen: true,
+    countdownSeconds: 10, // Updated to 10 seconds
+    timerId: null
   },
 
-  // Policy Finalization Model (Jane M. Doe - Austin, TX)
+  // Voice Functionality State
+  voice: {
+    isVoiceMode: false,
+    isListening: false,
+    isSpeaking: false,
+    isMuted: false,
+    recognition: null,
+    selectedVoice: null,
+    interimText: ""
+  },
+
+  // Policy Finalization Model (Aligned strictly with Customer FAQs)
   policy: {
     quoteRef: "#AF-849204-TX",
     status: "Ready to Bind",
@@ -25,22 +44,31 @@ const state = {
     auto: {
       vehicle: "2023 Honda CR-V EX-L",
       vin: "7FA...901",
-      bodilyInjury: "$250k/$500k",
-      propertyDamage: "$100k",
-      comprehensiveDeductible: "$500",
-      collisionDeductible: "$500",
-      termPremium: 642.00,
+      bodilyInjury: "$100,000 / $300,000 (100/300)", // Exactly matches FAQ
+      propertyDamage: "$100,000",
+      comprehensiveDeductible: "$500", // Exactly matches FAQ
+      collisionDeductible: "$500", // Exactly matches FAQ
+      uninsuredMotorist: "$100,000 / $300,000 (UM/UIM)",
+      gapCoverage: "Included ($5/mo)",
+      oemParts: "Included ($6/mo)",
+      roadside: "Included (Costco Exec / AmFam)",
+      termPremium: 584.00,
       termMonths: 6
     },
     home: {
       type: "Homeowners (HO-3)",
       location: "1428 Elm Ridge Ct, Austin, TX",
-      dwellingA: "$450k",
-      personalLiability: "$300k",
-      windHail: "1% ($4,500)",
-      allPeril: "$1,500",
-      waterBackup: "$25,000",
-      termPremium: 1280.00,
+      dwellingA: "$380,000 (Coverage A - Replacement Cost)", // Exactly matches FAQ
+      otherStructuresB: "$38,000 (10% of Dwelling)", // Exactly matches FAQ
+      personalPropertyC: "$190,000 (50% Replacement Cost)", // Exactly matches FAQ
+      lossOfUseD: "$150,000 (Standard Limit)", // Exactly matches FAQ
+      personalLiabilityE: "$300,000", // Exactly matches FAQ
+      medPaymentsF: "$3,000", // Exactly matches FAQ
+      windHail: "1% of Dwelling ($3,800)", // Exactly matches FAQ
+      allPeril: "$1,000 (AOP)", // Exactly matches FAQ
+      waterBackup: "$10,000 Limit", // Exactly matches FAQ
+      extendedReplacement: "25% Buffer ($95,000 Extra)", // Exactly matches FAQ
+      termPremium: 1120.00,
       termMonths: 12
     },
     discounts: [
@@ -49,60 +77,66 @@ const state = {
       { name: "Safe Driver (KnowYourDrive) & Home Security", amount: -68.00 }
     ],
     billing: {
-      totalAnnualCost: 2271.00,
+      totalAnnualCost: 1704.00,
       frequency: "Monthly Installments",
-      dueToday: 189.25,
-      monthlyDraft: 189.25,
+      dueToday: 142.00,
+      monthlyDraft: 142.00,
+      payInFullOption: 1580.00,
       firstDraftDate: "Oct 1, 2026",
       paymentMethod: "Visa ending in 4821"
     }
   },
 
-  // Initial Advisor Messages Matching Screenshot & Customer FAQ Ground Truth
+  // Advisor Messages
   advisor: {
-    messages: [
-      {
-        id: "msg-1",
-        sender: "user",
-        text: "What is Bodily Injury 100/300?",
-        time: "09:40 PM"
-      },
-      {
-        id: "msg-2",
-        sender: "agent",
-        text: "The first number ($100,000) is the maximum paid per person injured; the second ($300,000) is the maximum paid per accident regardless of how many people are injured.",
-        time: "09:40 PM",
-        quickReplies: [
-          "🚗 What is Bodily Injury 100/300?",
-          "🛡️ How to choose deductible?",
-          "🏠 What is Water Backup?",
-          "📞 Speak with an Agent"
-        ]
-      },
-      {
-        id: "msg-3",
-        sender: "user",
-        text: "What is OEM Parts coverage?",
-        time: "09:47 PM"
-      },
-      {
-        id: "msg-4",
-        sender: "agent",
-        text: "OEM (Original Equipment Manufacturer) Parts coverage ensures your vehicle is repaired using factory-original parts rather than aftermarket alternatives. It is available for vehicles generally up to 11 model years old and requires Comprehensive or Collision coverage.",
-        time: "09:47 PM",
-        quickReplies: [
-          "What is Loan or Lease (Gap) coverage?",
-          "How to choose $500 vs $1000 deductible?",
-          "Why is 1% Wind/Hail required?"
-        ]
-      }
-    ]
+    messages: []
   },
 
   faqs: []
 };
 
-// Web Audio Soft Chime Generator
+// Initial Conversation Seed
+function getInitialMessages() {
+  return [
+    {
+      id: "msg-1",
+      sender: "user",
+      text: "What is Bodily Injury 100/300?",
+      time: "09:40 PM"
+    },
+    {
+      id: "msg-2",
+      sender: "agent",
+      text: "The first number ($100,000) is the maximum paid per person injured; the second ($300,000) is the maximum paid per accident regardless of how many people are injured.",
+      time: "09:40 PM",
+      quickReplies: [
+        "🚗 What is Bodily Injury 100/300?",
+        "🛡️ How to choose deductible?",
+        "🏠 What is Water Backup?",
+        "📞 Speak with an Agent"
+      ]
+    },
+    {
+      id: "msg-3",
+      sender: "user",
+      text: "What is OEM Parts coverage?",
+      time: "09:47 PM"
+    },
+    {
+      id: "msg-4",
+      sender: "agent",
+      text: "OEM (Original Equipment Manufacturer) Parts coverage ensures your vehicle is repaired using factory-original parts rather than aftermarket alternatives. It is available for vehicles generally up to 11 model years old and requires Comprehensive or Collision coverage.",
+      time: "09:47 PM",
+      quickReplies: [
+        "What is Loan or Lease (Gap) coverage?",
+        "How do I choose between $500 and $1,000 deductible?",
+        "Why is 1% Wind/Hail required?"
+      ]
+    }
+  ];
+}
+
+// Web Audio Chime Generator
 function playSoftChime() {
   try {
     const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -132,14 +166,12 @@ function playSoftChime() {
     gain2.connect(ctx.destination);
     osc2.start(ctx.currentTime + 0.12);
     osc2.stop(ctx.currentTime + 0.6);
-  } catch (e) {
-    console.log("AudioContext note", e);
-  }
+  } catch (e) {}
 }
 
-// 5-Second Automated Timer for Glow & Jump
+// 10-Second Automated Timer for Glow & Jump
 function startBubbleCountdown() {
-  state.bubble.countdownSeconds = 5;
+  state.bubble.countdownSeconds = 10;
   updateCountdownDisplay();
 
   if (state.bubble.timerId) clearInterval(state.bubble.timerId);
@@ -173,17 +205,13 @@ function populateChatBubble() {
   updateCountdownDisplay();
 
   const button = document.getElementById('chat-bubble-button');
-  const panel = document.getElementById('advisor-chat-panel');
-  const callout = document.getElementById('chat-callout-teaser');
-
   if (button) {
     button.classList.add('bubble-enter', 'bubble-glowing', 'bubble-jumping');
   }
 
-  // Open advisor panel automatically at 5 seconds with animation
   toggleAdvisor(true);
   playSoftChime();
-  console.log("AmFam Digital Coverage Advisor chat bubble successfully triggered at 5.0 seconds!");
+  console.log("AmFam Digital Coverage Advisor chat bubble populated at 10.0 seconds!");
 }
 
 function resetBubbleTimer() {
@@ -217,8 +245,330 @@ function toggleAdvisor(forceOpen = null) {
   } else {
     if (panel) panel.classList.add('hidden');
     if (button && state.bubble.isPopulated) button.classList.add('bubble-jumping');
+    stopSpeaking();
+    stopListening();
   }
 }
+
+// RESET CONVERSATION & SESSION
+function resetSession() {
+  // Generate fresh session ID
+  state.session.id = "SES-" + Date.now().toString(36).toUpperCase();
+  state.session.startTime = new Date().toLocaleTimeString();
+
+  // Stop active speech and listening
+  stopSpeaking();
+  stopListening();
+
+  // Reset conversation to fresh initial welcome
+  state.advisor.messages = [
+    {
+      id: "msg-welcome",
+      sender: "agent",
+      text: "👋 Hello! I have reset our conversation and started a fresh session (" + state.session.id + "). I'm your AmFam Digital Coverage Advisor. How can I help you understand your policy options or finalize your coverage?",
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      quickReplies: [
+        "🚗 What is Bodily Injury 100/300?",
+        "🛡️ How to choose $500 vs $1,000 deductible?",
+        "🏠 What is Water Backup?",
+        "🔗 How does bundling save me money?"
+      ]
+    }
+  ];
+
+  renderAdvisorMessages();
+
+  // Show visual toast confirmation
+  showResetToast();
+  playSoftChime();
+}
+
+function showResetToast() {
+  const toast = document.getElementById('session-reset-toast');
+  if (toast) {
+    toast.classList.remove('hidden');
+    setTimeout(() => toast.classList.add('hidden'), 3000);
+  }
+}
+
+// =========================================================================
+// TWO-WAY VOICE ENGINE (SPEECH RECOGNITION + NATURAL FEMALE VOICE TTS)
+// =========================================================================
+
+// Initialize Natural Female Voice
+function initFemaleVoice() {
+  if (!('speechSynthesis' in window)) return;
+
+  function loadVoice() {
+    const voices = window.speechSynthesis.getVoices();
+    if (!voices || voices.length === 0) return;
+
+    // Search for high-quality natural female voices
+    // 1. Google US English (Natural Female)
+    // 2. Apple Samantha (Natural Female)
+    // 3. Microsoft Zira / Jenny / Aria (Natural Female)
+    // 4. Victoria / Karen (Natural Female)
+    const femaleVoice = voices.find(v => 
+      v.name.includes("Google US English") ||
+      v.name.includes("Samantha") ||
+      v.name.includes("Victoria") ||
+      v.name.includes("Karen") ||
+      v.name.includes("Jenny") ||
+      v.name.includes("Aria") ||
+      v.name.includes("Zira") ||
+      (v.lang.startsWith("en") && v.name.toLowerCase().includes("female"))
+    ) || voices.find(v => v.lang === "en-US") || voices[0];
+
+    state.voice.selectedVoice = femaleVoice;
+    console.log("Selected Natural Female Voice:", femaleVoice ? femaleVoice.name : "Default");
+  }
+
+  loadVoice();
+  window.speechSynthesis.onvoiceschanged = loadVoice;
+}
+
+// Voice Recognition (Speech-to-Text) Initialization
+function initSpeechRecognition() {
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRecognition) {
+    console.warn("SpeechRecognition not supported in this browser");
+    return;
+  }
+
+  const rec = new SpeechRecognition();
+  rec.continuous = false;
+  rec.interimResults = true;
+  rec.lang = 'en-US';
+
+  rec.onstart = () => {
+    state.voice.isListening = true;
+    updateVoiceUI();
+  };
+
+  rec.onresult = (event) => {
+    let interim = "";
+    let finalTranscript = "";
+
+    for (let i = event.resultIndex; i < event.results.length; ++i) {
+      if (event.results[i].isFinal) {
+        finalTranscript += event.results[i][0].transcript;
+      } else {
+        interim += event.results[i][0].transcript;
+      }
+    }
+
+    state.voice.interimText = interim;
+    updateVoiceUI();
+
+    if (finalTranscript.trim()) {
+      state.voice.interimText = "";
+      stopListening();
+      handleUserPrompt(finalTranscript.trim());
+    }
+  };
+
+  rec.onerror = (event) => {
+    console.warn("Speech recognition error:", event.error);
+    state.voice.isListening = false;
+    updateVoiceUI();
+  };
+
+  rec.onend = () => {
+    state.voice.isListening = false;
+    updateVoiceUI();
+  };
+
+  state.voice.recognition = rec;
+}
+
+// Toggle Voice Mode (Turns Continuous Speech On / Off)
+function toggleVoiceMode() {
+  state.voice.isVoiceMode = !state.voice.isVoiceMode;
+  
+  const voiceBtn = document.getElementById('voice-mode-toggle-btn');
+  if (voiceBtn) {
+    if (state.voice.isVoiceMode) {
+      voiceBtn.classList.add('text-emerald-400', 'bg-blue-900/60');
+      voiceBtn.classList.remove('text-blue-200');
+    } else {
+      voiceBtn.classList.remove('text-emerald-400', 'bg-blue-900/60');
+      voiceBtn.classList.add('text-blue-200');
+      stopSpeaking();
+      stopListening();
+    }
+  }
+
+  updateVoiceUI();
+
+  if (state.voice.isVoiceMode && !state.voice.isMuted) {
+    startListening();
+  }
+}
+
+// Toggle Microphone Mute / Unmute
+function toggleMute() {
+  state.voice.isMuted = !state.voice.isMuted;
+  
+  if (state.voice.isMuted) {
+    stopListening();
+  } else {
+    if (state.voice.isVoiceMode && !state.voice.isSpeaking) {
+      startListening();
+    }
+  }
+
+  updateVoiceUI();
+}
+
+function startListening() {
+  if (state.voice.isMuted || !state.voice.recognition || state.voice.isSpeaking) return;
+  try {
+    state.voice.recognition.start();
+  } catch (e) {
+    // Recognition might already be running
+  }
+}
+
+function stopListening() {
+  if (state.voice.recognition) {
+    try {
+      state.voice.recognition.stop();
+    } catch (e) {}
+  }
+  state.voice.isListening = false;
+  state.voice.interimText = "";
+  updateVoiceUI();
+}
+
+function stopSpeaking() {
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+  }
+  state.voice.isSpeaking = false;
+  updateVoiceUI();
+}
+
+// Speak Voice using Natural Female Voice (Text-to-Speech)
+function speakVoice(text) {
+  if (!('speechSynthesis' in window)) return;
+  window.speechSynthesis.cancel();
+
+  // Stop listening while speaking to prevent echo
+  stopListening();
+
+  const utterance = new SpeechSynthesisUtterance(normalizeVoice(text));
+  utterance.rate = 1.02; // Warm, polite, natural conversational pace
+  utterance.pitch = 1.08; // Natural feminine pitch
+
+  if (state.voice.selectedVoice) {
+    utterance.voice = state.voice.selectedVoice;
+  }
+
+  state.voice.isSpeaking = true;
+  updateVoiceUI();
+
+  // WHEN AGENT FINISHES SPEAKING: AUTOMATICALLY RESUME LISTENING (CONTINUOUS TWO-WAY VOICE)
+  utterance.onend = () => {
+    state.voice.isSpeaking = false;
+    updateVoiceUI();
+    
+    // Automatically listen for user reply if Voice Mode is on and not muted
+    if (state.voice.isVoiceMode && !state.voice.isMuted) {
+      setTimeout(startListening, 450);
+    }
+  };
+
+  utterance.onerror = () => {
+    state.voice.isSpeaking = false;
+    updateVoiceUI();
+  };
+
+  window.speechSynthesis.speak(utterance);
+}
+
+// Spoken Voice Text Normalization
+function normalizeVoice(text) {
+  let res = text;
+  res = res.replace(/\$100,000/g, "one hundred thousand dollars");
+  res = res.replace(/\$300,000/g, "three hundred thousand dollars");
+  res = res.replace(/\$380,000/g, "three hundred eighty thousand dollars");
+  res = res.replace(/\$500/g, "five hundred dollars");
+  res = res.replace(/\$1,000/g, "one thousand dollars");
+  res = res.replace(/\$([0-9,]+)/g, (m, p1) => parseInt(p1.replace(/,/g, ''), 10).toLocaleString() + " dollars");
+  res = res.replace(/100\/300/g, "one hundred over three hundred thousand dollars");
+  res = res.replace(/1-800-MY-AMFAM/g, "one eight hundred, my am fam");
+  res = res.replace(/1-800-692-6326/g, "one eight hundred, six nine two, six three two six");
+  res = res.replace(/AOP/g, "All Other Perils");
+  res = res.replace(/UM\/UIM/g, "Uninsured and Underinsured Motorist");
+  return res;
+}
+
+// Update Voice UI Elements
+function updateVoiceUI() {
+  const banner = document.getElementById('voice-status-banner');
+  const micBtn = document.getElementById('voice-mic-main-btn');
+  const muteBtn = document.getElementById('voice-mute-btn');
+  const statusText = document.getElementById('voice-status-text');
+  const interimEl = document.getElementById('voice-interim-display');
+
+  if (!banner) return;
+
+  if (state.voice.isVoiceMode) {
+    banner.classList.remove('hidden');
+  } else {
+    banner.classList.add('hidden');
+    return;
+  }
+
+  // Update Mute Button State
+  if (muteBtn) {
+    if (state.voice.isMuted) {
+      muteBtn.innerHTML = `🔇 <span>Unmute</span>`;
+      muteBtn.className = "bg-amber-600 hover:bg-amber-700 text-white px-2 py-1 rounded text-[10px] font-bold transition flex items-center gap-1";
+    } else {
+      muteBtn.innerHTML = `🎙️ <span>Mute</span>`;
+      muteBtn.className = "bg-blue-800 hover:bg-blue-700 text-blue-100 px-2 py-1 rounded text-[10px] font-semibold transition flex items-center gap-1";
+    }
+  }
+
+  // Status Text & Visual Indicators
+  if (statusText) {
+    if (state.voice.isSpeaking) {
+      statusText.innerHTML = `<span class="voice-bar w-1 bg-amber-400 rounded"></span><span class="voice-bar w-1 bg-amber-400 rounded"></span><span class="text-amber-300 font-semibold">Speaking response...</span>`;
+    } else if (state.voice.isMuted) {
+      statusText.innerHTML = `<span class="text-amber-300">🔇 Microphone Muted</span>`;
+    } else if (state.voice.isListening) {
+      statusText.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span><span class="text-emerald-300 font-semibold">Listening... Speak now</span>`;
+    } else {
+      statusText.innerHTML = `<span class="text-blue-200">Voice Mode Ready</span>`;
+    }
+  }
+
+  // Mic Pulse Indicator on Main Input
+  if (micBtn) {
+    if (state.voice.isListening && !state.voice.isMuted) {
+      micBtn.className = "p-2 rounded-xl text-white bg-emerald-600 mic-listening-active transition shrink-0 shadow-xs";
+    } else if (state.voice.isMuted) {
+      micBtn.className = "p-2 rounded-xl text-white bg-amber-600 transition shrink-0 shadow-xs";
+    } else {
+      micBtn.className = "p-2 rounded-xl text-blue-100 bg-blue-800 hover:bg-blue-700 transition shrink-0 shadow-xs";
+    }
+  }
+
+  // Interim Speech Transcription Display
+  if (interimEl) {
+    if (state.voice.interimText) {
+      interimEl.innerText = `"${state.voice.interimText}..."`;
+      interimEl.classList.remove('hidden');
+    } else {
+      interimEl.classList.add('hidden');
+    }
+  }
+}
+
+// =========================================================================
+// FAQ KNOWLEDGE BASE MATCHING & ADVISOR MESSAGING
+// =========================================================================
 
 // Deterministic FAQ Knowledge Base Search
 function searchFAQ(query) {
@@ -266,50 +616,6 @@ function searchFAQ(query) {
   return null;
 }
 
-// Spoken Voice Normalization & TTS
-function normalizeVoice(text) {
-  let res = text;
-  res = res.replace(/\$([0-9,]+)/g, (m, p1) => parseInt(p1.replace(/,/g, ''), 10).toLocaleString() + " dollars");
-  res = res.replace(/100\/300/g, "one hundred over three hundred thousand");
-  res = res.replace(/250\/500/g, "two hundred fifty over five hundred thousand");
-  res = res.replace(/50\/100/g, "fifty over one hundred thousand");
-  res = res.replace(/1-800-MY-AMFAM/g, "one eight hundred, my am fam");
-  return res;
-}
-
-function speakVoice(text) {
-  if (!('speechSynthesis' in window)) return;
-  window.speechSynthesis.cancel();
-
-  const utterance = new SpeechSynthesisUtterance(normalizeVoice(text));
-  utterance.rate = 1.05;
-  const voices = window.speechSynthesis.getVoices();
-  const nat = voices.find(v => v.name.includes('Google') || v.name.includes('Samantha') || v.lang === 'en-US');
-  if (nat) utterance.voice = nat;
-
-  state.bubble.isSpeaking = true;
-  updateVoiceUI();
-
-  utterance.onend = () => {
-    state.bubble.isSpeaking = false;
-    updateVoiceUI();
-  };
-  utterance.onerror = () => {
-    state.bubble.isSpeaking = false;
-    updateVoiceUI();
-  };
-
-  window.speechSynthesis.speak(utterance);
-}
-
-function updateVoiceUI() {
-  const bars = document.querySelectorAll('.voice-wave-bar-wrapper');
-  bars.forEach(el => {
-    if (state.bubble.isSpeaking) el.classList.remove('hidden');
-    else el.classList.add('hidden');
-  });
-}
-
 // Add Advisor Message
 function addMessage(sender, text, quickReplies = [], toolAction = null) {
   state.advisor.messages.push({
@@ -335,7 +641,7 @@ function renderAdvisorMessages() {
           <div class="flex justify-between items-start gap-2">
             <span>${m.text}</span>
             ${!isUser ? `
-              <button onclick="speakVoice('${m.text.replace(/'/g, "\\'")}')" class="text-slate-400 hover:text-blue-600 p-0.5 shrink-0" title="Listen with Spoken Voice">
+              <button onclick="speakVoice('${m.text.replace(/'/g, "\\'")}')" class="text-slate-400 hover:text-blue-600 p-0.5 shrink-0" title="Listen with Natural Female Voice">
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>
               </button>
             ` : ''}
@@ -370,9 +676,7 @@ function handleUserPrompt(text) {
   if (!text || !text.trim()) return;
   const q = text.trim();
 
-  // Ensure advisor is open
   toggleAdvisor(true);
-
   addMessage('user', q);
 
   // Check for Human Escalation
@@ -381,7 +685,7 @@ function handleUserPrompt(text) {
     setTimeout(() => {
       const resp = "I can connect you directly with a licensed American Family Insurance agent right now. Click below to call 1-800-MY-AMFAM (1-800-692-6326) or request a priority callback.";
       addMessage('agent', resp, ["📞 Call 1-800-MY-AMFAM", "Schedule Agent Callback", "Review Coverage Finalization"], "Action: trigger_escalation (1-800-692-6326)");
-      if (state.bubble.isVoiceMode) speakVoice(resp);
+      if (state.voice.isVoiceMode) speakVoice(resp);
     }, 250);
     return;
   }
@@ -396,7 +700,7 @@ function handleUserPrompt(text) {
         "What is Water Backup?",
         "Speak with an Agent"
       ], `FAQ: ${match.category} • ${match.subcategory}`);
-      if (state.bubble.isVoiceMode) speakVoice(match.answer);
+      if (state.voice.isVoiceMode) speakVoice(match.answer);
     } else {
       const fallback = "I'm your Digital Coverage Advisor. I can explain auto & home coverages, liability limits, deductibles, and discounts. How can I help you today?";
       addMessage('agent', fallback, [
@@ -404,7 +708,7 @@ function handleUserPrompt(text) {
         "What is Water Backup?",
         "Speak with an Agent"
       ]);
-      if (state.bubble.isVoiceMode) speakVoice(fallback);
+      if (state.voice.isVoiceMode) speakVoice(fallback);
     }
   }, 200);
 }
@@ -431,7 +735,6 @@ function confirmAndBindPolicy() {
   if (modalSigner) modalSigner.innerText = signerName;
   if (modal) modal.classList.remove('hidden');
 
-  // Trigger Advisor Congratulations message
   setTimeout(() => {
     addMessage('agent', `🎉 Congratulations ${signerName}! Your American Family Auto & Home bundle policy (Ref: #AF-849204-TX) has been successfully bound. Your coverage begins at 12:01 AM on September 1, 2026.`, [
       "Download Policy Deck PDF",
@@ -455,7 +758,15 @@ async function init() {
     console.log("Loaded fallback inline FAQs");
   }
 
+  // Load Initial Seed Messages
+  state.advisor.messages = getInitialMessages();
   renderAdvisorMessages();
+
+  // Setup Voice Engine
+  initFemaleVoice();
+  initSpeechRecognition();
+
+  // Start 10-Second Timer
   startBubbleCountdown();
 }
 
