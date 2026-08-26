@@ -38,3 +38,13 @@
 - [x] Push new evaluation suites to `gecx-amfam` platform (`cxas push-eval`)
 - [x] Execute platform evaluation runs across the expanded test suite (`cxas run`) — 29/29 tests PASS (100%)
 - [x] Compile comprehensive pass/fail and verbatim fidelity verification report
+
+### Digital Coverage Advisor Web Platform & Interactive Finalization Sandbox Sprint
+- [x] Exact replica of `amfam.com` front page with official branding, roofline curve, and product tiles
+- [x] Integrated Policy Finalization & Review Interface (`#AF-849204-TX`) matching customer FAQ numbers
+- [x] 10-Second Timer: Chat bubble hidden on page refresh/initial load, auto-populates with glow & jump after 10s or on manual trigger
+- [x] Fresh Session & Greeting initialized on every page refresh
+- [x] Full two-way voice conversation loop (Web Speech API STT + Natural Female Voice TTS)
+- [x] Microphone Mute/Unmute toggle and session reset (🔄) capabilities
+- [x] Interactive policy table explainer popups linked directly to FAQ advisor
+

@@ -1,7 +1,8 @@
 /**
  * American Family Insurance - Official Finalization Page & Digital Coverage Advisor
  * Features:
- * - 10-Second Automated Populating & Jumping Chat Bubble
+ * - Fresh Session & Greeting on every Browser Refresh / Load
+ * - Chat Bubble starts HIDDEN on load; Populates only after 10s countdown or when triggered
  * - Interactive Back-and-Forth Voice Mode (Speech Recognition STT + Natural Female Voice TTS)
  * - Microphone Mute / Unmute Toggle
  * - Session & Conversation Reset
@@ -11,15 +12,15 @@
 // Application State
 const state = {
   session: {
-    id: "SES-" + Date.now().toString(36).toUpperCase(),
+    id: "SES-" + Math.random().toString(36).substring(2, 9).toUpperCase(),
     startTime: new Date().toLocaleTimeString()
   },
 
   // Chat Bubble State
   bubble: {
     isPopulated: false,
-    isOpen: true,
-    countdownSeconds: 10, // Updated to 10 seconds
+    isOpen: false, // Starts CLOSED & HIDDEN on page refresh
+    countdownSeconds: 10, // 10-second timer
     timerId: null
   },
 
@@ -95,42 +96,19 @@ const state = {
   faqs: []
 };
 
-// Initial Conversation Seed
-function getInitialMessages() {
+// Initial Fresh Session Greeting
+function getFreshSessionGreeting() {
   return [
     {
-      id: "msg-1",
-      sender: "user",
-      text: "What is Bodily Injury 100/300?",
-      time: "09:40 PM"
-    },
-    {
-      id: "msg-2",
+      id: "msg-welcome",
       sender: "agent",
-      text: "The first number ($100,000) is the maximum paid per person injured; the second ($300,000) is the maximum paid per accident regardless of how many people are injured.",
-      time: "09:40 PM",
+      text: "👋 Hi there! I'm your American Family Digital Coverage Advisor. How can I help you today? You can chat with me or talk with your voice here to ask about auto & home coverage limits, deductibles, or policy finalization.",
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       quickReplies: [
         "🚗 What is Bodily Injury 100/300?",
-        "🛡️ How to choose deductible?",
-        "🏠 What is Water Backup?",
-        "📞 Speak with an Agent"
-      ]
-    },
-    {
-      id: "msg-3",
-      sender: "user",
-      text: "What is OEM Parts coverage?",
-      time: "09:47 PM"
-    },
-    {
-      id: "msg-4",
-      sender: "agent",
-      text: "OEM (Original Equipment Manufacturer) Parts coverage ensures your vehicle is repaired using factory-original parts rather than aftermarket alternatives. It is available for vehicles generally up to 11 model years old and requires Comprehensive or Collision coverage.",
-      time: "09:47 PM",
-      quickReplies: [
-        "What is Loan or Lease (Gap) coverage?",
-        "How do I choose between $500 and $1,000 deductible?",
-        "Why is 1% Wind/Hail required?"
+        "🛡️ How do I choose between $500 and $1,000 deductible?",
+        "🏠 What is Water Backup coverage?",
+        "🎙️ Talk to Advisor (Voice Mode)"
       ]
     }
   ];
@@ -172,6 +150,8 @@ function playSoftChime() {
 // 10-Second Automated Timer for Glow & Jump
 function startBubbleCountdown() {
   state.bubble.countdownSeconds = 10;
+  state.bubble.isPopulated = false;
+  state.bubble.isOpen = false;
   updateCountdownDisplay();
 
   if (state.bubble.timerId) clearInterval(state.bubble.timerId);
@@ -200,37 +180,57 @@ function updateCountdownDisplay() {
   }
 }
 
+// Populate Chat Bubble (Triggered after 10s or on user click)
 function populateChatBubble() {
   state.bubble.isPopulated = true;
   updateCountdownDisplay();
 
+  const container = document.getElementById('chat-bubble-container');
   const button = document.getElementById('chat-bubble-button');
+
+  if (container) {
+    container.classList.remove('hidden');
+    container.classList.add('flex');
+  }
+
   if (button) {
     button.classList.add('bubble-enter', 'bubble-glowing', 'bubble-jumping');
   }
 
   toggleAdvisor(true);
   playSoftChime();
-  console.log("AmFam Digital Coverage Advisor chat bubble populated at 10.0 seconds!");
+  console.log("AmFam Digital Coverage Advisor chat bubble populated at 10.0 seconds with fresh session: " + state.session.id);
 }
 
 function resetBubbleTimer() {
   state.bubble.isPopulated = false;
   state.bubble.isOpen = false;
   
+  const container = document.getElementById('chat-bubble-container');
   const panel = document.getElementById('advisor-chat-panel');
   const button = document.getElementById('chat-bubble-button');
 
   if (panel) panel.classList.add('hidden');
   if (button) button.classList.remove('bubble-glowing', 'bubble-jumping');
+  if (container) {
+    container.classList.add('hidden');
+    container.classList.remove('flex');
+  }
 
   startBubbleCountdown();
 }
 
 // Toggle Advisor Panel
 function toggleAdvisor(forceOpen = null) {
+  const container = document.getElementById('chat-bubble-container');
   const panel = document.getElementById('advisor-chat-panel');
   const button = document.getElementById('chat-bubble-button');
+
+  // Ensure container is visible if opening
+  if (container && forceOpen === true) {
+    container.classList.remove('hidden');
+    container.classList.add('flex');
+  }
 
   if (forceOpen !== null) {
     state.bubble.isOpen = forceOpen;
@@ -253,7 +253,7 @@ function toggleAdvisor(forceOpen = null) {
 // RESET CONVERSATION & SESSION
 function resetSession() {
   // Generate fresh session ID
-  state.session.id = "SES-" + Date.now().toString(36).toUpperCase();
+  state.session.id = "SES-" + Math.random().toString(36).substring(2, 9).toUpperCase();
   state.session.startTime = new Date().toLocaleTimeString();
 
   // Stop active speech and listening
@@ -263,15 +263,15 @@ function resetSession() {
   // Reset conversation to fresh initial welcome
   state.advisor.messages = [
     {
-      id: "msg-welcome",
+      id: "msg-reset-welcome",
       sender: "agent",
-      text: "👋 Hello! I have reset our conversation and started a fresh session (" + state.session.id + "). I'm your AmFam Digital Coverage Advisor. How can I help you understand your policy options or finalize your coverage?",
+      text: "👋 Hello! I have started a fresh session (" + state.session.id + "). I'm your American Family Digital Coverage Advisor. How can I help you today? You can chat with me or talk with your voice here.",
       time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       quickReplies: [
         "🚗 What is Bodily Injury 100/300?",
-        "🛡️ How to choose $500 vs $1,000 deductible?",
-        "🏠 What is Water Backup?",
-        "🔗 How does bundling save me money?"
+        "🛡️ How do I choose between $500 and $1,000 deductible?",
+        "🏠 What is Water Backup coverage?",
+        "🎙️ Talk to Advisor (Voice Mode)"
       ]
     }
   ];
@@ -304,10 +304,6 @@ function initFemaleVoice() {
     if (!voices || voices.length === 0) return;
 
     // Search for high-quality natural female voices
-    // 1. Google US English (Natural Female)
-    // 2. Apple Samantha (Natural Female)
-    // 3. Microsoft Zira / Jenny / Aria (Natural Female)
-    // 4. Victoria / Karen (Natural Female)
     const femaleVoice = voices.find(v => 
       v.name.includes("Google US English") ||
       v.name.includes("Samantha") ||
@@ -424,9 +420,7 @@ function startListening() {
   if (state.voice.isMuted || !state.voice.recognition || state.voice.isSpeaking) return;
   try {
     state.voice.recognition.start();
-  } catch (e) {
-    // Recognition might already be running
-  }
+  } catch (e) {}
 }
 
 function stopListening() {
@@ -676,6 +670,12 @@ function handleUserPrompt(text) {
   if (!text || !text.trim()) return;
   const q = text.trim();
 
+  // If user triggers voice mode chip
+  if (q.includes("Voice Mode") || q.includes("Talk to Advisor")) {
+    if (!state.voice.isVoiceMode) toggleVoiceMode();
+    return;
+  }
+
   toggleAdvisor(true);
   addMessage('user', q);
 
@@ -715,7 +715,8 @@ function handleUserPrompt(text) {
 
 // Interactive Coverage Explainer Launcher (For Finalization Table items)
 function explainCoverage(term) {
-  toggleAdvisor(true);
+  // Ensure chat container is visible when user clicks an explanation
+  populateChatBubble();
   handleUserPrompt(term);
 }
 
@@ -758,15 +759,15 @@ async function init() {
     console.log("Loaded fallback inline FAQs");
   }
 
-  // Load Initial Seed Messages
-  state.advisor.messages = getInitialMessages();
+  // Set fresh session greeting on every page refresh
+  state.advisor.messages = getFreshSessionGreeting();
   renderAdvisorMessages();
 
   // Setup Voice Engine
   initFemaleVoice();
   initSpeechRecognition();
 
-  // Start 10-Second Timer
+  // Start 10-Second Countdown (Bubble starts HIDDEN)
   startBubbleCountdown();
 }
 
