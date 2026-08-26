@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Auto, home, life and more | American Family Insurance</title>
-  <meta name="description" content="Offering Business and Personal Insurance coverage options for your home, office, autos and life. Let us protect the dreams you've worked so hard to achieve.">
+  <meta name="description" content="Offering Business and Personal Insurance coverage options for your home, office, autos and life. Let us protect the dreams you have worked so hard to achieve.">
   <!-- Tailwind CSS via allowlisted CDN -->
   <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
   <link rel="stylesheet" href="styles.css">
@@ -12,21 +12,25 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 </head>
-<body class="bg-white text-slate-900 min-h-screen flex flex-col font-sans antialiased selection:bg-red-100 selection:text-red-900">
+<body class="bg-[#F8FAFC] text-slate-900 min-h-screen flex flex-col font-sans antialiased selection:bg-red-100 selection:text-red-900">
 
-  <!-- TOP SANDBOX SIMULATION STATUS & 10-SECOND TIMER BAR -->
+  <!-- ========================================================================= -->
+  <!-- TOP SANDBOX SIMULATION STATUS & 10-SECOND TIMER & VIEWPORT SWITCHER -->
+  <!-- ========================================================================= -->
   <div class="bg-slate-900 text-white px-4 py-2 text-xs flex flex-wrap justify-between items-center sticky top-0 z-50 border-b border-slate-800">
     <div class="flex items-center gap-3">
       <span class="inline-flex items-center gap-1.5 font-bold text-red-400">
         <span class="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
-        AMFAM POLICY FINALIZATION SANDBOX
+        AMFAM SANDBOX
       </span>
       <span class="text-slate-600">|</span>
-      <span class="text-slate-300 hidden sm:inline">APEX Auto &amp; Home Bundle • Quote #AF-849204-TX</span>
+      <span class="text-slate-300 hidden sm:inline">APEX Auto &amp; Home Bundle • Digital Coverage Advisor MVP</span>
+      <span class="bg-blue-950 text-blue-300 px-2 py-0.5 rounded border border-blue-800 font-mono text-[10px] hidden md:inline">Target: gecx-dm-demo</span>
     </div>
 
-    <!-- 10-SECOND TRIGGER CONTROLS & RESET -->
+    <!-- 10-SECOND TRIGGER CONTROLS & VIEWPORT SWITCHER -->
     <div class="flex items-center gap-2">
+      <!-- 10s TIMER BADGE -->
       <div id="bubble-timer-badge" class="bg-red-900/80 text-red-200 border border-red-700 px-2.5 py-1 rounded-full text-[11px] font-bold flex items-center gap-1.5 shadow-sm animate-pulse">
         ⏱️ Chat Bubble Populates in <strong>10s</strong>
       </div>
@@ -36,79 +40,102 @@
       <button onclick="populateChatBubble()" class="bg-red-600 hover:bg-red-700 text-white text-[11px] font-bold px-2.5 py-1 rounded-md transition shadow-xs">
         ⚡ Pop Now
       </button>
+
+      <!-- VIEWPORT SWITCHER (REQ-005: 49% Mobile Traffic Verification) -->
+      <div class="hidden lg:flex items-center ml-2 pl-2 border-l border-slate-700 gap-1">
+        <button id="vp-btn-desktop" onclick="setViewport('desktop')" class="px-2.5 py-1 rounded-md text-[11px] font-bold bg-blue-600 text-white transition flex items-center gap-1">
+          <span>🖥️ Desktop</span>
+        </button>
+        <button id="vp-btn-tablet" onclick="setViewport('tablet')" class="px-2.5 py-1 rounded-md text-[11px] font-semibold text-slate-300 hover:text-white transition flex items-center gap-1">
+          <span>📱 Tablet</span>
+        </button>
+        <button id="vp-btn-mobile" onclick="setViewport('mobile')" class="px-2.5 py-1 rounded-md text-[11px] font-semibold text-slate-300 hover:text-white transition flex items-center gap-1">
+          <span>📲 Mobile (390px)</span>
+        </button>
+      </div>
     </div>
   </div>
 
-  <!-- ========================================================================= -->
-  <!-- EXACT AMFAM.COM TOP UTILITY BAR & MAIN HEADER -->
-  <!-- ========================================================================= -->
-  <header class="bg-white sticky top-[37px] z-40 shadow-xs">
-    
-    <!-- TOP UTILITY NAV -->
-    <div class="bg-[#F8F9FA] border-b border-slate-200 py-1.5 px-4 sm:px-8 text-xs font-semibold text-slate-700">
-      <div class="max-w-7xl mx-auto flex justify-between items-center">
-        <div>
-          <a href="#main-content" class="sr-only focus:not-sr-only text-blue-900">Skip to Main Content</a>
-        </div>
-        <div class="flex items-center space-x-6">
-          <a href="javascript:void(0)" onclick="handleUserPrompt('How can I find a local agent?')" class="hover:text-red-600 transition flex items-center gap-1">
-            <svg class="w-3.5 h-3.5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-            <span>Find an agent</span>
-          </a>
-          <a href="javascript:void(0)" onclick="handleUserPrompt('What is the customer support phone number?')" class="hover:text-red-600 transition">Contact us</a>
-          <a href="javascript:void(0)" onclick="handleUserPrompt('How do I sign into my account?')" class="hover:text-red-600 transition flex items-center gap-1">
-            <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
-            <span>Sign in</span>
-          </a>
-        </div>
-      </div>
-    </div>
+  <!-- VIEWPORT EMULATOR WRAPPER -->
+  <div id="app-viewport-wrapper" class="w-full flex-grow flex flex-col transition-all duration-300">
+    <div id="mobile-notch-el" class="mobile-notch hidden"></div>
 
-    <!-- MAIN BRAND HEADER -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-8 py-3.5 flex justify-between items-center">
+    <!-- ========================================================================= -->
+    <!-- EXACT AMFAM.COM TOP UTILITY BAR & MAIN HEADER -->
+    <!-- ========================================================================= -->
+    <header class="bg-white sticky top-[37px] z-40 shadow-xs">
       
-      <!-- OFFICIAL LOGO -->
-      <a href="/" class="flex items-center">
-        <img alt="American Family Insurance Logo" class="h-10 sm:h-12 w-auto" src="https://edge.sitecorecloud.io/americanfamilymutualinsurance-j9xa8vzv/media/project/amfam/public/navigations/main/american-family-logo.svg" />
-      </a>
-
-      <!-- PRIMARY NAVIGATION -->
-      <nav class="hidden lg:flex items-center space-x-8 text-sm font-bold text-[#002F6C]">
-        <div class="group relative cursor-pointer flex items-center gap-1 hover:text-red-600 transition py-2">
-          <span>Insurance</span>
-          <svg class="w-4 h-4 transition group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+      <!-- TOP UTILITY NAV -->
+      <div class="bg-[#F8F9FA] border-b border-slate-200 py-1.5 px-4 sm:px-8 text-xs font-semibold text-slate-700">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+          <div>
+            <span class="text-slate-500 font-mono text-[11px]">AmFam Digital Advisor • Phase 1 MVP</span>
+          </div>
+          <div class="flex items-center space-x-6">
+            <a href="javascript:void(0)" onclick="handleUserPrompt('How can I find a local agent?')" class="hover:text-red-600 transition flex items-center gap-1">
+              <svg class="w-3.5 h-3.5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+              <span>Find an agent</span>
+            </a>
+            <a href="javascript:void(0)" onclick="openClickToCallModal()" class="hover:text-red-600 transition">Contact us</a>
+            <a href="javascript:void(0)" onclick="handleUserPrompt('How do I sign into my account?')" class="hover:text-red-600 transition flex items-center gap-1">
+              <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+              <span>Sign in</span>
+            </a>
+          </div>
         </div>
-        <div class="group relative cursor-pointer flex items-center gap-1 hover:text-red-600 transition py-2">
-          <span>Claims</span>
-          <svg class="w-4 h-4 transition group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-        </div>
-        <div class="group relative cursor-pointer flex items-center gap-1 hover:text-red-600 transition py-2">
-          <span>Customer support</span>
-          <svg class="w-4 h-4 transition group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-        </div>
-        <div class="group relative cursor-pointer flex items-center gap-1 hover:text-red-600 transition py-2">
-          <span>Resources</span>
-          <svg class="w-4 h-4 transition group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-        </div>
-      </nav>
-
-      <!-- CTA & ACTIONS -->
-      <div class="flex items-center gap-3">
-        <button onclick="handleUserPrompt('I want to start a new quote');" class="bg-[#0A58CA] hover:bg-[#002F6C] text-white text-xs sm:text-sm font-bold px-5 py-2.5 rounded-full shadow-xs transition transform active:scale-95">
-          Get a quote
-        </button>
       </div>
 
-    </div>
+      <!-- MAIN BRAND HEADER -->
+      <div class="max-w-7xl mx-auto px-4 sm:px-8 py-3.5 flex justify-between items-center">
+        
+        <!-- OFFICIAL LOGO -->
+        <a href="javascript:void(0)" onclick="setView('home')" class="flex items-center gap-3">
+          <img alt="American Family Insurance Logo" class="h-10 sm:h-12 w-auto" src="https://edge.sitecorecloud.io/americanfamilymutualinsurance-j9xa8vzv/media/project/amfam/public/navigations/main/american-family-logo.svg" />
+        </a>
 
-    <!-- ICONIC RED ROOFLINE ACCENT -->
-    <div class="w-full h-1 bg-[#D71920]"></div>
-  </header>
+        <!-- PRIMARY NAVIGATION TABS (MULTI-VIEW ROUTING) -->
+        <nav class="hidden lg:flex items-center space-x-2 text-xs sm:text-sm font-bold text-[#002F6C]">
+          <button id="nav-btn-home" onclick="setView('home')" class="nav-tab-btn px-3 py-2 rounded-xl transition bg-[#002F6C] text-white font-bold">
+            🏠 Homepage &amp; Finalization
+          </button>
+          <button id="nav-btn-quote" onclick="setView('quote')" class="nav-tab-btn px-3 py-2 rounded-xl text-slate-600 hover:bg-slate-100 transition font-semibold">
+            🚗 APEX Quote Config
+          </button>
+          <button id="nav-btn-cuj" onclick="setView('cuj')" class="nav-tab-btn px-3 py-2 rounded-xl text-slate-600 hover:bg-slate-100 transition font-semibold">
+            🗺️ CUJ Interactive Studio
+          </button>
+          <button id="nav-btn-faqs" onclick="setView('faqs')" class="nav-tab-btn px-3 py-2 rounded-xl text-slate-600 hover:bg-slate-100 transition font-semibold">
+            📚 Knowledge Base (FAQs)
+          </button>
+          <button id="nav-btn-telemetry" onclick="setView('telemetry')" class="nav-tab-btn px-3 py-2 rounded-xl text-slate-600 hover:bg-slate-100 transition font-semibold">
+            📊 RUM Telemetry
+          </button>
+        </nav>
 
-  <!-- ========================================================================= -->
-  <!-- HERO SECTION & PRODUCT TILES (MATCHING USER'S ATTACHED SCREENSHOT) -->
-  <!-- ========================================================================= -->
-  <main id="main-content" class="flex-grow">
+        <!-- CTA & ACTIONS -->
+        <div class="flex items-center gap-2">
+          <button onclick="setView('quote');" class="bg-[#0A58CA] hover:bg-[#002F6C] text-white text-xs sm:text-sm font-bold px-5 py-2.5 rounded-full shadow-xs transition transform active:scale-95">
+            Get a quote →
+          </button>
+        </div>
+
+      </div>
+
+      <!-- MOBILE SUB-NAV TABS -->
+      <div class="lg:hidden flex overflow-x-auto py-2 px-4 border-t border-slate-200 gap-1 text-xs bg-slate-50">
+        <button id="mob-nav-home" onclick="setView('home')" class="px-2.5 py-1.5 rounded-lg font-bold bg-[#002F6C] text-white whitespace-nowrap">Home</button>
+        <button id="mob-nav-quote" onclick="setView('quote')" class="px-2.5 py-1.5 rounded-lg font-semibold text-slate-600 whitespace-nowrap">APEX Quote</button>
+        <button id="mob-nav-cuj" onclick="setView('cuj')" class="px-2.5 py-1.5 rounded-lg font-semibold text-slate-600 whitespace-nowrap">CUJ Studio</button>
+        <button id="mob-nav-faqs" onclick="setView('faqs')" class="px-2.5 py-1.5 rounded-lg font-semibold text-slate-600 whitespace-nowrap">FAQ Library</button>
+        <button id="mob-nav-telemetry" onclick="setView('telemetry')" class="px-2.5 py-1.5 rounded-lg font-semibold text-slate-600 whitespace-nowrap">Telemetry</button>
+      </div>
+
+      <!-- ICONIC RED ROOFLINE ACCENT -->
+      <div class="roofline-bar"></div>
+    </header>
+
+    <!-- 5 MULTI-VIEW CONTAINERS -->
+    <main id="view-home" class="view-container flex-grow">
     
     <section class="relative bg-white pt-10 pb-6 px-4 sm:px-8 text-center max-w-5xl mx-auto">
       <!-- OFFICIAL RED ROOFLINE VECTOR SVG -->
@@ -542,30 +569,465 @@
     </section>
 
   </main>
-
-  <!-- ========================================================================= -->
-  <!-- FOOTER -->
-  <!-- ========================================================================= -->
-  <footer class="bg-white border-t border-slate-200 py-10 px-4 sm:px-8 text-slate-600 text-xs">
-    <div class="max-w-7xl mx-auto space-y-6">
+    <main id="view-quote" class="view-container flex-grow hidden">
       
-      <div class="flex flex-wrap justify-between items-center gap-4 pb-6 border-b border-slate-100">
-        <img alt="American Family Insurance Footer Logo" class="h-9 w-auto" src="https://edge.sitecorecloud.io/americanfamilymutualinsurance-j9xa8vzv/media/project/amfam/public/navigations/footer/amfam-logo.svg" />
-        <div class="flex items-center gap-3">
-          <img alt="App Store" class="h-8 w-auto" src="https://edge.sitecorecloud.io/americanfamilymutualinsurance-j9xa8vzv/media/project/amfam/public/navigations/footer/apple-app-store.svg" />
-          <img alt="Google Play" class="h-8 w-auto" src="https://edge.sitecorecloud.io/americanfamilymutualinsurance-j9xa8vzv/media/project/amfam/public/navigations/footer/googleplay.svg" />
+      <!-- STICKY RATE SUMMARY & RECALCULATE BAR -->
+      <div class="bg-white border-b border-slate-200 px-4 py-3 sticky top-[101px] z-30 shadow-sm">
+        <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-4">
+          
+          <div class="flex items-center gap-4">
+            <div>
+              <span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider block">Estimated Total</span>
+              <div class="flex items-baseline gap-2">
+                <span id="quote-monthly-rate" class="text-2xl sm:text-3xl font-black text-blue-950 dead-click-target" data-deadclick-label="Monthly Rate Display">$142.00</span>
+                <span class="text-xs font-semibold text-slate-500">/ month</span>
+                <span class="text-xs text-slate-400 hidden sm:inline">(or <span id="quote-full-rate">$1,580.00</span>/yr in full)</span>
+              </div>
+            </div>
+
+            <div class="hidden sm:inline-flex items-center gap-1.5 bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold px-3 py-1 rounded-xl">
+              <span>🎉 Bundle Discount Applied (-29%)</span>
+            </div>
+          </div>
+
+          <!-- RECALCULATE RATE ACTION BUTTON -->
+          <div class="flex items-center gap-3">
+            <button id="calc-rate-btn" onclick="recalculateQuoteRate()" class="bg-red-600 hover:bg-red-700 text-white text-xs sm:text-sm font-bold px-5 py-2.5 rounded-xl shadow-md transition transform active:scale-95 flex items-center gap-2">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+              <span>Calculate new rate</span>
+            </button>
+            <button onclick="openEscalationModal()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold px-3 py-2.5 rounded-xl transition hidden md:flex items-center gap-1">
+              <span>📞 Need Agent?</span>
+            </button>
+          </div>
+
         </div>
       </div>
 
-      <div class="text-[10px] text-slate-400 text-center leading-relaxed">
-        <p>© 2026 American Family Insurance Company. APEX Auto is underwritten by Midvale Indemnity Company. APEX Home is underwritten by Homesite Insurance Company. American Family Mutual Insurance Company, S.I. &amp; Operating Companies, 6000 American Parkway, Madison, WI 53783.</p>
-      </div>
+      <!-- QUOTE CONTENT BODY -->
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+        
+        <!-- QUOTE SUMMARY HEADER -->
+        <div class="bg-gradient-to-r from-blue-900 to-blue-950 text-white rounded-3xl p-6 sm:p-8 shadow-sm flex flex-wrap justify-between items-center gap-4">
+          <div>
+            <div class="flex items-center gap-2 mb-1">
+              <span class="bg-red-600 text-white text-[10px] font-bold uppercase px-2 py-0.5 rounded">Quote Ready</span>
+              <span class="text-xs text-blue-200 font-mono">ID: AF-98421-WI</span>
+            </div>
+            <h2 class="text-2xl font-bold">Sarah Jenkins • APEX Auto & Home Bundle</h2>
+            <p class="text-xs text-blue-200 mt-1">2024 Honda CR-V Hybrid EX-L & Madison, WI 53711 Residence</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="triggerProactiveAdvisor('dead_click', 'Bodily Injury 100/300')" class="bg-blue-800 hover:bg-blue-700 text-white text-xs font-semibold px-4 py-2 rounded-xl border border-blue-700 transition">
+              💡 Trigger Advisor Guidance
+            </button>
+          </div>
+        </div>
 
-    </div>
-  </footer>
+        <!-- BEHAVIORAL FRICTION TEST BENCH (FOR SANDBOX EVALUATION) -->
+        <div class="bg-amber-50 border border-amber-200 rounded-2xl p-4 text-xs text-amber-900">
+          <div class="font-bold flex items-center gap-2 mb-2 text-amber-950">
+            <span>🧪 Sandbox Behavioral Friction Test Bench (SOW Sec 2.2):</span>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <button onclick="triggerProactiveAdvisor('dead_click', 'Bodily Injury 100/300')" class="bg-white hover:bg-amber-100 border border-amber-300 font-semibold px-3 py-1.5 rounded-lg transition shadow-sm">
+              ⚡ Simulate Dead Clicks on "Bodily Injury 100/300"
+            </button>
+            <button onclick="triggerProactiveAdvisor('dwell_time', 'Deductible Section')" class="bg-white hover:bg-amber-100 border border-amber-300 font-semibold px-3 py-1.5 rounded-lg transition shadow-sm">
+              ⏱️ Simulate 30s Page Dwell / Hesitation
+            </button>
+            <button onclick="state.quote.billing.dirty=true; renderQuoteUI();" class="bg-white hover:bg-amber-100 border border-amber-300 font-semibold px-3 py-1.5 rounded-lg transition shadow-sm">
+              🔄 Trigger Uncalculated Rate Pulse
+            </button>
+            <button onclick="openEscalationModal()" class="bg-white hover:bg-amber-100 border border-amber-300 font-semibold px-3 py-1.5 rounded-lg transition shadow-sm">
+              📞 Trigger Human Escalation Modal
+            </button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          
+          <!-- LEFT COLUMN: AUTO COVERAGES -->
+          <div class="lg:col-span-6 space-y-6">
+            
+            <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-6">
+              <div class="flex items-center justify-between border-b border-slate-100 pb-4">
+                <div class="flex items-center gap-2.5">
+                  <span class="text-xl">🚗</span>
+                  <div>
+                    <h3 class="text-base font-bold text-slate-900">APEX Auto Coverages</h3>
+                    <p class="text-xs text-slate-500">Underwritten by Midvale Indemnity Company</p>
+                  </div>
+                </div>
+                <span class="text-xs font-bold text-blue-900 bg-blue-50 px-2.5 py-1 rounded-lg">Vehicle 1 of 1</span>
+              </div>
+
+              <!-- BODILY INJURY LIABILITY (HIGH FRICTION SIGNAL) -->
+              <div class="space-y-2 p-3 rounded-2xl bg-slate-50 border border-slate-200">
+                <div class="flex justify-between items-start">
+                  <div>
+                    <label class="text-xs font-bold text-slate-900 flex items-center gap-1.5 dead-click-target" data-deadclick-label="Bodily Injury Liability">
+                      <span>Bodily Injury (BI) Liability</span>
+                      <span class="text-blue-600 text-xs cursor-pointer">ℹ️</span>
+                    </label>
+                    <p class="text-[11px] text-slate-500 dead-click-target" data-deadclick-label="BI Description">
+                      Covers medical & legal defense if you injure someone in an at-fault accident.
+                    </p>
+                  </div>
+                  <span class="text-[10px] bg-red-100 text-red-800 font-bold px-2 py-0.5 rounded-full dead-click-target" data-deadclick-label="Recommended 100/300">
+                    Recommended
+                  </span>
+                </div>
+                <select id="select-bodily-injury" onchange="state.quote.auto.bodilyInjury=this.value; state.quote.billing.dirty=true; renderQuoteUI();" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs font-semibold text-slate-900 focus:ring-2 focus:ring-blue-600">
+                  <option value="50/100">$50,000 / $100,000 (State Minimum)</option>
+                  <option value="100/300" selected>$100,000 / $300,000 (Recommended • Asset Protection)</option>
+                  <option value="250/500">$250,000 / $500,000 (High Net Worth Protection)</option>
+                </select>
+              </div>
+
+              <!-- COLLISION DEDUCTIBLE -->
+              <div class="space-y-2 p-3 rounded-2xl bg-slate-50 border border-slate-200">
+                <div class="flex justify-between items-center">
+                  <label class="text-xs font-bold text-slate-900 flex items-center gap-1.5 dead-click-target" data-deadclick-label="Collision Deductible">
+                    <span>Collision Deductible</span>
+                    <span class="text-blue-600 text-xs cursor-pointer">ℹ️</span>
+                  </label>
+                  <span class="text-[11px] text-slate-500">Impact with vehicle/object</span>
+                </div>
+                <select id="select-collision-ded" onchange="state.quote.auto.collisionDeductible=parseInt(this.value); state.quote.billing.dirty=true; renderQuoteUI();" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs font-semibold text-slate-900 focus:ring-2 focus:ring-blue-600">
+                  <option value="250">$250 Deductible (Lower Out of Pocket)</option>
+                  <option value="500" selected>$500 Deductible (Balanced)</option>
+                  <option value="1000">$1,000 Deductible (Lower Premium)</option>
+                </select>
+              </div>
+
+              <!-- COMPREHENSIVE DEDUCTIBLE -->
+              <div class="space-y-2 p-3 rounded-2xl bg-slate-50 border border-slate-200">
+                <div class="flex justify-between items-center">
+                  <label class="text-xs font-bold text-slate-900 flex items-center gap-1.5 dead-click-target" data-deadclick-label="Comprehensive Deductible">
+                    <span>Comprehensive Deductible</span>
+                    <span class="text-blue-600 text-xs cursor-pointer">ℹ️</span>
+                  </label>
+                  <span class="text-[11px] text-slate-500">Theft, hail, glass, animal</span>
+                </div>
+                <select id="select-comp-ded" onchange="state.quote.auto.comprehensiveDeductible=parseInt(this.value); state.quote.billing.dirty=true; renderQuoteUI();" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs font-semibold text-slate-900 focus:ring-2 focus:ring-blue-600">
+                  <option value="250">$250 Deductible</option>
+                  <option value="500" selected>$500 Deductible</option>
+                  <option value="1000">$1,000 Deductible</option>
+                </select>
+              </div>
+
+              <!-- OPTIONAL AUTO ADD-ONS -->
+              <div class="space-y-3 pt-2">
+                <h4 class="text-xs font-bold text-slate-800 uppercase tracking-wider">Optional Auto Add-ons</h4>
+                
+                <label class="flex items-center justify-between p-3 rounded-xl border border-slate-200 hover:bg-slate-50 transition cursor-pointer dead-click-target" data-deadclick-label="Loan or Lease Gap Assistance">
+                  <div class="flex items-center gap-3">
+                    <input id="check-gap-coverage" type="checkbox" checked onchange="state.quote.auto.gapCoverage=this.checked; state.quote.billing.dirty=true; renderQuoteUI();" class="w-4 h-4 text-blue-600 rounded" />
+                    <div>
+                      <div class="text-xs font-bold text-slate-900">Loan / Lease Assistance (Gap)</div>
+                      <div class="text-[11px] text-slate-500">Covers difference between market value & loan balance</div>
+                    </div>
+                  </div>
+                  <span class="text-xs font-semibold text-slate-700">+$5/mo</span>
+                </label>
+
+                <label class="flex items-center justify-between p-3 rounded-xl border border-slate-200 hover:bg-slate-50 transition cursor-pointer dead-click-target" data-deadclick-label="OEM Parts Coverage">
+                  <div class="flex items-center gap-3">
+                    <input id="check-oem-parts" type="checkbox" onchange="state.quote.auto.oemParts=this.checked; state.quote.billing.dirty=true; renderQuoteUI();" class="w-4 h-4 text-blue-600 rounded" />
+                    <div>
+                      <div class="text-xs font-bold text-slate-900">OEM Parts Coverage</div>
+                      <div class="text-[11px] text-slate-500">Factory-original parts on repairs up to 11 yrs</div>
+                    </div>
+                  </div>
+                  <span class="text-xs font-semibold text-slate-700">+$6/mo</span>
+                </label>
+
+                <label class="flex items-center justify-between p-3 rounded-xl border border-slate-200 hover:bg-slate-50 transition cursor-pointer dead-click-target" data-deadclick-label="Emergency Roadside Assistance">
+                  <div class="flex items-center gap-3">
+                    <input id="check-roadside" type="checkbox" checked onchange="state.quote.auto.roadside=this.checked; state.quote.billing.dirty=true; renderQuoteUI();" class="w-4 h-4 text-blue-600 rounded" />
+                    <div>
+                      <div class="text-xs font-bold text-slate-900">Emergency Roadside Assistance</div>
+                      <div class="text-[11px] text-slate-500">Towing, battery jump, flat tire, lockouts</div>
+                    </div>
+                  </div>
+                  <span class="text-xs font-semibold text-emerald-700">Included</span>
+                </label>
+              </div>
+
+            </div>
+
+          </div>
+
+          <!-- RIGHT COLUMN: HOME COVERAGES -->
+          <div class="lg:col-span-6 space-y-6">
+            
+            <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-6">
+              <div class="flex items-center justify-between border-b border-slate-100 pb-4">
+                <div class="flex items-center gap-2.5">
+                  <span class="text-xl">🏠</span>
+                  <div>
+                    <h3 class="text-base font-bold text-slate-900">APEX Home Coverages</h3>
+                    <p class="text-xs text-slate-500">Underwritten by Homesite Insurance</p>
+                  </div>
+                </div>
+                <span class="text-xs font-bold text-amber-900 bg-amber-50 px-2.5 py-1 rounded-lg">Madison, WI</span>
+              </div>
+
+              <!-- DWELLING COVERAGE A -->
+              <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200 space-y-1">
+                <div class="flex justify-between items-center">
+                  <span class="text-xs font-bold text-slate-900 dead-click-target" data-deadclick-label="Dwelling Coverage A">Dwelling (Coverage A)</span>
+                  <span class="text-xs font-bold text-blue-900">$380,000</span>
+                </div>
+                <p class="text-[11px] text-slate-500">Rebuilding cost estimate based on square footage & construction.</p>
+              </div>
+
+              <!-- EXTENDED REPLACEMENT COST -->
+              <div class="space-y-2 p-3 rounded-2xl bg-slate-50 border border-slate-200">
+                <div class="flex justify-between items-center">
+                  <label class="text-xs font-bold text-slate-900 flex items-center gap-1.5 dead-click-target" data-deadclick-label="Extended Replacement Cost">
+                    <span>Extended Replacement Cost Buffer</span>
+                    <span class="text-blue-600 text-xs cursor-pointer">ℹ️</span>
+                  </label>
+                </div>
+                <select id="select-ext-replacement" onchange="state.quote.home.extendedReplacement=this.value; state.quote.billing.dirty=true; renderQuoteUI();" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs font-semibold text-slate-900 focus:ring-2 focus:ring-blue-600">
+                  <option value="25%" selected>25% Buffer ($95,000 extra coverage)</option>
+                  <option value="50%">50% Buffer ($190,000 extra coverage)</option>
+                </select>
+              </div>
+
+              <!-- WATER BACKUP & SUMP PUMP -->
+              <div class="space-y-2 p-3 rounded-2xl bg-slate-50 border border-slate-200">
+                <div class="flex justify-between items-center">
+                  <label class="text-xs font-bold text-slate-900 flex items-center gap-1.5 dead-click-target" data-deadclick-label="Water Backup Coverage">
+                    <span>Water Backup & Sump Overflow</span>
+                    <span class="text-blue-600 text-xs cursor-pointer">ℹ️</span>
+                  </label>
+                  <span class="text-[10px] bg-blue-100 text-blue-900 font-bold px-2 py-0.5 rounded-full">Essential</span>
+                </div>
+                <select id="select-water-backup" onchange="state.quote.home.waterBackup=parseInt(this.value); state.quote.billing.dirty=true; renderQuoteUI();" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs font-semibold text-slate-900 focus:ring-2 focus:ring-blue-600">
+                  <option value="10000" selected>$10,000 Water Backup Limit (+$4/mo)</option>
+                  <option value="25000">$25,000 Water Backup Limit (+$8/mo)</option>
+                  <option value="0">No Water Backup (Not Recommended)</option>
+                </select>
+              </div>
+
+              <!-- DEDUCTIBLES -->
+              <div class="grid grid-cols-2 gap-3 pt-2">
+                <div class="p-3 rounded-xl border border-slate-200 bg-slate-50">
+                  <div class="text-[11px] font-bold text-slate-700 dead-click-target" data-deadclick-label="All Perils AOP Deductible">All-Perils (AOP) Ded</div>
+                  <div class="text-sm font-bold text-slate-900 mt-1">$1,000</div>
+                </div>
+                <div class="p-3 rounded-xl border border-slate-200 bg-slate-50">
+                  <div class="text-[11px] font-bold text-slate-700 dead-click-target" data-deadclick-label="Wind and Hail Deductible">Wind / Hail Ded</div>
+                  <div class="text-sm font-bold text-slate-900 mt-1">1% ($3,800)</div>
+                </div>
+              </div>
+
+              <!-- BIND / CONTINUE BUTTON -->
+              <div class="pt-4 border-t border-slate-100">
+                <button onclick="alert('Proceeding to policy review & payment confirmation.');" class="w-full bg-blue-900 hover:bg-blue-800 text-white font-bold py-3.5 rounded-xl shadow-md text-sm transition">
+                  Review & Bind Policy →
+                </button>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </main>
+    <main id="view-cuj" class="view-container flex-grow hidden">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+        
+        <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm">
+          <div class="flex flex-wrap justify-between items-center gap-4 mb-6 pb-6 border-b border-slate-100">
+            <div>
+              <span class="bg-blue-100 text-blue-900 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Executive Presentation</span>
+              <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-2">Critical User Journey (CUJ) Interactive Studio</h2>
+              <p class="text-xs sm:text-sm text-slate-600 mt-1">High-fidelity transcript synthesis, behavioral trigger interception, and live sandbox execution.</p>
+            </div>
+            
+            <!-- CUJ PICKER -->
+            <div class="flex items-center gap-2">
+              <label class="text-xs font-bold text-slate-700">Select CUJ:</label>
+              <select id="cuj-selector" onchange="selectCUJ(this.value)" class="bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs font-semibold text-slate-900 focus:ring-2 focus:ring-blue-600"></select>
+            </div>
+          </div>
+
+          <!-- CUJ DETAIL CARD (RENDERED VIA JS) -->
+          <div id="cuj-detail-card"></div>
+
+          <!-- CUJ SPECIFICATION MATRIX -->
+          <div class="mt-8 pt-8 border-t border-slate-200">
+            <h3 class="text-lg font-bold text-slate-900 mb-4">Phase 1 Critical User Journey Matrix</h3>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-xs border border-slate-200 rounded-xl overflow-hidden">
+                <thead class="bg-slate-100 text-slate-700 font-bold uppercase tracking-wider border-b border-slate-200">
+                  <tr>
+                    <th class="p-3">CUJ ID & Title</th>
+                    <th class="p-3">RUM Friction Baseline</th>
+                    <th class="p-3">Trigger Type</th>
+                    <th class="p-3">Advisor Action</th>
+                    <th class="p-3">Outcome</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 bg-white">
+                  <tr class="hover:bg-slate-50">
+                    <td class="p-3 font-bold text-blue-900">CUJ-001: Bodily Injury 100/300</td>
+                    <td class="p-3 text-slate-600">P95 = 27 min on quote page</td>
+                    <td class="p-3 text-red-600 font-semibold">Dead click & Dwell &gt; 20s</td>
+                    <td class="p-3 text-slate-700">Explains 100/300 asset protection</td>
+                    <td class="p-3 font-bold text-emerald-700">+18% Bind Rate</td>
+                  </tr>
+                  <tr class="hover:bg-slate-50">
+                    <td class="p-3 font-bold text-blue-900">CUJ-002: Deductible &amp; Rate Recalculation</td>
+                    <td class="p-3 text-slate-600">Dead click on static price</td>
+                    <td class="p-3 text-red-600 font-semibold">Dead click intercept</td>
+                    <td class="p-3 text-slate-700">Explains trade-off &amp; recalculates</td>
+                    <td class="p-3 font-bold text-emerald-700">Zero drop-offs</td>
+                  </tr>
+                  <tr class="hover:bg-slate-50">
+                    <td class="p-3 font-bold text-blue-900">CUJ-003: Gap &amp; Water Backup Add-ons</td>
+                    <td class="p-3 text-slate-600">Optional coverage drop-off</td>
+                    <td class="p-3 text-red-600 font-semibold">Hover / Selection hesitation</td>
+                    <td class="p-3 text-slate-700">Explains loan gap &amp; sewer backup</td>
+                    <td class="p-3 font-bold text-emerald-700">+24% Add-on Attach</td>
+                  </tr>
+                  <tr class="hover:bg-slate-50">
+                    <td class="p-3 font-bold text-blue-900">CUJ-004: Seamless Human Escalation</td>
+                    <td class="p-3 text-slate-600">Complex rating dead end</td>
+                    <td class="p-3 text-red-600 font-semibold">Intent classification</td>
+                    <td class="p-3 text-slate-700">Packages CRM &amp; connects 1-800</td>
+                    <td class="p-3 font-bold text-emerald-700">-3.5m Handle Time</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </main>
+    <main id="view-faqs" class="view-container flex-grow hidden">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+        
+        <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm">
+          <div class="flex flex-wrap justify-between items-center gap-4 mb-6 pb-6 border-b border-slate-100">
+            <div>
+              <span class="bg-red-100 text-red-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Authoritative Source of Truth</span>
+              <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-2">Comprehensive FAQ Knowledge Base</h2>
+              <p class="text-xs sm:text-sm text-slate-600 mt-1">100% deterministic FAQ responses for APEX Auto & APEX Home policies.</p>
+            </div>
+            
+            <!-- LIVE SEARCH BAR -->
+            <div class="w-full sm:w-80">
+              <input type="text" id="faq-search-input" onkeyup="renderFAQsUI(currentFaqFilter, this.value)" placeholder="Search 76+ FAQs (e.g. 100/300, Gap, Deductible)..." class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-xs font-medium focus:ring-2 focus:ring-blue-600 focus:outline-none" />
+            </div>
+          </div>
+
+          <!-- CATEGORY FILTER PILLS -->
+          <div class="flex flex-wrap gap-2 mb-6 text-xs">
+            <button onclick="currentFaqFilter='all'; renderFAQsUI('all');" class="px-3.5 py-1.5 rounded-xl font-bold bg-blue-900 text-white">All (76)</button>
+            <button onclick="currentFaqFilter='Liability'; renderFAQsUI('Liability');" class="px-3.5 py-1.5 rounded-xl font-bold bg-slate-100 text-slate-700 hover:bg-blue-50">🚗 Auto Liability</button>
+            <button onclick="currentFaqFilter='Physical Damage'; renderFAQsUI('Physical Damage');" class="px-3.5 py-1.5 rounded-xl font-bold bg-slate-100 text-slate-700 hover:bg-blue-50">🛡️ Physical Damage & Deductibles</button>
+            <button onclick="currentFaqFilter='Optional'; renderFAQsUI('Optional');" class="px-3.5 py-1.5 rounded-xl font-bold bg-slate-100 text-slate-700 hover:bg-blue-50">⭐ Optional Add-ons</button>
+            <button onclick="currentFaqFilter='Home'; renderFAQsUI('Home');" class="px-3.5 py-1.5 rounded-xl font-bold bg-slate-100 text-slate-700 hover:bg-blue-50">🏠 APEX Home Core</button>
+            <button onclick="currentFaqFilter='Bundling'; renderFAQsUI('Bundling');" class="px-3.5 py-1.5 rounded-xl font-bold bg-slate-100 text-slate-700 hover:bg-blue-50">🔗 Bundling & Payments</button>
+          </div>
+
+          <!-- FAQ GRID -->
+          <div id="faqs-list-container" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+
+        </div>
+
+      </div>
+    </main>
+    <main id="view-telemetry" class="view-container flex-grow hidden">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+        
+        <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm">
+          <div class="flex items-center justify-between mb-6 pb-6 border-b border-slate-100">
+            <div>
+              <span class="bg-purple-100 text-purple-900 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Live Telemetry</span>
+              <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-2">Real-User Monitoring (RUM) Telemetry</h2>
+              <p class="text-xs sm:text-sm text-slate-600 mt-1">Live tracking of dead-click interventions, dwell reductions, and deterministic deflection.</p>
+            </div>
+            <button onclick="renderTelemetryUI()" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold px-3 py-2 rounded-xl transition">
+              🔄 Refresh Telemetry
+            </button>
+          </div>
+
+          <!-- KPI STATS CARDS -->
+          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
+            <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4">
+              <div class="text-xs text-slate-500 font-bold">Dwell Time on Quote</div>
+              <div id="stat-dwell-time" class="text-2xl font-black text-slate-900 mt-1">0s</div>
+              <div class="text-[10px] text-emerald-600 mt-1">Target: &lt; 4 mins (was 27m)</div>
+            </div>
+
+            <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4">
+              <div class="text-xs text-slate-500 font-bold">Dead Clicks Intercepted</div>
+              <div id="stat-dead-clicks" class="text-2xl font-black text-red-600 mt-1">0</div>
+              <div class="text-[10px] text-slate-400 mt-1">RUM Interception Rate: 100%</div>
+            </div>
+
+            <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4">
+              <div class="text-xs text-slate-500 font-bold">Advisor Proactive Triggers</div>
+              <div id="stat-advisor-triggers" class="text-2xl font-black text-blue-900 mt-1">0</div>
+              <div class="text-[10px] text-blue-600 mt-1">Contextual Assistance</div>
+            </div>
+
+            <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4">
+              <div class="text-xs text-slate-500 font-bold">FAQ Questions Asked</div>
+              <div id="stat-faqs-asked" class="text-2xl font-black text-purple-900 mt-1">0</div>
+              <div class="text-[10px] text-purple-600 mt-1">Deterministic Retrieval</div>
+            </div>
+
+            <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4">
+              <div class="text-xs text-slate-500 font-bold">Rate Recalculations</div>
+              <div id="stat-rate-calcs" class="text-2xl font-black text-amber-700 mt-1">0</div>
+              <div class="text-[10px] text-amber-600 mt-1">Live Rate Invocations</div>
+            </div>
+          </div>
+
+          <!-- EVENT STREAM -->
+          <div class="space-y-3">
+            <h3 class="text-sm font-bold text-slate-800">Live Client Event Stream</h3>
+            <div id="telemetry-event-stream" class="bg-slate-50 border border-slate-200 rounded-2xl p-3 max-h-80 overflow-y-auto space-y-1"></div>
+          </div>
+
+        </div>
+
+      </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-white border-t border-slate-200 py-10 px-4 sm:px-8 text-slate-600 text-xs">
+      <div class="max-w-7xl mx-auto space-y-6">
+        
+        <div class="flex flex-wrap justify-between items-center gap-4 pb-6 border-b border-slate-100">
+          <img alt="American Family Insurance Footer Logo" class="h-9 w-auto" src="https://edge.sitecorecloud.io/americanfamilymutualinsurance-j9xa8vzv/media/project/amfam/public/navigations/footer/amfam-logo.svg" />
+          <div class="flex items-center gap-3">
+            <img alt="App Store" class="h-8 w-auto" src="https://edge.sitecorecloud.io/americanfamilymutualinsurance-j9xa8vzv/media/project/amfam/public/navigations/footer/apple-app-store.svg" />
+            <img alt="Google Play" class="h-8 w-auto" src="https://edge.sitecorecloud.io/americanfamilymutualinsurance-j9xa8vzv/media/project/amfam/public/navigations/footer/googleplay.svg" />
+          </div>
+        </div>
+
+        <div class="text-[10px] text-slate-400 text-center leading-relaxed">
+          <p>© 2026 American Family Insurance Company. APEX Auto is underwritten by Midvale Indemnity Company. APEX Home is underwritten by Homesite Insurance Company. American Family Mutual Insurance Company, S.I. &amp; Operating Companies, 6000 American Parkway, Madison, WI 53783.</p>
+        </div>
+
+      </div>
+    </footer>
+
+  </div>
 
   <!-- ========================================================================= -->
-  <!-- DIGITAL COVERAGE ADVISOR WIDGET (TWO-WAY VOICE + MUTE + RESET SESSION) -->
+  <!-- DIGITAL COVERAGE ADVISOR WIDGET (TWO-WAY VOICE + REAL-TIME BARGE-IN) -->
   <!-- ========================================================================= -->
   <div id="chat-bubble-container" class="fixed bottom-6 right-6 z-50 flex-col items-end hidden">
     
@@ -586,12 +1048,12 @@
 
         <div class="flex items-center gap-1.5">
           <!-- RESET SESSION BUTTON -->
-          <button onclick="resetSession()" class="text-blue-200 hover:text-white p-1.5 rounded-lg hover:bg-blue-800 transition" title="Reset Conversation & Session">
+          <button onclick="resetSession()" class="text-blue-200 hover:text-white p-1.5 rounded-lg hover:bg-blue-800 transition" title="Reset Conversation &amp; Session">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
           </button>
           
-          <!-- TWO-WAY VOICE TOGGLE (FEMALE NATURAL VOICE + STT) -->
-          <button id="voice-mode-toggle-btn" onclick="toggleVoiceMode()" class="text-blue-200 hover:text-white p-1.5 rounded-lg hover:bg-blue-800 transition" title="Toggle Two-Way Voice Mode (Continuous Talk & Listen)">
+          <!-- TWO-WAY VOICE TOGGLE -->
+          <button id="voice-mode-toggle-btn" onclick="toggleVoiceMode()" class="text-blue-200 hover:text-white p-1.5 rounded-lg hover:bg-blue-800 transition" title="Toggle Two-Way Voice Mode (Continuous Talk &amp; Listen)">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/></svg>
           </button>
           
@@ -606,7 +1068,7 @@
       <div id="voice-status-banner" class="hidden bg-[#0C2340] px-4 py-2 flex items-center justify-between text-xs text-blue-200 border-b border-blue-900">
         <div id="voice-status-text" class="flex items-center gap-2 text-[11px]">
           <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-          <span class="text-emerald-300 font-semibold">Listening... Speak now</span>
+          <span class="text-emerald-300 font-semibold">Listening... Speak now (Barge-in ready)</span>
         </div>
         
         <div class="flex items-center gap-2">
@@ -616,6 +1078,11 @@
           </button>
           <button onclick="toggleVoiceMode()" class="text-slate-400 hover:text-white text-[10px] underline">Exit Voice</button>
         </div>
+      </div>
+
+      <!-- BARGE-IN INTERRUPTION TOAST -->
+      <div id="barge-in-toast" class="hidden bg-amber-500 text-slate-950 font-bold px-3 py-1.5 text-center text-xs barge-in-badge shadow-sm flex items-center justify-center gap-1.5">
+        <span>⚡ Interrupted! Advisor paused &amp; listening to you...</span>
       </div>
 
       <!-- INTERIM VOICE SPEECH PREVIEW -->
@@ -635,8 +1102,8 @@
           <div class="flex items-center gap-2">
             <input id="chat-text-inp" type="text" placeholder="Ask about 100/300, deductibles, water backup..." class="flex-grow bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2 text-xs font-medium focus:ring-2 focus:ring-[#0A58CA] focus:outline-none" />
             
-            <!-- MIC BUTTON (QUICK VOICE INPUT / STT TRIGGER) -->
-            <button id="voice-mic-main-btn" type="button" onclick="if(!state.voice.isVoiceMode) toggleVoiceMode(); else if(state.voice.isMuted) toggleMute(); else startListening();" class="p-2 rounded-xl text-blue-100 bg-blue-800 hover:bg-blue-700 transition shrink-0 shadow-xs" title="Talk to Advisor">
+            <!-- MIC BUTTON (QUICK VOICE INPUT / STT TRIGGER / BARGE-IN) -->
+            <button id="voice-mic-main-btn" type="button" onclick="triggerMainMicClick()" class="p-2 rounded-xl text-blue-100 bg-blue-800 hover:bg-blue-700 transition shrink-0 shadow-xs" title="Talk / Interrupt Advisor">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/></svg>
             </button>
 
@@ -652,7 +1119,6 @@
 
     <!-- GLOWING & JUMPING CHAT LAUNCHER BUTTON -->
     <button id="chat-bubble-button" onclick="toggleAdvisor()" class="relative bg-gradient-to-br from-[#002F6C] to-[#0C2340] text-white p-4 rounded-full shadow-2xl transition transform flex items-center justify-center border-2 border-[#D71920] bubble-glowing">
-      <!-- Notification Ping -->
       <div class="absolute -top-1 -right-1 w-4 h-4 bg-[#D71920] rounded-full animate-ping"></div>
       <div class="absolute -top-1 -right-1 w-4 h-4 bg-[#D71920] rounded-full flex items-center justify-center text-[9px] font-bold text-white">1</div>
       

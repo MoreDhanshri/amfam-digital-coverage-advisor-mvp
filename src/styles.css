@@ -1,23 +1,28 @@
-/* Exact American Family Insurance Design System & Replica Styles */
+/* =========================================================================
+   American Family Insurance Design System & Digital Coverage Advisor Styles
+   ========================================================================= */
+
 :root {
   --amfam-primary-blue: #002F6C;
   --amfam-dark-blue: #0C2340;
   --amfam-bright-blue: #004B87;
   --amfam-action-blue: #0A58CA;
+  --amfam-sky-blue: #E8F1FA;
   --amfam-red: #D71920;
   --amfam-red-hover: #B81319;
   --amfam-gold: #F59E0B;
-  --amfam-light-gray: #F8F9FA;
+  --amfam-light-gray: #F8FAFC;
   --amfam-border-gray: #E2E8F0;
-  --amfam-text-primary: #1E293B;
+  --amfam-text-primary: #0F172A;
   --amfam-text-muted: #64748B;
-  --font-open-sans: 'Open Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --amfam-success: #10B981;
+  --font-open-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
 body {
   font-family: var(--font-open-sans);
   color: var(--amfam-text-primary);
-  background-color: #FFFFFF;
+  background-color: #F8FAFC;
   margin: 0;
   padding: 0;
   -webkit-font-smoothing: antialiased;
@@ -25,8 +30,8 @@ body {
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 7px;
-  height: 7px;
+  width: 6px;
+  height: 6px;
 }
 ::-webkit-scrollbar-track {
   background: #F1F5F9;
@@ -39,14 +44,59 @@ body {
   background: #94A3B8;
 }
 
-/* Iconic AmFam Roofline Curve */
+/* Iconic AmFam Roofline Bar */
 .roofline-bar {
   background-color: var(--amfam-red);
   height: 4px;
   width: 100%;
 }
 
-/* 10-SECOND CHAT BUBBLE POPULATE & JUMP ANIMATION */
+/* =========================================================================
+   VIEWPORT EMULATOR FRAMES (Desktop / Tablet / Mobile 390px)
+   ========================================================================= */
+
+.viewport-mobile-frame {
+  max-width: 410px !important;
+  margin: 20px auto !important;
+  border: 14px solid #0F172A !important;
+  border-radius: 44px !important;
+  overflow: hidden !important;
+  box-shadow: 0 25px 60px -12px rgba(0, 0, 0, 0.35) !important;
+  background: #FFFFFF !important;
+  min-height: 844px !important;
+  position: relative !important;
+  transition: all 0.3s ease !important;
+}
+
+.viewport-tablet-frame {
+  max-width: 820px !important;
+  margin: 20px auto !important;
+  border: 16px solid #0F172A !important;
+  border-radius: 36px !important;
+  overflow: hidden !important;
+  box-shadow: 0 25px 60px -12px rgba(0, 0, 0, 0.3) !important;
+  background: #FFFFFF !important;
+  min-height: 900px !important;
+  position: relative !important;
+  transition: all 0.3s ease !important;
+}
+
+.mobile-notch {
+  width: 150px;
+  height: 26px;
+  background: #0F172A;
+  margin: 0 auto;
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
+  position: sticky;
+  top: 0;
+  z-index: 60;
+}
+
+/* =========================================================================
+   10-SECOND CHAT BUBBLE POPULATE, JUMP & GLOW ANIMATIONS
+   ========================================================================= */
+
 @keyframes bubble-pop-in {
   0% {
     opacity: 0;
@@ -97,12 +147,6 @@ body {
   }
 }
 
-@keyframes callout-bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-5px); }
-}
-
-/* Classes for dynamic trigger */
 .bubble-enter {
   animation: bubble-pop-in 0.65s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
@@ -115,15 +159,15 @@ body {
   animation: bubble-radiant-glow 2.2s infinite ease-in-out;
 }
 
-.callout-teaser-float {
-  animation: callout-bounce 3s infinite ease-in-out;
-}
+/* =========================================================================
+   TWO-WAY VOICE VISUALIZERS, BARGE-IN & PULSE RINGS
+   ========================================================================= */
 
-/* Voice Visualizer Waves & Microphone Pulse */
 @keyframes wave-bar {
   0%, 100% { height: 4px; }
   50% { height: 22px; }
 }
+
 .voice-bar {
   animation: wave-bar 0.9s ease-in-out infinite;
 }
@@ -138,12 +182,43 @@ body {
   70% { transform: scale(1.08); box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
   100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
 }
+
 .mic-listening-active {
   animation: mic-listening-pulse 1.5s infinite;
 }
 
-/* Dead click ripple */
+@keyframes barge-in-flash {
+  0% { transform: scale(0.9); opacity: 0; }
+  50% { transform: scale(1.05); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.barge-in-badge {
+  animation: barge-in-flash 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* =========================================================================
+   DEAD CLICK RIPPLE & INTERACTIVE EXPLORER
+   ========================================================================= */
+
 .dead-click-target {
   cursor: pointer;
   user-select: none;
+  transition: all 0.15s ease;
+}
+.dead-click-target:active {
+  transform: scale(0.98);
+}
+
+@keyframes click-ripple {
+  0% { transform: scale(0.8); opacity: 0.8; }
+  100% { transform: scale(2.4); opacity: 0; }
+}
+
+.click-ripple-effect {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(215, 25, 32, 0.4);
+  pointer-events: none;
+  animation: click-ripple 0.6s linear;
 }

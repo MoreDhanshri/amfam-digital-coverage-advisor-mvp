@@ -51,3 +51,20 @@
 - [x] Git commit and push all updates to feature branch
 
 
+
+### Web Experience Merge & Real-Time Barge-In Voice Sprint (Conversation 4a23ebbd-0b61-40ed-90a5-d7ba918d4354)
+- [x] Merge multi-view architecture from `AmFam Website Redesign CUJ`:
+  - [x] View 1: 🏠 Homepage Redesign & Policy Finalization Interface (#AF-849204-TX / #AF-98421-WI, BI 100/300, $500 Ded, $380k Dwelling, $10k Water Backup, discounts, payment schedule, electronic binder)
+  - [x] View 2: 🚗 APEX Quote Configurator & Live Rate Recalculator ($142/mo) with behavioral friction bench
+  - [x] View 3: 🗺️ CUJ Interactive Studio (CUJ-001, CUJ-002, CUJ-003, CUJ-004, Persona cards, friction points, dialogue timeline, and "Run Simulation in Advisor" runner)
+  - [x] View 4: 📚 Knowledge Base FAQ Directory with search and category filtering
+  - [x] View 5: 📊 Real-User Monitoring (RUM) Telemetry Dashboard with live event stream
+- [x] Implement responsive Viewport Switcher (Desktop, Tablet, Mobile 390px with device bezel & notch)
+- [x] Implement 10-Second automated pop-in timer with glowing & jumping bubble animations
+- [x] Enable real-time voice barge-in:
+  - [x] User vocalization or mic click immediately cancels active TTS (`window.speechSynthesis.cancel()`)
+  - [x] Added `bargeIn()` handler, `⚡ Interrupted!` visual badge (`#barge-in-toast`), and seamless transition back to listening mode
+  - [x] Upgraded speech synthesis with high-grade natural female neural voices (`Microsoft Jenny Online (Natural)`, `Google US English`, `Samantha (Enhanced)`, etc.)
+  - [x] Built insurance-fluent spoken text normalizer for natural cadence and pauses
+- [x] Verified full end-to-end functionality on `http://dhanshrimore.c.googlers.com:8080`
+- [x] Committed and synced repository changes
