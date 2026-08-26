@@ -1,6 +1,6 @@
 /**
- * American Family Insurance - Official Homepage Replica & Digital Coverage Advisor
- * With 5-Second Automated Glow & Jump Chat Bubble Integration
+ * American Family Insurance - Official Finalization Page & Digital Coverage Advisor
+ * With 5-Second Automated Glowing & Jumping Chat Bubble
  */
 
 // Application State
@@ -8,56 +8,101 @@ const state = {
   // Chat Bubble State
   bubble: {
     isPopulated: false,
-    isOpen: false,
+    isOpen: true, // Default open or toggleable, pops up with animation at 5s
     countdownSeconds: 5,
     timerId: null,
     isVoiceMode: false,
     isSpeaking: false
   },
 
-  // Active View ('home', 'quote', 'cuj', 'faqs')
-  currentView: 'home',
-
-  // Policy Quote Model for Sandbox Testing (Sarah Jenkins)
-  quote: {
-    id: "AF-98421-WI",
-    customer: "Sarah Jenkins",
-    location: "Madison, WI 53711",
+  // Policy Finalization Model (Jane M. Doe - Austin, TX)
+  policy: {
+    quoteRef: "#AF-849204-TX",
+    status: "Ready to Bind",
+    effectiveDate: "September 1, 2026",
+    customer: "Jane M. Doe",
+    address: "1428 Elm Ridge Ct, Austin, TX 78701",
     auto: {
-      vehicle: "2024 Honda CR-V Hybrid EX-L",
-      bodilyInjury: "100/300",
-      propertyDamage: "$100,000",
-      comprehensiveDeductible: 500,
-      collisionDeductible: 500,
-      gapCoverage: true,
-      oemParts: false,
-      roadside: true
+      vehicle: "2023 Honda CR-V EX-L",
+      vin: "7FA...901",
+      bodilyInjury: "$250k/$500k",
+      propertyDamage: "$100k",
+      comprehensiveDeductible: "$500",
+      collisionDeductible: "$500",
+      termPremium: 642.00,
+      termMonths: 6
     },
     home: {
-      property: "2,400 sq ft Single Family Home (Madison, WI)",
-      dwellingA: 380000,
-      aopDeductible: 1000,
-      windHailDeductible: "1%",
-      extendedReplacement: "25%",
-      waterBackup: 10000
+      type: "Homeowners (HO-3)",
+      location: "1428 Elm Ridge Ct, Austin, TX",
+      dwellingA: "$450k",
+      personalLiability: "$300k",
+      windHail: "1% ($4,500)",
+      allPeril: "$1,500",
+      waterBackup: "$25,000",
+      termPremium: 1280.00,
+      termMonths: 12
     },
+    discounts: [
+      { name: "Multi-Policy Bundle Discount (Auto + Home)", amount: -184.00 },
+      { name: "Paperless & Autopay Enrollment", amount: -45.00 },
+      { name: "Safe Driver (KnowYourDrive) & Home Security", amount: -68.00 }
+    ],
     billing: {
-      currentMonthlyRate: 142,
-      baseMonthlyRate: 142,
-      dirty: false
+      totalAnnualCost: 2271.00,
+      frequency: "Monthly Installments",
+      dueToday: 189.25,
+      monthlyDraft: 189.25,
+      firstDraftDate: "Oct 1, 2026",
+      paymentMethod: "Visa ending in 4821"
     }
   },
 
-  // Advisor Messages
+  // Initial Advisor Messages Matching Screenshot & Customer FAQ Ground Truth
   advisor: {
-    messages: []
+    messages: [
+      {
+        id: "msg-1",
+        sender: "user",
+        text: "What is Bodily Injury 100/300?",
+        time: "09:40 PM"
+      },
+      {
+        id: "msg-2",
+        sender: "agent",
+        text: "The first number ($100,000) is the maximum paid per person injured; the second ($300,000) is the maximum paid per accident regardless of how many people are injured.",
+        time: "09:40 PM",
+        quickReplies: [
+          "🚗 What is Bodily Injury 100/300?",
+          "🛡️ How to choose deductible?",
+          "🏠 What is Water Backup?",
+          "📞 Speak with an Agent"
+        ]
+      },
+      {
+        id: "msg-3",
+        sender: "user",
+        text: "What is OEM Parts coverage?",
+        time: "09:47 PM"
+      },
+      {
+        id: "msg-4",
+        sender: "agent",
+        text: "OEM (Original Equipment Manufacturer) Parts coverage ensures your vehicle is repaired using factory-original parts rather than aftermarket alternatives. It is available for vehicles generally up to 11 model years old and requires Comprehensive or Collision coverage.",
+        time: "09:47 PM",
+        quickReplies: [
+          "What is Loan or Lease (Gap) coverage?",
+          "How to choose $500 vs $1000 deductible?",
+          "Why is 1% Wind/Hail required?"
+        ]
+      }
+    ]
   },
 
-  // Knowledge Base (FAQs)
   faqs: []
 };
 
-// Web Audio Soft Chime Generator (Pure synthesized sound, zero external dependencies)
+// Web Audio Soft Chime Generator
 function playSoftChime() {
   try {
     const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -68,7 +113,7 @@ function playSoftChime() {
     const osc1 = ctx.createOscillator();
     const gain1 = ctx.createGain();
     osc1.type = 'sine';
-    osc1.frequency.setValueAtTime(659.25, ctx.currentTime); // E5
+    osc1.frequency.setValueAtTime(659.25, ctx.currentTime);
     gain1.gain.setValueAtTime(0.08, ctx.currentTime);
     gain1.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.35);
     osc1.connect(gain1);
@@ -76,11 +121,11 @@ function playSoftChime() {
     osc1.start(ctx.currentTime);
     osc1.stop(ctx.currentTime + 0.35);
 
-    // Note 2: B5 (higher pitch chime)
+    // Note 2: B5
     const osc2 = ctx.createOscillator();
     const gain2 = ctx.createGain();
     osc2.type = 'sine';
-    osc2.frequency.setValueAtTime(987.77, ctx.currentTime + 0.12); // B5
+    osc2.frequency.setValueAtTime(987.77, ctx.currentTime + 0.12);
     gain2.gain.setValueAtTime(0.09, ctx.currentTime + 0.12);
     gain2.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.6);
     osc2.connect(gain2);
@@ -88,11 +133,11 @@ function playSoftChime() {
     osc2.start(ctx.currentTime + 0.12);
     osc2.stop(ctx.currentTime + 0.6);
   } catch (e) {
-    console.log("AudioContext not permitted before user gesture", e);
+    console.log("AudioContext note", e);
   }
 }
 
-// 5-Second Chat Bubble Population Trigger
+// 5-Second Automated Timer for Glow & Jump
 function startBubbleCountdown() {
   state.bubble.countdownSeconds = 5;
   updateCountdownDisplay();
@@ -127,43 +172,29 @@ function populateChatBubble() {
   state.bubble.isPopulated = true;
   updateCountdownDisplay();
 
-  const container = document.getElementById('chat-bubble-container');
-  const callout = document.getElementById('chat-callout-teaser');
   const button = document.getElementById('chat-bubble-button');
-
-  if (container) {
-    container.classList.remove('hidden');
-    container.classList.add('flex');
-  }
+  const panel = document.getElementById('advisor-chat-panel');
+  const callout = document.getElementById('chat-callout-teaser');
 
   if (button) {
     button.classList.add('bubble-enter', 'bubble-glowing', 'bubble-jumping');
   }
 
-  if (callout) {
-    callout.classList.remove('hidden');
-  }
-
+  // Open advisor panel automatically at 5 seconds with animation
+  toggleAdvisor(true);
   playSoftChime();
-  console.log("AmFam Digital Coverage Advisor chat bubble successfully populated at 5.0 seconds!");
+  console.log("AmFam Digital Coverage Advisor chat bubble successfully triggered at 5.0 seconds!");
 }
 
 function resetBubbleTimer() {
   state.bubble.isPopulated = false;
   state.bubble.isOpen = false;
   
-  const container = document.getElementById('chat-bubble-container');
   const panel = document.getElementById('advisor-chat-panel');
-  const callout = document.getElementById('chat-callout-teaser');
   const button = document.getElementById('chat-bubble-button');
 
   if (panel) panel.classList.add('hidden');
-  if (callout) callout.classList.add('hidden');
   if (button) button.classList.remove('bubble-glowing', 'bubble-jumping');
-  if (container) {
-    container.classList.add('hidden');
-    container.classList.remove('flex');
-  }
 
   startBubbleCountdown();
 }
@@ -171,7 +202,6 @@ function resetBubbleTimer() {
 // Toggle Advisor Panel
 function toggleAdvisor(forceOpen = null) {
   const panel = document.getElementById('advisor-chat-panel');
-  const callout = document.getElementById('chat-callout-teaser');
   const button = document.getElementById('chat-bubble-button');
 
   if (forceOpen !== null) {
@@ -182,8 +212,6 @@ function toggleAdvisor(forceOpen = null) {
 
   if (state.bubble.isOpen) {
     if (panel) panel.classList.remove('hidden');
-    if (callout) callout.classList.add('hidden');
-    // Stop continuous jumping while open, keep subtle glow
     if (button) button.classList.remove('bubble-jumping');
     renderAdvisorMessages();
   } else {
@@ -216,10 +244,16 @@ function searchFAQ(query) {
 
     if (clean.includes('100/300') && q.includes('100/300')) score += 60;
     if (clean.includes('bodily') && q.includes('Bodily Injury')) score += 50;
+    if (clean.includes('property damage') && q.includes('Property Damage')) score += 50;
     if (clean.includes('water backup') && q.includes('Water Backup')) score += 60;
-    if ((clean.includes('gap') || clean.includes('lease')) && q.includes('Loan or Lease')) score += 60;
+    if ((clean.includes('gap') || clean.includes('loan') || clean.includes('lease')) && q.includes('Loan or Lease')) score += 60;
+    if (clean.includes('oem') && q.includes('OEM')) score += 60;
+    if (clean.includes('wind') && q.includes('Wind/Hail')) score += 60;
+    if (clean.includes('all-perils') || clean.includes('aop')) score += 60;
+    if (clean.includes('dwelling') && q.includes('Dwelling')) score += 50;
     if (clean.includes('deductible') && q.includes('deductible')) score += 40;
     if (clean.includes('recalculate') && q.includes('recalculate')) score += 50;
+    if (clean.includes('paying monthly') || clean.includes('paying in full')) score += 50;
     if (clean.includes('agent') || clean.includes('call')) score += 30;
 
     if (score > bestScore) {
@@ -237,6 +271,7 @@ function normalizeVoice(text) {
   let res = text;
   res = res.replace(/\$([0-9,]+)/g, (m, p1) => parseInt(p1.replace(/,/g, ''), 10).toLocaleString() + " dollars");
   res = res.replace(/100\/300/g, "one hundred over three hundred thousand");
+  res = res.replace(/250\/500/g, "two hundred fifty over five hundred thousand");
   res = res.replace(/50\/100/g, "fifty over one hundred thousand");
   res = res.replace(/1-800-MY-AMFAM/g, "one eight hundred, my am fam");
   return res;
@@ -267,65 +302,12 @@ function speakVoice(text) {
   window.speechSynthesis.speak(utterance);
 }
 
-// Session Management & Live CXAS Agent Connection
-state.sessionId = 'amfam-web-' + Math.random().toString(36).substring(2, 9) + '-' + Date.now();
-state.isLiveAgentConnected = false;
-state.agentMetadata = null;
-
 function updateVoiceUI() {
   const bars = document.querySelectorAll('.voice-wave-bar-wrapper');
   bars.forEach(el => {
     if (state.bubble.isSpeaking) el.classList.remove('hidden');
     else el.classList.add('hidden');
   });
-}
-
-function showTypingIndicator() {
-  removeTypingIndicator();
-  const container = document.getElementById('advisor-messages-list');
-  if (!container) return;
-
-  const typingEl = document.createElement('div');
-  typingEl.id = 'agent-typing-indicator';
-  typingEl.className = 'flex flex-col items-start mb-3 animate-pulse';
-  typingEl.innerHTML = `
-    <div class="bg-white text-slate-600 border border-blue-200 rounded-2xl rounded-tl-xs px-3.5 py-2 text-xs flex items-center gap-2 shadow-xs">
-      <span class="w-2 h-2 rounded-full bg-blue-600 animate-bounce"></span>
-      <span class="w-2 h-2 rounded-full bg-blue-600 animate-bounce" style="animation-delay: 0.15s"></span>
-      <span class="w-2 h-2 rounded-full bg-blue-600 animate-bounce" style="animation-delay: 0.3s"></span>
-      <span class="text-[11px] font-semibold text-blue-900 ml-1">Live CXAS Agent is formulating response...</span>
-    </div>
-  `;
-  container.appendChild(typingEl);
-  container.scrollTop = container.scrollHeight;
-}
-
-function removeTypingIndicator() {
-  const el = document.getElementById('agent-typing-indicator');
-  if (el) el.remove();
-}
-
-function updateAgentStatusUI() {
-  const topPill = document.getElementById('agent-connection-pill');
-  const advisorBadge = document.getElementById('advisor-status-badge');
-
-  if (state.isLiveAgentConnected) {
-    if (topPill) {
-      topPill.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span> <span>Live CXAS Agent: <strong>amfam-faq-advisor</strong> (gecx-amfam)</span>`;
-      topPill.className = "text-emerald-300 font-bold flex items-center gap-1.5 text-[11px]";
-    }
-    if (advisorBadge) {
-      advisorBadge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> <span>Live GCP Agent (amfam-faq-advisor • Temp 0.0)</span>`;
-    }
-  } else {
-    if (topPill) {
-      topPill.innerHTML = `<span class="w-2 h-2 rounded-full bg-amber-400"></span> <span>Deterministic FAQ Engine (Standalone)</span>`;
-      topPill.className = "text-amber-300 font-semibold flex items-center gap-1.5 text-[11px]";
-    }
-    if (advisorBadge) {
-      advisorBadge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-blue-300"></span> <span>Deterministic Knowledge Base (Verbatim Mode)</span>`;
-    }
-  }
 }
 
 // Add Advisor Message
@@ -345,56 +327,24 @@ function renderAdvisorMessages() {
   const container = document.getElementById('advisor-messages-list');
   if (!container) return;
 
-  if (state.advisor.messages.length === 0) {
-    container.innerHTML = `
-      <div class="text-center py-6 px-3">
-        <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-900 to-blue-950 text-white mx-auto flex items-center justify-center font-black text-lg shadow-md mb-3 border border-red-500">
-          AF
-        </div>
-        <h4 class="font-extrabold text-slate-900 text-sm mb-1">AmFam Digital Coverage Advisor</h4>
-        <p class="text-xs text-slate-500 mb-4">Connected to Live GCP CXAS Agent • 100% Verbatim Fidelity</p>
-        
-        <div class="bg-blue-50/80 border border-blue-200 rounded-2xl p-3.5 text-xs text-slate-700 text-left mb-4 shadow-sm">
-          👋 Welcome to American Family Insurance! Ask me any question about coverage limits (100/300), Comprehensive vs Collision, deductible trade-offs, Gap, Water Backup, or multi-policy bundling.
-        </div>
-
-        <div class="text-left space-y-2">
-          <p class="text-[11px] font-bold text-slate-600 uppercase tracking-wider">Suggested Inquiries:</p>
-          <button onclick="handleUserPrompt('What is Bodily Injury 100/300?')" class="w-full text-xs bg-white hover:bg-blue-50 text-blue-900 border border-slate-200 rounded-xl p-2.5 text-left font-medium transition flex items-center justify-between shadow-2xs">
-            <span>🚗 What is Bodily Injury 100/300?</span>
-            <span class="text-slate-400">→</span>
-          </button>
-          <button onclick="handleUserPrompt('How do I choose between a $500 and $1,000 deductible?')" class="w-full text-xs bg-white hover:bg-blue-50 text-blue-900 border border-slate-200 rounded-xl p-2.5 text-left font-medium transition flex items-center justify-between shadow-2xs">
-            <span>🛡️ How to choose deductible ($500 vs $1,000)?</span>
-            <span class="text-slate-400">→</span>
-          </button>
-          <button onclick="handleUserPrompt('What is Water Backup coverage?')" class="w-full text-xs bg-white hover:bg-blue-50 text-blue-900 border border-slate-200 rounded-xl p-2.5 text-left font-medium transition flex items-center justify-between shadow-2xs">
-            <span>🏠 What is Water Backup coverage?</span>
-            <span class="text-slate-400">→</span>
-          </button>
-          <button onclick="handleUserPrompt('How does bundling save me money?')" class="w-full text-xs bg-white hover:bg-blue-50 text-blue-900 border border-slate-200 rounded-xl p-2.5 text-left font-medium transition flex items-center justify-between shadow-2xs">
-            <span>🔗 How much do I save by bundling?</span>
-            <span class="text-slate-400">→</span>
-          </button>
-        </div>
-      </div>
-    `;
-    return;
-  }
-
   container.innerHTML = state.advisor.messages.map(m => {
     const isUser = m.sender === 'user';
     return `
       <div class="flex flex-col ${isUser ? 'items-end' : 'items-start'} mb-3">
-        <div class="${isUser ? 'bg-blue-900 text-white rounded-2xl rounded-tr-xs' : 'bg-white text-slate-800 border border-slate-200 rounded-2xl rounded-tl-xs shadow-xs'} px-4 py-2.5 max-w-[88%] text-xs leading-relaxed">
+        <div class="${isUser ? 'bg-[#002F6C] text-white rounded-2xl rounded-tr-xs' : 'bg-white text-slate-800 border border-slate-200 rounded-2xl rounded-tl-xs shadow-xs'} px-4 py-2.5 max-w-[88%] text-xs leading-relaxed">
           <div class="flex justify-between items-start gap-2">
             <span>${m.text}</span>
             ${!isUser ? `
-              <button onclick="speakVoice('${m.text.replace(/'/g, "\\'")}')" class="text-slate-400 hover:text-blue-600 p-0.5 shrink-0" title="Listen">
+              <button onclick="speakVoice('${m.text.replace(/'/g, "\\'")}')" class="text-slate-400 hover:text-blue-600 p-0.5 shrink-0" title="Listen with Spoken Voice">
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>
               </button>
             ` : ''}
           </div>
+          ${m.toolAction ? `
+            <div class="mt-2 pt-2 border-t border-slate-100 text-[10px] font-mono text-blue-700 bg-blue-50 p-1.5 rounded">
+              ⚡ ${m.toolAction}
+            </div>
+          ` : ''}
         </div>
         <span class="text-[10px] text-slate-400 px-1 mt-0.5">${m.time}</span>
         ${m.quickReplies && m.quickReplies.length > 0 ? `
@@ -415,84 +365,85 @@ function renderAdvisorMessages() {
   }, 50);
 }
 
-// Local In-Browser Deterministic FAQ Search (Fallback)
-function handleLocalFallback(q) {
-  const lower = q.toLowerCase();
-  if (lower.includes('agent') || lower.includes('human') || lower.includes('call') || lower.includes('speak') || lower.includes('commercial')) {
-    const resp = "I can connect you directly with a licensed American Family Insurance agent right now. Click below to call 1-800-MY-AMFAM or request a priority callback.";
-    addMessage('agent', resp, ["📞 Call 1-800-MY-AMFAM (1-800-692-6326)", "Schedule Agent Callback", "Back to Coverages"]);
-    if (state.bubble.isVoiceMode) speakVoice(resp);
-    return;
-  }
-
-  const match = searchFAQ(q);
-  if (match) {
-    addMessage('agent', match.answer, [
-      "What is Bodily Injury 100/300?",
-      "How to choose deductible?",
-      "Speak with an Agent"
-    ]);
-    if (state.bubble.isVoiceMode) speakVoice(match.answer);
-  } else {
-    const fallback = "I'm your Digital Coverage Advisor. I can explain auto & home coverages, liability limits, deductibles, and discounts. How can I help you today?";
-    addMessage('agent', fallback, [
-      "What is Bodily Injury 100/300?",
-      "What is Water Backup?",
-      "Speak with an Agent"
-    ]);
-    if (state.bubble.isVoiceMode) speakVoice(fallback);
-  }
-}
-
-// User Prompt Handler — Sends requests to Live CXAS Agent backend
-async function handleUserPrompt(text) {
+// User Prompt Handler
+function handleUserPrompt(text) {
   if (!text || !text.trim()) return;
   const q = text.trim();
 
-  // If advisor closed, open it
+  // Ensure advisor is open
   toggleAdvisor(true);
 
-  // Add User Message
   addMessage('user', q);
 
-  // Show typing indicator
-  showTypingIndicator();
-
-  // Try calling the live CXAS agent on GCP
-  try {
-    const response = await fetch('/api/chat', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        session_id: state.sessionId,
-        message: q
-      })
-    });
-
-    if (response.ok) {
-      const data = await response.json();
-      removeTypingIndicator();
-
-      if (data.status === 'success' && data.reply) {
-        const quickReplies = [
-          "🚗 What is Bodily Injury 100/300?",
-          "🛡️ How to choose deductible?",
-          "🏠 What is Water Backup?",
-          "📞 Speak with an Agent"
-        ];
-
-        addMessage('agent', data.reply, quickReplies);
-        if (state.bubble.isVoiceMode) speakVoice(data.reply);
-        return;
-      }
-    }
-  } catch (err) {
-    console.warn("Live CXAS API call failed, falling back to local deterministic FAQ engine:", err);
+  // Check for Human Escalation
+  const lower = q.toLowerCase();
+  if (lower.includes('agent') || lower.includes('human') || lower.includes('call') || lower.includes('speak') || lower.includes('commercial')) {
+    setTimeout(() => {
+      const resp = "I can connect you directly with a licensed American Family Insurance agent right now. Click below to call 1-800-MY-AMFAM (1-800-692-6326) or request a priority callback.";
+      addMessage('agent', resp, ["📞 Call 1-800-MY-AMFAM", "Schedule Agent Callback", "Review Coverage Finalization"], "Action: trigger_escalation (1-800-692-6326)");
+      if (state.bubble.isVoiceMode) speakVoice(resp);
+    }, 250);
+    return;
   }
 
-  // Fallback to local deterministic search if backend is unavailable
-  removeTypingIndicator();
-  handleLocalFallback(q);
+  // Deterministic FAQ Search
+  const match = searchFAQ(q);
+  setTimeout(() => {
+    if (match) {
+      addMessage('agent', match.answer, [
+        "What is Bodily Injury 100/300?",
+        "How to choose deductible?",
+        "What is Water Backup?",
+        "Speak with an Agent"
+      ], `FAQ: ${match.category} • ${match.subcategory}`);
+      if (state.bubble.isVoiceMode) speakVoice(match.answer);
+    } else {
+      const fallback = "I'm your Digital Coverage Advisor. I can explain auto & home coverages, liability limits, deductibles, and discounts. How can I help you today?";
+      addMessage('agent', fallback, [
+        "What is Bodily Injury 100/300?",
+        "What is Water Backup?",
+        "Speak with an Agent"
+      ]);
+      if (state.bubble.isVoiceMode) speakVoice(fallback);
+    }
+  }, 200);
+}
+
+// Interactive Coverage Explainer Launcher (For Finalization Table items)
+function explainCoverage(term) {
+  toggleAdvisor(true);
+  handleUserPrompt(term);
+}
+
+// Confirm & Bind Policy Handler
+function confirmAndBindPolicy() {
+  const nameInp = document.getElementById('sig-name-input');
+  const agreeCheck = document.getElementById('sig-agree-check');
+  
+  if (!agreeCheck.checked) {
+    alert("Please check the declaration box agreeing to the Terms of Service & Electronic Delivery before binding.");
+    return;
+  }
+
+  const signerName = nameInp ? nameInp.value : "Jane M. Doe";
+  const modal = document.getElementById('bind-success-modal');
+  const modalSigner = document.getElementById('bind-modal-signer');
+  if (modalSigner) modalSigner.innerText = signerName;
+  if (modal) modal.classList.remove('hidden');
+
+  // Trigger Advisor Congratulations message
+  setTimeout(() => {
+    addMessage('agent', `🎉 Congratulations ${signerName}! Your American Family Auto & Home bundle policy (Ref: #AF-849204-TX) has been successfully bound. Your coverage begins at 12:01 AM on September 1, 2026.`, [
+      "Download Policy Deck PDF",
+      "View MyAmFam ID Cards",
+      "What is paperless auto-pay?"
+    ]);
+  }, 400);
+}
+
+function closeBindModal() {
+  const modal = document.getElementById('bind-success-modal');
+  if (modal) modal.classList.add('hidden');
 }
 
 // Initialize on page load
@@ -504,22 +455,8 @@ async function init() {
     console.log("Loaded fallback inline FAQs");
   }
 
-  // Check live agent backend status
-  try {
-    const statusRes = await fetch('/api/status');
-    if (statusRes.ok) {
-      state.agentMetadata = await statusRes.json();
-      state.isLiveAgentConnected = true;
-      console.log("Connected to Live CXAS Agent:", state.agentMetadata);
-    }
-  } catch (e) {
-    console.log("Running in standalone/offline mode");
-  }
-  updateAgentStatusUI();
-
-  // Start 5-second countdown immediately on page visit/refresh
+  renderAdvisorMessages();
   startBubbleCountdown();
 }
 
 window.addEventListener('DOMContentLoaded', init);
-

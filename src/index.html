@@ -14,30 +14,24 @@
 </head>
 <body class="bg-white text-slate-900 min-h-screen flex flex-col font-sans antialiased selection:bg-red-100 selection:text-red-900">
 
-  <!-- SANDBOX SIMULATION STATUS & 5-SECOND TIMER BAR -->
+  <!-- TOP SANDBOX SIMULATION STATUS & 5-SECOND TIMER BAR -->
   <div class="bg-slate-900 text-white px-4 py-2 text-xs flex flex-wrap justify-between items-center sticky top-0 z-50 border-b border-slate-800">
     <div class="flex items-center gap-3">
       <span class="inline-flex items-center gap-1.5 font-bold text-red-400">
         <span class="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
-        AMFAM.COM EXACT REPLICA
+        AMFAM POLICY FINALIZATION SANDBOX
       </span>
       <span class="text-slate-600">|</span>
-      <span id="agent-connection-pill" class="text-emerald-300 font-bold flex items-center gap-1.5 text-[11px]">
-        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-        Live CXAS Agent: amfam-faq-advisor (gecx-amfam)
-      </span>
+      <span class="text-slate-300 hidden sm:inline">APEX Auto &amp; Home Bundle • Quote #AF-849204-TX</span>
     </div>
 
     <!-- 5-SECOND TRIGGER CONTROLS -->
     <div class="flex items-center gap-2">
-      <div id="bubble-timer-badge" class="bg-red-900/80 text-red-200 border border-red-700 px-2.5 py-1 rounded-full text-[11px] font-bold flex items-center gap-1.5 shadow-sm">
-        ⏱️ Chat Bubble Populates in <strong>5s</strong>
+      <div id="bubble-timer-badge" class="bg-emerald-900/80 text-emerald-200 border border-emerald-700 px-2.5 py-1 rounded-full text-[11px] font-bold flex items-center gap-1.5 shadow-sm">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span> <span>Advisor Active</span>
       </div>
       <button onclick="resetBubbleTimer()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-[11px] font-semibold px-2.5 py-1 rounded-md border border-slate-700 transition">
         🔄 Re-test 5s Trigger
-      </button>
-      <button onclick="populateChatBubble()" class="bg-red-600 hover:bg-red-700 text-white text-[11px] font-bold px-2.5 py-1 rounded-md transition shadow-xs">
-        ⚡ Pop Now
       </button>
     </div>
   </div>
@@ -109,40 +103,40 @@
   </header>
 
   <!-- ========================================================================= -->
-  <!-- HERO SECTION: "Life's better when you're under our roof." -->
+  <!-- HERO SECTION & PRODUCT TILES (MATCHING USER'S ATTACHED SCREENSHOT) -->
   <!-- ========================================================================= -->
   <main id="main-content" class="flex-grow">
     
-    <section class="relative bg-white py-12 sm:py-16 px-4 sm:px-8 text-center max-w-5xl mx-auto">
+    <section class="relative bg-white pt-10 pb-6 px-4 sm:px-8 text-center max-w-5xl mx-auto">
       <!-- OFFICIAL RED ROOFLINE VECTOR SVG -->
-      <div class="flex justify-center mb-6">
+      <div class="flex justify-center mb-4">
         <img alt="American Family Insurance red roofline" width="680" height="75" class="h-auto max-w-full" src="https://edge.sitecorecloud.io/americanfamilymutualinsurance-j9xa8vzv/media/project/amfam/public/heros/rooflinesvg.svg?h=96&iar=0&w=864" />
       </div>
 
-      <h1 class="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-[#002F6C] tracking-tight leading-tight mb-4">
+      <h1 class="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-[#002F6C] tracking-tight leading-tight mb-3">
         Life's better when you're <br/>
         <span class="text-[#002F6C]">under our roof.</span>
       </h1>
 
-      <p class="text-base sm:text-xl font-bold text-slate-700 mb-8">
+      <p class="text-sm sm:text-lg font-bold text-slate-700 mb-6">
         Save up to 40% when you bundle home and auto*
       </p>
 
       <!-- ZIP CODE QUOTE STARTER FORM -->
-      <div class="max-w-md mx-auto mb-8">
-        <form onsubmit="event.preventDefault(); handleUserPrompt('I am ready for a quote in ZIP ' + document.getElementById('hero-zip').value);" class="flex items-center shadow-lg rounded-full border-2 border-slate-200 bg-white p-1.5 focus-within:border-[#0A58CA] transition">
+      <div class="max-w-md mx-auto mb-6">
+        <form onsubmit="event.preventDefault(); handleUserPrompt('I am ready for a quote in ZIP ' + document.getElementById('hero-zip').value);" class="flex items-center shadow-md rounded-full border-2 border-slate-200 bg-white p-1.5 focus-within:border-[#0A58CA] transition">
           <div class="pl-4 pr-2 text-slate-400">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
           </div>
           <input id="hero-zip" type="text" value="53711" placeholder="Enter Zip Code" class="w-full text-sm font-bold text-slate-900 placeholder:text-slate-400 focus:outline-none bg-transparent" />
-          <button type="submit" class="bg-[#0A58CA] hover:bg-[#002F6C] text-white font-bold px-6 py-3 rounded-full text-xs sm:text-sm whitespace-nowrap transition transform active:scale-95 shadow-md">
+          <button type="submit" class="bg-[#0A58CA] hover:bg-[#002F6C] text-white font-bold px-6 py-2.5 rounded-full text-xs sm:text-sm whitespace-nowrap transition transform active:scale-95 shadow-md">
             Start a quote
           </button>
         </form>
       </div>
 
       <!-- QUICK ACTION HERO LINKS -->
-      <div class="flex flex-wrap justify-center items-center gap-6 text-xs sm:text-sm font-bold text-[#002F6C]">
+      <div class="flex flex-wrap justify-center items-center gap-6 text-xs font-bold text-[#002F6C]">
         <a href="javascript:void(0)" onclick="handleUserPrompt('How do I pay my bill?')" class="flex items-center gap-1.5 hover:text-red-600 transition">
           <span>💳 Pay a bill</span>
         </a>
@@ -157,15 +151,13 @@
       </div>
     </section>
 
-    <!-- ========================================================================= -->
-    <!-- FEATURED PRODUCT TILES (EXACT REPLICA) -->
-    <!-- ========================================================================= -->
-    <section class="py-10 bg-[#F8F9FA] border-y border-slate-200">
+    <!-- FEATURED PRODUCT TILES (MATCHING SCREENSHOT WITH BUNDLES HIGHLIGHTED) -->
+    <section class="py-6 bg-[#F8F9FA] border-y border-slate-200">
       <div class="max-w-7xl mx-auto px-4 sm:px-8">
         <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-3">
           
           <!-- EDUCATION TIPS -->
-          <div onclick="handleUserPrompt('What are your top insurance education tips?')" class="bg-white rounded-2xl p-4 border border-slate-200 shadow-2xs hover:shadow-md hover:border-blue-400 transition cursor-pointer flex flex-col justify-between h-36">
+          <div onclick="handleUserPrompt('What are your top insurance education tips?')" class="bg-white rounded-2xl p-4 border border-slate-200 shadow-2xs hover:shadow-md hover:border-blue-400 transition cursor-pointer flex flex-col justify-between h-32">
             <span class="bg-emerald-100 text-emerald-800 text-[10px] font-black uppercase px-2 py-0.5 rounded-full w-fit">NEW!</span>
             <div class="text-2xl">💡</div>
             <div class="flex justify-between items-center text-xs font-bold text-[#002F6C]">
@@ -174,8 +166,8 @@
             </div>
           </div>
 
-          <!-- BUNDLES -->
-          <div onclick="handleUserPrompt('How does bundling save me money?')" class="bg-white rounded-2xl p-4 border-2 border-red-500 shadow-2xs hover:shadow-md transition cursor-pointer flex flex-col justify-between h-36">
+          <!-- BUNDLES (HIGHLIGHTED IN RED BORDER AS IN SCREENSHOT) -->
+          <div onclick="handleUserPrompt('How does bundling save me money?')" class="bg-white rounded-2xl p-4 border-2 border-red-500 shadow-md transition cursor-pointer flex flex-col justify-between h-32 ring-2 ring-red-100">
             <span class="bg-red-600 text-white text-[10px] font-black uppercase px-2 py-0.5 rounded-full w-fit">SAVE!</span>
             <div class="text-2xl">🚗🏠</div>
             <div class="flex justify-between items-center text-xs font-bold text-[#002F6C]">
@@ -185,7 +177,7 @@
           </div>
 
           <!-- CAR -->
-          <div onclick="handleUserPrompt('What does auto insurance cover?')" class="bg-white rounded-2xl p-4 border border-slate-200 shadow-2xs hover:shadow-md hover:border-blue-400 transition cursor-pointer flex flex-col justify-between h-36">
+          <div onclick="handleUserPrompt('What does auto insurance cover?')" class="bg-white rounded-2xl p-4 border border-slate-200 shadow-2xs hover:shadow-md hover:border-blue-400 transition cursor-pointer flex flex-col justify-between h-32">
             <div class="h-4"></div>
             <div class="text-2xl">🚗</div>
             <div class="flex justify-between items-center text-xs font-bold text-[#002F6C]">
@@ -195,7 +187,7 @@
           </div>
 
           <!-- HOME -->
-          <div onclick="handleUserPrompt('What does homeowners insurance cover?')" class="bg-white rounded-2xl p-4 border border-slate-200 shadow-2xs hover:shadow-md hover:border-blue-400 transition cursor-pointer flex flex-col justify-between h-36">
+          <div onclick="handleUserPrompt('What does homeowners insurance cover?')" class="bg-white rounded-2xl p-4 border border-slate-200 shadow-2xs hover:shadow-md hover:border-blue-400 transition cursor-pointer flex flex-col justify-between h-32">
             <div class="h-4"></div>
             <div class="text-2xl">🏠</div>
             <div class="flex justify-between items-center text-xs font-bold text-[#002F6C]">
@@ -205,7 +197,7 @@
           </div>
 
           <!-- LIFE -->
-          <div onclick="handleUserPrompt('Tell me about life insurance options')" class="bg-white rounded-2xl p-4 border border-slate-200 shadow-2xs hover:shadow-md hover:border-blue-400 transition cursor-pointer flex flex-col justify-between h-36">
+          <div onclick="handleUserPrompt('Tell me about life insurance options')" class="bg-white rounded-2xl p-4 border border-slate-200 shadow-2xs hover:shadow-md hover:border-blue-400 transition cursor-pointer flex flex-col justify-between h-32">
             <div class="h-4"></div>
             <div class="text-2xl">🛡️</div>
             <div class="flex justify-between items-center text-xs font-bold text-[#002F6C]">
@@ -215,7 +207,7 @@
           </div>
 
           <!-- RENTERS -->
-          <div onclick="handleUserPrompt('What does renters insurance cover?')" class="bg-white rounded-2xl p-4 border border-slate-200 shadow-2xs hover:shadow-md hover:border-blue-400 transition cursor-pointer flex flex-col justify-between h-36">
+          <div onclick="handleUserPrompt('What does renters insurance cover?')" class="bg-white rounded-2xl p-4 border border-slate-200 shadow-2xs hover:shadow-md hover:border-blue-400 transition cursor-pointer flex flex-col justify-between h-32">
             <div class="h-4"></div>
             <div class="text-2xl">🏢</div>
             <div class="flex justify-between items-center text-xs font-bold text-[#002F6C]">
@@ -225,7 +217,7 @@
           </div>
 
           <!-- VIEW ALL -->
-          <div onclick="handleUserPrompt('Show all insurance products')" class="bg-white rounded-2xl p-4 border border-slate-200 shadow-2xs hover:shadow-md hover:border-blue-400 transition cursor-pointer flex flex-col justify-between h-36">
+          <div onclick="handleUserPrompt('Show all insurance products')" class="bg-white rounded-2xl p-4 border border-slate-200 shadow-2xs hover:shadow-md hover:border-blue-400 transition cursor-pointer flex flex-col justify-between h-32">
             <div class="h-4"></div>
             <div class="text-2xl">➕</div>
             <div class="flex justify-between items-center text-xs font-bold text-[#002F6C]">
@@ -239,89 +231,289 @@
     </section>
 
     <!-- ========================================================================= -->
-    <!-- TRUSTED PROOF POINTS: 12 MILLION CUSTOMERS & J.D. POWER -->
+    <!-- MOCK POLICY FINALIZATION & REVIEW INTERFACE (ADDED DIRECTLY BELOW) -->
     <!-- ========================================================================= -->
-    <section class="py-16 px-4 sm:px-8 max-w-7xl mx-auto">
-      <div class="flex flex-col md:flex-row items-center justify-between gap-6 mb-12">
-        <div>
-          <h2 class="text-2xl sm:text-4xl font-extrabold text-[#002F6C] tracking-tight">
-            Trusted by over 12 million customers &amp; counting
-          </h2>
-          <p class="text-sm text-slate-600 mt-1">Protecting what matters most for more than 95 years.</p>
+    <section class="py-12 px-4 sm:px-8 max-w-6xl mx-auto">
+      
+      <!-- CHECKOUT STEPPER -->
+      <div class="flex items-center justify-between max-w-2xl mx-auto mb-8 text-xs font-bold">
+        <div class="flex items-center gap-2 text-emerald-700">
+          <span class="w-6 h-6 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center text-xs">✓</span>
+          <span>1. Vehicle &amp; Property</span>
         </div>
-        <img alt="trophy doodle" class="h-20 w-auto" src="https://edge.sitecorecloud.io/americanfamilymutualinsurance-j9xa8vzv/media/project/amfam/public/home-page/trophydoodle.svg" />
+        <div class="w-12 h-0.5 bg-emerald-300"></div>
+        <div class="flex items-center gap-2 text-emerald-700">
+          <span class="w-6 h-6 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center text-xs">✓</span>
+          <span>2. Coverages Selected</span>
+        </div>
+        <div class="w-12 h-0.5 bg-blue-600"></div>
+        <div class="flex items-center gap-2 text-[#002F6C]">
+          <span class="w-6 h-6 rounded-full bg-[#002F6C] text-white flex items-center justify-center text-xs ring-4 ring-blue-100">3</span>
+          <span class="underline decoration-red-500 decoration-2 font-extrabold">3. Review &amp; Bind</span>
+        </div>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <!-- MAIN FINALIZATION CARD -->
+      <div class="bg-white rounded-3xl border border-slate-200 shadow-xl overflow-hidden mb-10">
         
-        <!-- CARD 1: TRUSTPILOT -->
-        <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-3">
-          <div class="text-amber-400 text-lg">★★★★★</div>
-          <h3 class="text-lg font-bold text-slate-900">Trustpilot reviews</h3>
-          <p class="text-xs text-slate-600 leading-relaxed">
-            Read authentic experiences from over 100,000 satisfied American Family customers.
-          </p>
-          <a href="javascript:void(0)" onclick="handleUserPrompt('What do customer reviews say?')" class="text-xs font-bold text-[#0A58CA] hover:underline block pt-2">
-            Read reviews →
-          </a>
+        <!-- CARD HEADER -->
+        <div class="bg-gradient-to-r from-[#002F6C] to-[#0C2340] text-white p-6 sm:p-8 flex flex-wrap justify-between items-center gap-4">
+          <div>
+            <div class="flex items-center gap-2 mb-1.5">
+              <span class="bg-red-600 text-white text-[10px] uppercase font-bold px-2.5 py-0.5 rounded-full">Final Step</span>
+              <span class="text-blue-200 text-xs font-mono">Quote Reference: <strong>#AF-849204-TX</strong></span>
+            </div>
+            <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight">Review &amp; Finalize Your Coverage</h2>
+            <p class="text-xs sm:text-sm text-blue-200 mt-1">Bundled American Family Auto &amp; Homeowners Policy • Status: <span class="text-emerald-300 font-bold">Ready to Bind</span></p>
+          </div>
+          
+          <div class="bg-blue-950/80 border border-blue-700/60 rounded-2xl p-3 text-right">
+            <div class="text-[11px] text-blue-300">Total Combined Binder Due</div>
+            <div class="text-2xl font-black text-amber-300">$189.25 <span class="text-xs text-white font-normal">/ mo</span></div>
+            <div class="text-[10px] text-emerald-400">Includes $297.00 Bundle Savings</div>
+          </div>
         </div>
 
-        <!-- CARD 2: J.D. POWER #1 -->
-        <div class="bg-white rounded-3xl p-6 border-2 border-blue-600 shadow-md space-y-3">
-          <span class="bg-blue-100 text-blue-900 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">Award Winning</span>
-          <h3 class="text-lg font-bold text-slate-900">#1 in customer satisfaction</h3>
-          <p class="text-xs text-slate-600 leading-relaxed">
-            Ranked #1 for Digital Insurance Shopping Experience by J.D. Power.
-          </p>
-          <span class="text-[11px] font-semibold text-slate-500 block">- J.D. Power 2023 Study</span>
-        </div>
+        <div class="p-6 sm:p-8 space-y-8">
+          
+          <!-- ADVISOR CONTEXT PROMPT BANNER -->
+          <div class="bg-blue-50/80 border border-blue-200 rounded-2xl p-4 flex items-center justify-between gap-4 text-xs text-slate-700">
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 rounded-xl bg-blue-900 text-white flex items-center justify-center font-bold text-xs shrink-0">AF</div>
+              <div>
+                <span class="font-bold text-[#002F6C]">Questions before binding?</span>
+                <span class="text-slate-600"> Click any coverage limit or deductible below to ask your Digital Coverage Advisor.</span>
+              </div>
+            </div>
+            <button onclick="toggleAdvisor(true)" class="bg-[#002F6C] hover:bg-[#0A58CA] text-white font-bold px-3.5 py-2 rounded-xl text-xs whitespace-nowrap transition shadow-2xs">
+              Open Advisor 💬
+            </button>
+          </div>
 
-        <!-- CARD 3: APP STORE -->
-        <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-3">
-          <div class="text-amber-400 text-lg">★ 4.7 / 5.0</div>
-          <h3 class="text-lg font-bold text-slate-900">4.7 App Store Rating</h3>
-          <p class="text-xs text-slate-600 leading-relaxed">
-            84k+ customer reviews on the MyAmFam mobile app. Manage claims, view ID cards, and access 24/7 advisor.
-          </p>
-          <a href="javascript:void(0)" onclick="handleUserPrompt('Tell me about the MyAmFam mobile app')" class="text-xs font-bold text-[#0A58CA] hover:underline block pt-2">
-            Get the app →
-          </a>
+          <!-- 1. POLICY SUMMARY -->
+          <div>
+            <h3 class="text-base font-extrabold text-[#002F6C] flex items-center gap-2 mb-4">
+              <span class="w-6 h-6 rounded-lg bg-blue-100 text-[#002F6C] flex items-center justify-center text-xs">1</span>
+              <span>Policy Summary</span>
+            </h3>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              
+              <!-- AUTO PROTECTION CARD -->
+              <div class="border border-slate-200 rounded-2xl p-5 bg-white shadow-2xs space-y-4">
+                <div class="flex justify-between items-start border-b border-slate-100 pb-3">
+                  <div>
+                    <span class="text-[10px] font-bold uppercase text-red-600">APEX Auto Protection</span>
+                    <h4 class="text-sm font-bold text-slate-900">2023 Honda CR-V (VIN: 7FA...901)</h4>
+                    <p class="text-[11px] text-slate-500">Underwritten by Midvale Indemnity Company</p>
+                  </div>
+                  <span class="text-xs font-bold text-[#002F6C] bg-blue-50 px-2.5 py-1 rounded-lg">$642.00 (6 Mo)</span>
+                </div>
+
+                <div class="space-y-2.5 text-xs">
+                  <div class="flex justify-between items-center p-2 rounded-xl bg-slate-50 hover:bg-blue-50/50 transition cursor-pointer" onclick="explainCoverage('What is the difference between Bodily Injury limits like 100/300 or 250/500?');">
+                    <div>
+                      <span class="font-bold text-slate-900">$250k/$500k Bodily Injury (BI)</span>
+                      <span class="text-[11px] text-slate-500 block">Max per person / max per accident</span>
+                    </div>
+                    <span class="text-blue-600 font-semibold text-[11px]">Explain ℹ️</span>
+                  </div>
+
+                  <div class="flex justify-between items-center p-2 rounded-xl bg-slate-50 hover:bg-blue-50/50 transition cursor-pointer" onclick="explainCoverage('What does Property Damage (PD) liability cover?');">
+                    <div>
+                      <span class="font-bold text-slate-900">$100k Property Damage (PD)</span>
+                      <span class="text-[11px] text-slate-500 block">Damage to third-party vehicles &amp; property</span>
+                    </div>
+                    <span class="text-blue-600 font-semibold text-[11px]">Explain ℹ️</span>
+                  </div>
+
+                  <div class="grid grid-cols-2 gap-2">
+                    <div class="p-2 rounded-xl bg-slate-50 hover:bg-blue-50/50 transition cursor-pointer" onclick="explainCoverage('What is Comprehensive coverage and what does it cover?');">
+                      <span class="text-[10px] text-slate-500 block">Comprehensive Ded</span>
+                      <span class="font-bold text-slate-900">$500 Deductible</span>
+                    </div>
+                    <div class="p-2 rounded-xl bg-slate-50 hover:bg-blue-50/50 transition cursor-pointer" onclick="explainCoverage('How do I choose between a $250, $500, or $1,000 deductible for Comprehensive or Collision?');">
+                      <span class="text-[10px] text-slate-500 block">Collision Ded</span>
+                      <span class="font-bold text-slate-900">$500 Deductible</span>
+                    </div>
+                  </div>
+
+                  <div class="flex justify-between items-center pt-2 text-[11px] text-slate-600">
+                    <span>Includes: Loan/Lease (Gap), Roadside Assistance</span>
+                    <button onclick="explainCoverage('What is Loan or Lease Assistance (Gap) coverage?');" class="text-blue-600 hover:underline">Gap Info</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- HOMEOWNERS PROTECTION CARD -->
+              <div class="border border-slate-200 rounded-2xl p-5 bg-white shadow-2xs space-y-4">
+                <div class="flex justify-between items-start border-b border-slate-100 pb-3">
+                  <div>
+                    <span class="text-[10px] font-bold uppercase text-amber-600">APEX Homeowners (HO-3)</span>
+                    <h4 class="text-sm font-bold text-slate-900">1428 Elm Ridge Ct, Austin, TX</h4>
+                    <p class="text-[11px] text-slate-500">Underwritten by Homesite Insurance Company</p>
+                  </div>
+                  <span class="text-xs font-bold text-[#002F6C] bg-blue-50 px-2.5 py-1 rounded-lg">$1,280.00 (12 Mo)</span>
+                </div>
+
+                <div class="space-y-2.5 text-xs">
+                  <div class="flex justify-between items-center p-2 rounded-xl bg-slate-50 hover:bg-blue-50/50 transition cursor-pointer" onclick="explainCoverage('What is Dwelling coverage (Coverage A) and how is the amount determined?');">
+                    <div>
+                      <span class="font-bold text-slate-900">$450k Dwelling (Coverage A)</span>
+                      <span class="text-[11px] text-slate-500 block">Estimated structure replacement cost</span>
+                    </div>
+                    <span class="text-blue-600 font-semibold text-[11px]">Explain ℹ️</span>
+                  </div>
+
+                  <div class="flex justify-between items-center p-2 rounded-xl bg-slate-50 hover:bg-blue-50/50 transition cursor-pointer" onclick="explainCoverage('What is Personal Liability coverage (Coverage E)?');">
+                    <div>
+                      <span class="font-bold text-slate-900">$300k Personal Liability</span>
+                      <span class="text-[11px] text-slate-500 block">Protects against injury &amp; property lawsuits</span>
+                    </div>
+                    <span class="text-blue-600 font-semibold text-[11px]">Explain ℹ️</span>
+                  </div>
+
+                  <div class="grid grid-cols-2 gap-2">
+                    <div class="p-2 rounded-xl bg-slate-50 hover:bg-blue-50/50 transition cursor-pointer" onclick="explainCoverage('What is a Wind/Hail deductible and how is it different from my standard deductible?');">
+                      <span class="text-[10px] text-slate-500 block">Wind / Hail Ded</span>
+                      <span class="font-bold text-slate-900">1% ($4,500)</span>
+                    </div>
+                    <div class="p-2 rounded-xl bg-slate-50 hover:bg-blue-50/50 transition cursor-pointer" onclick="explainCoverage('What is the All-Perils (AOP) deductible?');">
+                      <span class="text-[10px] text-slate-500 block">All Peril Ded</span>
+                      <span class="font-bold text-slate-900">$1,500 Deductible</span>
+                    </div>
+                  </div>
+
+                  <div class="flex justify-between items-center pt-2 text-[11px] text-slate-600">
+                    <span>Includes: $25k Water Backup, 25% Extended Replacement</span>
+                    <button onclick="explainCoverage('What is Water Backup coverage and do I need it?');" class="text-blue-600 hover:underline">Water Backup Info</button>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- 2. DISCOUNTS APPLIED -->
+          <div>
+            <h3 class="text-base font-extrabold text-[#002F6C] flex items-center gap-2 mb-4">
+              <span class="w-6 h-6 rounded-lg bg-blue-100 text-[#002F6C] flex items-center justify-center text-xs">2</span>
+              <span>Discounts Applied</span>
+            </h3>
+
+            <div class="bg-emerald-50/70 border border-emerald-200 rounded-2xl p-5 space-y-3">
+              <div class="flex justify-between items-center text-xs text-emerald-950 font-medium pb-2 border-b border-emerald-200/60">
+                <span class="flex items-center gap-2">
+                  <span class="text-emerald-700 font-bold">✓</span>
+                  <span>Multi-Policy Bundle Discount (Auto + Home)</span>
+                </span>
+                <span class="font-bold text-emerald-800">-$184.00 / yr</span>
+              </div>
+              <div class="flex justify-between items-center text-xs text-emerald-950 font-medium pb-2 border-b border-emerald-200/60">
+                <span class="flex items-center gap-2">
+                  <span class="text-emerald-700 font-bold">✓</span>
+                  <span>Paperless &amp; Autopay Enrollment</span>
+                </span>
+                <span class="font-bold text-emerald-800">-$45.00 / yr</span>
+              </div>
+              <div class="flex justify-between items-center text-xs text-emerald-950 font-medium">
+                <span class="flex items-center gap-2">
+                  <span class="text-emerald-700 font-bold">✓</span>
+                  <span>Safe Driver (KnowYourDrive) &amp; Home Security System</span>
+                </span>
+                <span class="font-bold text-emerald-800">-$68.00 / yr</span>
+              </div>
+              <div class="pt-2 flex justify-between items-center text-xs font-extrabold text-emerald-900 border-t border-emerald-300">
+                <span>Total Annual Policy Savings:</span>
+                <span>-$297.00 / year</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. PAYMENT & BILLING SCHEDULE -->
+          <div>
+            <h3 class="text-base font-extrabold text-[#002F6C] flex items-center gap-2 mb-4">
+              <span class="w-6 h-6 rounded-lg bg-blue-100 text-[#002F6C] flex items-center justify-center text-xs">3</span>
+              <span>Payment &amp; Billing Schedule</span>
+            </h3>
+
+            <div class="border border-slate-200 rounded-2xl overflow-hidden text-xs">
+              <div class="bg-slate-50 p-4 border-b border-slate-200 flex flex-wrap justify-between items-center gap-2">
+                <div>
+                  <span class="text-slate-500 font-medium">Total Combined Annual Cost:</span>
+                  <span class="font-bold text-slate-900 text-sm ml-1">$2,271.00</span>
+                </div>
+                <div>
+                  <span class="text-slate-500 font-medium">Payment Frequency:</span>
+                  <span class="font-bold text-[#002F6C] bg-blue-50 px-2 py-0.5 rounded ml-1">Monthly Installments (12-pay)</span>
+                </div>
+              </div>
+
+              <div class="divide-y divide-slate-100 bg-white">
+                <div class="p-4 flex justify-between items-center">
+                  <span class="font-bold text-slate-900">Due Today (Binder Payment):</span>
+                  <span class="font-extrabold text-[#002F6C] text-base">$189.25</span>
+                </div>
+                <div class="p-4 flex justify-between items-center">
+                  <span class="text-slate-700">Future Monthly Auto-Draft:</span>
+                  <span class="font-bold text-slate-800">$189.25 / month (starting Oct 1, 2026)</span>
+                </div>
+                <div class="p-4 flex justify-between items-center">
+                  <span class="text-slate-700">Payment Method Selected:</span>
+                  <span class="font-bold text-slate-800">💳 Visa ending in 4821</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4. ELECTRONIC SIGNATURE & CONSENT -->
+          <div class="border-t border-slate-200 pt-8">
+            <h3 class="text-base font-extrabold text-[#002F6C] flex items-center gap-2 mb-4">
+              <span class="w-6 h-6 rounded-lg bg-blue-100 text-[#002F6C] flex items-center justify-center text-xs">4</span>
+              <span>Electronic Signature &amp; Consent</span>
+            </h3>
+
+            <div class="bg-slate-50 border border-slate-200 rounded-2xl p-6 space-y-4">
+              <p class="text-xs text-slate-600 leading-relaxed">
+                <strong>Applicant Declaration:</strong> By typing your name below, you certify that all information provided in this quote is accurate to the best of your knowledge. Coverage begins at 12:01 AM on September 1, 2026, pending successful initial payment processing.
+              </p>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1">Full Legal Name (Signature)</label>
+                  <input id="sig-name-input" type="text" value="Jane M. Doe" class="w-full bg-white border border-slate-300 rounded-xl px-4 py-2.5 text-xs font-bold text-slate-900 focus:ring-2 focus:ring-[#0A58CA] focus:outline-none" />
+                </div>
+                <div>
+                  <label class="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1">Date</label>
+                  <input type="text" value="08/25/2026" disabled class="w-full bg-slate-100 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-bold text-slate-500" />
+                </div>
+              </div>
+
+              <label class="flex items-start gap-3 pt-2 cursor-pointer">
+                <input id="sig-agree-check" type="checkbox" checked class="w-4 h-4 text-blue-600 rounded mt-0.5" />
+                <span class="text-xs text-slate-700 font-medium">
+                  I agree to the Terms of Service, Electronic Delivery, Paperless Policy Documents, and Underwriting Disclosures.
+                </span>
+              </label>
+
+              <!-- ACTION BUTTONS -->
+              <div class="flex flex-wrap justify-between items-center gap-4 pt-4 border-t border-slate-200">
+                <button onclick="handleUserPrompt('How do I go back and change my vehicle or driver information?');" class="text-xs font-bold text-slate-600 hover:text-slate-900 flex items-center gap-1.5 px-4 py-2.5 rounded-xl border border-slate-300 hover:bg-slate-100 transition">
+                  <span>← Edit Quote Details</span>
+                </button>
+                <button onclick="confirmAndBindPolicy();" class="bg-[#0A58CA] hover:bg-[#002F6C] text-white font-extrabold px-8 py-3.5 rounded-xl text-sm shadow-md transition transform active:scale-95 flex items-center gap-2">
+                  <span>CONFIRM &amp; BIND COVERAGE</span>
+                  <span>→</span>
+                </button>
+              </div>
+
+            </div>
+          </div>
+
         </div>
 
       </div>
-    </section>
 
-    <!-- ========================================================================= -->
-    <!-- 2-COLUMN ACTION CHOICE: "DO IT YOURSELF" OR "WORK WITH AN AGENT" -->
-    <!-- ========================================================================= -->
-    <section class="bg-[#F8F9FA] py-16 px-4 sm:px-8 border-t border-slate-200">
-      <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
-        
-        <!-- DIY START A QUOTE -->
-        <div class="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm flex flex-col justify-between items-center text-center">
-          <img alt="Do it yourself start a quote" class="h-24 w-auto mb-4" src="https://edge.sitecorecloud.io/americanfamilymutualinsurance-j9xa8vzv/media/project/amfam/public/2-column-cta/global-assets/global-quote-cta/do-it-yourself-start-a-quote.svg?h=121&iar=0&w=141" />
-          <h3 class="text-xl font-bold text-[#002F6C] mb-2">Do it yourself</h3>
-          <p class="text-xs text-slate-600 mb-6 max-w-xs">
-            Start a fast quote online in minutes with our real-time Digital Coverage Advisor to help every step of the way.
-          </p>
-          <button onclick="handleUserPrompt('Help me start a self-service quote');" class="bg-[#0A58CA] hover:bg-[#002F6C] text-white font-bold px-6 py-3 rounded-full text-xs transition transform active:scale-95 shadow-xs">
-            Start an online quote →
-          </button>
-        </div>
-
-        <!-- WORK WITH AN AGENT -->
-        <div class="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm flex flex-col justify-between items-center text-center">
-          <img alt="Work with an agent" class="h-24 w-auto mb-4" src="https://edge.sitecorecloud.io/americanfamilymutualinsurance-j9xa8vzv/media/project/amfam/public/2-column-cta/global-assets/global-quote-cta/work-with-an-agent.svg?h=173&iar=0&w=139" />
-          <h3 class="text-xl font-bold text-[#002F6C] mb-2">Work with an agent</h3>
-          <p class="text-xs text-slate-600 mb-6 max-w-xs">
-            Connect with an experienced local American Family agent who knows your community and can tailor coverage.
-          </p>
-          <button onclick="handleUserPrompt('Connect me with a local agent');" class="bg-[#002F6C] hover:bg-slate-900 text-white font-bold px-6 py-3 rounded-full text-xs transition transform active:scale-95 shadow-xs">
-            Find an agent near you →
-          </button>
-        </div>
-
-      </div>
     </section>
 
   </main>
@@ -329,129 +521,62 @@
   <!-- ========================================================================= -->
   <!-- FOOTER -->
   <!-- ========================================================================= -->
-  <footer class="bg-white border-t border-slate-200 py-12 px-4 sm:px-8 text-slate-600 text-xs">
-    <div class="max-w-7xl mx-auto space-y-8">
+  <footer class="bg-white border-t border-slate-200 py-10 px-4 sm:px-8 text-slate-600 text-xs">
+    <div class="max-w-7xl mx-auto space-y-6">
       
-      <div class="flex flex-wrap justify-between items-center gap-4 pb-8 border-b border-slate-100">
-        <img alt="American Family Insurance Footer Logo" class="h-10 w-auto" src="https://edge.sitecorecloud.io/americanfamilymutualinsurance-j9xa8vzv/media/project/amfam/public/navigations/footer/amfam-logo.svg" />
+      <div class="flex flex-wrap justify-between items-center gap-4 pb-6 border-b border-slate-100">
+        <img alt="American Family Insurance Footer Logo" class="h-9 w-auto" src="https://edge.sitecorecloud.io/americanfamilymutualinsurance-j9xa8vzv/media/project/amfam/public/navigations/footer/amfam-logo.svg" />
         <div class="flex items-center gap-3">
-          <img alt="App Store" class="h-9 w-auto" src="https://edge.sitecorecloud.io/americanfamilymutualinsurance-j9xa8vzv/media/project/amfam/public/navigations/footer/apple-app-store.svg" />
-          <img alt="Google Play" class="h-9 w-auto" src="https://edge.sitecorecloud.io/americanfamilymutualinsurance-j9xa8vzv/media/project/amfam/public/navigations/footer/googleplay.svg" />
+          <img alt="App Store" class="h-8 w-auto" src="https://edge.sitecorecloud.io/americanfamilymutualinsurance-j9xa8vzv/media/project/amfam/public/navigations/footer/apple-app-store.svg" />
+          <img alt="Google Play" class="h-8 w-auto" src="https://edge.sitecorecloud.io/americanfamilymutualinsurance-j9xa8vzv/media/project/amfam/public/navigations/footer/googleplay.svg" />
         </div>
       </div>
 
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-6 text-[11px]">
-        <div>
-          <h4 class="font-bold text-[#002F6C] uppercase tracking-wider mb-2">Insurance</h4>
-          <ul class="space-y-1.5">
-            <li><a href="javascript:void(0)" onclick="handleUserPrompt('What does auto insurance cover?')" class="hover:text-red-600">Car Insurance</a></li>
-            <li><a href="javascript:void(0)" onclick="handleUserPrompt('What does home insurance cover?')" class="hover:text-red-600">Homeowners Insurance</a></li>
-            <li><a href="javascript:void(0)" onclick="handleUserPrompt('What is bundle discount?')" class="hover:text-red-600">Bundle &amp; Save</a></li>
-            <li><a href="javascript:void(0)" onclick="handleUserPrompt('Tell me about renters insurance')" class="hover:text-red-600">Renters Insurance</a></li>
-          </ul>
-        </div>
-        <div>
-          <h4 class="font-bold text-[#002F6C] uppercase tracking-wider mb-2">Claims &amp; Support</h4>
-          <ul class="space-y-1.5">
-            <li><a href="javascript:void(0)" onclick="handleUserPrompt('How do I file a claim?')" class="hover:text-red-600">File a Claim</a></li>
-            <li><a href="javascript:void(0)" onclick="handleUserPrompt('How to pay bill?')" class="hover:text-red-600">Pay a Bill</a></li>
-            <li><a href="javascript:void(0)" onclick="handleUserPrompt('How to get ID cards?')" class="hover:text-red-600">Insurance ID Cards</a></li>
-            <li><a href="javascript:void(0)" onclick="handleUserPrompt('Speak with customer service')" class="hover:text-red-600">Customer Support</a></li>
-          </ul>
-        </div>
-        <div>
-          <h4 class="font-bold text-[#002F6C] uppercase tracking-wider mb-2">Company</h4>
-          <ul class="space-y-1.5">
-            <li><a href="javascript:void(0)" class="hover:text-red-600">About American Family</a></li>
-            <li><a href="javascript:void(0)" class="hover:text-red-600">Careers</a></li>
-            <li><a href="javascript:void(0)" class="hover:text-red-600">Newsroom</a></li>
-            <li><a href="javascript:void(0)" class="hover:text-red-600">Community Investment</a></li>
-          </ul>
-        </div>
-        <div>
-          <h4 class="font-bold text-[#002F6C] uppercase tracking-wider mb-2">Underwriting</h4>
-          <p class="text-[10px] text-slate-500 leading-normal">
-            APEX Auto is underwritten by Midvale Indemnity Company. APEX Home is underwritten by Homesite Insurance Company. American Family Mutual Insurance Company, S.I. &amp; Operating Companies, 6000 American Parkway, Madison, WI 53783.
-          </p>
-        </div>
-      </div>
-
-      <div class="pt-6 border-t border-slate-100 text-[10px] text-slate-400 text-center">
-        <p>© 2026 American Family Insurance. All rights reserved. Privacy Policy | Terms of Use | Security</p>
+      <div class="text-[10px] text-slate-400 text-center leading-relaxed">
+        <p>© 2026 American Family Insurance Company. APEX Auto is underwritten by Midvale Indemnity Company. APEX Home is underwritten by Homesite Insurance Company. American Family Mutual Insurance Company, S.I. &amp; Operating Companies, 6000 American Parkway, Madison, WI 53783.</p>
       </div>
 
     </div>
   </footer>
 
   <!-- ========================================================================= -->
-  <!-- 5-SECOND POPULATING CHAT BUBBLE & DIGITAL COVERAGE ADVISOR WIDGET -->
+  <!-- DIGITAL COVERAGE ADVISOR WIDGET (MATCHING EXACT ATTACHED SCREENSHOT) -->
   <!-- ========================================================================= -->
-  <div id="chat-bubble-container" class="fixed bottom-6 right-6 z-50 flex-col items-end hidden">
+  <div id="chat-bubble-container" class="fixed bottom-6 right-6 z-50 flex flex-col items-end">
     
-    <!-- CALLOUT TEASER BUBBLE (POPS UP ABOVE THE BUTTON) -->
-    <div id="chat-callout-teaser" class="callout-teaser-float bg-white rounded-3xl p-4 shadow-2xl border-2 border-red-500 max-w-xs mb-3 text-xs text-slate-800 relative hidden">
-      <button onclick="document.getElementById('chat-callout-teaser').classList.add('hidden')" class="absolute top-2.5 right-2.5 text-slate-400 hover:text-slate-600 p-0.5">
-        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-      </button>
-
-      <div class="flex items-center gap-2 mb-2">
-        <div class="w-6 h-6 rounded-lg bg-blue-900 text-white flex items-center justify-center font-bold text-[10px]">AF</div>
-        <span class="font-extrabold text-blue-950 text-xs">Digital Coverage Advisor</span>
-        <span class="text-[9px] bg-red-100 text-red-700 font-bold px-1.5 py-0.5 rounded-full">Active</span>
-      </div>
-
-      <p class="text-slate-600 text-[11px] leading-relaxed mb-3">
-        👋 Hi there! Need quick answers on Bodily Injury limits, deductibles, or bundle savings? Ask me anything!
-      </p>
-
-      <div class="space-y-1.5">
-        <button onclick="handleUserPrompt('What is Bodily Injury 100/300?')" class="w-full text-[11px] bg-blue-50 hover:bg-blue-100 text-blue-900 border border-blue-200 rounded-xl px-2.5 py-1.5 text-left font-medium transition flex items-center justify-between">
-          <span>🚗 What is 100/300 limit?</span>
-          <span>→</span>
-        </button>
-        <button onclick="handleUserPrompt('What is Water Backup coverage?')" class="w-full text-[11px] bg-blue-50 hover:bg-blue-100 text-blue-900 border border-blue-200 rounded-xl px-2.5 py-1.5 text-left font-medium transition flex items-center justify-between">
-          <span>🏠 What is Water Backup?</span>
-          <span>→</span>
-        </button>
-      </div>
-
-      <!-- Pointer triangle -->
-      <div class="absolute -bottom-2 right-8 w-4 h-4 bg-white border-r-2 border-b-2 border-red-500 transform rotate-45"></div>
-    </div>
-
-    <!-- EXPANDED ADVISOR CHAT PANEL -->
-    <div id="advisor-chat-panel" class="w-[360px] sm:w-[390px] bg-white rounded-3xl shadow-2xl border border-slate-200 flex flex-col overflow-hidden mb-3 hidden h-[540px]">
+    <!-- EXPANDED ADVISOR CHAT PANEL (MATCHING SCREENSHOT UI) -->
+    <div id="advisor-chat-panel" class="w-[360px] sm:w-[410px] bg-white rounded-2xl shadow-2xl border border-slate-300 flex flex-col overflow-hidden mb-3 h-[560px] transition-all duration-200">
       
-      <!-- HEADER -->
-      <div class="bg-gradient-to-r from-[#002F6C] to-[#0C2340] text-white p-4 flex items-center justify-between">
+      <!-- HEADER WITH GCP AGENT SUBTITLE AS IN SCREENSHOT -->
+      <div class="bg-[#002F6C] text-white px-4 py-3 flex items-center justify-between shadow-xs">
         <div class="flex items-center gap-3">
-          <div class="w-9 h-9 rounded-xl bg-blue-800 flex items-center justify-center font-bold text-sm shadow-inner border border-red-500">
+          <div class="w-8 h-8 rounded-full bg-[#0A58CA] flex items-center justify-center font-bold text-xs shadow-inner border border-blue-400">
             AF
           </div>
           <div>
-            <div class="font-bold text-sm leading-none">Digital Coverage Advisor</div>
-            <div id="advisor-status-badge" class="text-[10px] text-blue-300 flex items-center gap-1 mt-1">
+            <div class="font-bold text-xs sm:text-sm leading-none text-white">Digital Coverage Advisor</div>
+            <div class="text-[10px] text-blue-200 flex items-center gap-1 mt-1 font-mono">
               <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-              <span>Live GCP Agent (amfam-faq-advisor • Temp 0.0)</span>
+              <span>Live GCP Agent [amfam-faq-advisor • Temp 0.0]</span>
             </div>
           </div>
         </div>
 
-        <div class="flex items-center gap-1">
+        <div class="flex items-center gap-2">
           <!-- VOICE TOGGLE -->
-          <button onclick="state.bubble.isVoiceMode = !state.bubble.isVoiceMode; this.classList.toggle('text-amber-400'); if(!state.bubble.isVoiceMode && ('speechSynthesis' in window)) window.speechSynthesis.cancel();" class="p-1.5 text-slate-300 hover:text-white rounded-lg transition" title="Toggle Voice Readout">
+          <button onclick="state.bubble.isVoiceMode = !state.bubble.isVoiceMode; this.classList.toggle('text-amber-300'); if(!state.bubble.isVoiceMode && ('speechSynthesis' in window)) window.speechSynthesis.cancel();" class="text-blue-200 hover:text-white p-1 transition" title="Toggle Voice">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/></svg>
           </button>
           <!-- CLOSE -->
-          <button onclick="toggleAdvisor(false)" class="p-1.5 text-slate-300 hover:text-white rounded-lg transition">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+          <button onclick="toggleAdvisor(false)" class="text-blue-200 hover:text-white p-1 transition">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
           </button>
         </div>
       </div>
 
       <!-- VOICE BAR INDICATOR -->
-      <div class="voice-wave-bar-wrapper hidden bg-blue-950 px-4 py-1.5 flex items-center justify-between text-[11px] text-blue-200 border-b border-blue-800">
-        <span class="flex items-center gap-1.5">
+      <div class="voice-wave-bar-wrapper hidden bg-[#0C2340] px-4 py-1 flex items-center justify-between text-[10px] text-blue-200 border-b border-blue-900">
+        <span class="flex items-center gap-1">
           <span class="voice-bar w-1 bg-amber-400 rounded"></span>
           <span class="voice-bar w-1 bg-amber-400 rounded"></span>
           <span class="voice-bar w-1 bg-amber-400 rounded"></span>
@@ -462,10 +587,10 @@
         <button onclick="if('speechSynthesis' in window) window.speechSynthesis.cancel(); state.bubble.isSpeaking=false; updateVoiceUI();" class="text-slate-400 hover:text-white text-[10px] underline">Stop</button>
       </div>
 
-      <!-- MESSAGES SCROLL -->
-      <div id="advisor-messages-list" class="flex-grow p-4 overflow-y-auto bg-slate-50/50 space-y-3"></div>
+      <!-- MESSAGES SCROLL (MATCHING SCREENSHOT CHAT HISTORY) -->
+      <div id="advisor-messages-list" class="flex-grow p-4 overflow-y-auto bg-[#F8FAFC] space-y-3"></div>
 
-      <!-- INPUT -->
+      <!-- INPUT BAR -->
       <div class="p-3 bg-white border-t border-slate-200">
         <form onsubmit="event.preventDefault(); const inp = document.getElementById('chat-text-inp'); handleUserPrompt(inp.value); inp.value='';">
           <div class="flex items-center gap-2">
@@ -480,7 +605,7 @@
     </div>
 
     <!-- GLOWING & JUMPING CHAT LAUNCHER BUTTON -->
-    <button id="chat-bubble-button" onclick="toggleAdvisor()" class="relative bg-gradient-to-br from-[#002F6C] to-[#0C2340] text-white p-4 rounded-full shadow-2xl transition transform flex items-center justify-center border-2 border-[#D71920]">
+    <button id="chat-bubble-button" onclick="toggleAdvisor()" class="relative bg-gradient-to-br from-[#002F6C] to-[#0C2340] text-white p-4 rounded-full shadow-2xl transition transform flex items-center justify-center border-2 border-[#D71920] bubble-glowing">
       <!-- Notification Ping -->
       <div class="absolute -top-1 -right-1 w-4 h-4 bg-[#D71920] rounded-full animate-ping"></div>
       <div class="absolute -top-1 -right-1 w-4 h-4 bg-[#D71920] rounded-full flex items-center justify-center text-[9px] font-bold text-white">1</div>
@@ -488,6 +613,43 @@
       <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
     </button>
 
+  </div>
+
+  <!-- BIND SUCCESS MODAL -->
+  <div id="bind-success-modal" class="fixed inset-0 bg-slate-950/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-3xl max-w-md w-full p-8 shadow-2xl border border-slate-200 text-center space-y-4">
+      <div class="w-16 h-16 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center text-3xl mx-auto shadow-inner">
+        🎉
+      </div>
+      <h3 class="text-2xl font-black text-[#002F6C]">Coverage Bound!</h3>
+      <p class="text-xs text-slate-600">
+        Thank you, <strong id="bind-modal-signer">Jane M. Doe</strong>! Your American Family Auto &amp; Homeowners bundle is officially confirmed.
+      </p>
+      
+      <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 text-xs text-left space-y-1.5 font-mono">
+        <div class="flex justify-between">
+          <span class="text-slate-500">Policy Binder:</span>
+          <span class="font-bold text-[#002F6C]">AMFAM-POL-849204-TX</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-slate-500">Effective Date:</span>
+          <span class="font-bold text-slate-900">09/01/2026 12:01 AM</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-slate-500">Monthly Auto-Draft:</span>
+          <span class="font-bold text-emerald-700">$189.25 / mo</span>
+        </div>
+      </div>
+
+      <div class="space-y-2 pt-2">
+        <button onclick="alert('Downloading Policy Binder PDF & Auto ID Cards...'); closeBindModal();" class="w-full bg-[#0A58CA] hover:bg-[#002F6C] text-white font-bold py-3 rounded-xl text-xs shadow-md transition">
+          📄 Download Proof of Insurance (PDF)
+        </button>
+        <button onclick="closeBindModal()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold py-2.5 rounded-xl text-xs transition">
+          Close Window
+        </button>
+      </div>
+    </div>
   </div>
 
   <script src="app.js"></script>
