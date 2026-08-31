@@ -26,7 +26,7 @@ conversations:
               reason: "out_of_scope_query"
     expectations:
       - "The agent must recognize pet insurance as out-of-scope and call escalate_to_agent"
-      - "The agent must output the exact canned specialist connection response with 1-800-MYAMFAM"
+      - "The agent must output the exact canned specialist connection response with 1-800-MYAMFAM (1-800-692-6326)"
     tags: [P0, BLOCKER, out-of-scope, escalation, exact-match]
 
   - conversation: life_insurance_out_of_scope

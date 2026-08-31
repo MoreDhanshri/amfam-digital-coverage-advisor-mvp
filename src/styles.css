@@ -224,18 +224,45 @@ body {
 }
 
 /* =========================================================================
-   GOOGLE CES OOTB CHAT-MESSENGER STYLING & BRANDING
+   GOOGLE CES OOTB CHAT-MESSENGER STYLING & BRANDING (Tier 1 CSS Tokens)
    ========================================================================= */
 
 chat-messenger {
-  --chat-messenger-color--primary: #002F6C;
-  --chat-messenger-color--secondary: #D71920;
-  --chat-messenger-color--primary-container: #E8F1FA;
-  --chat-messenger-color--on-primary: #FFFFFF;
-  --chat-messenger-color--on-primary-container: #002F6C;
-  --chat-messenger-color--surface: #FFFFFF;
-  --chat-messenger-color--surface-container: #F8FAFC;
-  --chat-messenger-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  /* ── BRAND COLORS ─────────────────────────────────────────────────── */
+  --chat-messenger-color--primary:              #002F6C;  /* AmFam Navy Blue */
+  --chat-messenger-color--primary-container:    #E8F0FE;  /* User message bubble background */
+  --chat-messenger-color--on-primary:           #FFFFFF;  /* Text on primary */
+  --chat-messenger-color--on-primary-container: #002F6C;  /* Text on user message bubble */
+  --chat-messenger-color--secondary:            #D71920;  /* AmFam Iconic Red accent */
+
+  /* ── SURFACES ─────────────────────────────────────────────────────── */
+  --chat-messenger-color--surface:              #FFFFFF;  /* Chat body background */
+  --chat-messenger-color--surface-container:    #F8FAFD;  /* Widget card backgrounds */
+  --chat-messenger-color--surface-container-high: #F1F4F9; /* Input field background */
+
+  /* ── TEXT & ICONS ─────────────────────────────────────────────────── */
+  --chat-messenger-color--on-surface:           #1E293B;  /* Slate 900 primary text */
+  --chat-messenger-color--on-surface-variant:   #64748B;  /* Slate 500 secondary text / icons */
+
+  /* ── UTILITIES ────────────────────────────────────────────────────── */
+  --chat-messenger-color--outline:              #CBD5E1;  /* Slate 300 borders / dividers */
+  --chat-messenger-color--link:                 #0A58CA;  /* AmFam Action Blue hyperlinks */
+  --chat-messenger-color--error:                #D71920;  /* AmFam Red error states */
+
+  /* ── SHAPE ────────────────────────────────────────────────────────── */
+  --chat-messenger-shape--corner-value-small:        8px;
+  --chat-messenger-shape--corner-value-medium:       12px;
+  --chat-messenger-shape--corner-value-large:        16px;
+  --chat-messenger-shape--corner-value-extra-large:  20px; /* Main window corner */
+  --chat-messenger-shape--corner-fully-rounded:      100px;
+
+  /* ── TYPOGRAPHY ───────────────────────────────────────────────────── */
+  --chat-messenger-font-family: 'Open Sans', ui-sans-serif, system-ui, -apple-system, sans-serif;
+
+  /* ── POSITIONING (slide-over render-mode) ─────────────────────────── */
   z-index: 99999;
+  position: fixed;
+  bottom: 0;
+  right: 0;
 }
 

@@ -61,7 +61,7 @@ conversations:
         tool_calls:
           - action: escalate_to_agent
             args:
-              reason: "customer_requested_agent"
+              reason: "out_of_scope_query"
     expectations:
       - "The agent must route claims inquiries to escalate_to_agent"
       - "The agent must provide contact number 1-800-MYAMFAM"

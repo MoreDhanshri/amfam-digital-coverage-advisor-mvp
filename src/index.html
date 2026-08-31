@@ -11,6 +11,7 @@
   <!-- Google Customer Engagement Suite (CES) Fast OOTB Chat Messenger -->
   <script defer src="https://www.gstatic.com/ces-console/fast/chat-messenger/prod/v1/chat-messenger.js"></script>
   <link rel="stylesheet" href="https://www.gstatic.com/ces-console/fast/chat-messenger/prod/v1/themes/chat-messenger-default.css">
+  <link rel="stylesheet" href="https://www.gstatic.com/ces-console/fast/chat-messenger/prod/v1/themes/chat-messenger-layout.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -27,8 +28,8 @@
         AMFAM SANDBOX
       </span>
       <span class="text-slate-600">|</span>
-      <span class="text-slate-300 hidden sm:inline">APEX Auto &amp; Home Bundle • Digital Coverage Advisor MVP</span>
-      <span class="bg-blue-950 text-blue-300 px-2 py-0.5 rounded border border-blue-800 font-mono text-[10px] hidden md:inline">Target: gecx-dm-demo</span>
+      <span class="text-slate-300 hidden sm:inline">AmFam FAQ Advisor • Live Voice &amp; Chat Agent</span>
+      <a href="https://ces.cloud.google.com/projects/gecx-amfam/locations/us/apps/b8159ce5-24ba-4578-8547-b58995268856" target="_blank" class="bg-emerald-950 text-emerald-300 px-2 py-0.5 rounded border border-emerald-800 font-mono text-[10px] hidden md:inline hover:underline" title="Open in Google CES Portal">CES Portal: gecx-amfam (b8159ce5) ↗</a>
     </div>
 
     <!-- 10-SECOND TRIGGER CONTROLS & VIEWPORT SWITCHER -->
@@ -72,7 +73,7 @@
       <div class="bg-[#F8F9FA] border-b border-slate-200 py-1.5 px-4 sm:px-8 text-xs font-semibold text-slate-700">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
           <div>
-            <span class="text-slate-500 font-mono text-[11px]">AmFam Digital Advisor • Phase 1 MVP</span>
+            <span class="text-slate-500 font-mono text-[11px]">AmFam FAQ Advisor • Google Cloud CES Live</span>
           </div>
           <div class="flex items-center space-x-6">
             <a href="javascript:void(0)" onclick="handleUserPrompt('How can I find a local agent?')" class="hover:text-red-600 transition flex items-center gap-1">
@@ -1030,48 +1031,28 @@
   </div>
 
   <!-- ========================================================================= -->
-  <!-- DIGITAL COVERAGE ADVISOR WIDGET (TWO-WAY VOICE + REAL-TIME BARGE-IN) -->
-  <!-- ========================================================================= -->
-  <!-- ========================================================================= -->
-  <!-- GOOGLE CUSTOMER ENGAGEMENT SUITE (CES) OOTB CHAT-MESSENGER WEB WIDGET -->
+  <!-- GOOGLE CUSTOMER ENGAGEMENT SUITE (CES) OFFICIAL OOTB CHAT MESSENGER -->
+  <!-- Deployment: projects/gecx-amfam/locations/us/apps/b8159ce5-24ba-4578-8547-b58995268856/deployments/amfam-faq-advisor-web-widget -->
+  <!-- Modality: CHAT_AND_VOICE (Native CES Neural Voice + Server-Side VAD Barge-In) -->
   <!-- ========================================================================= -->
   <chat-messenger
-    id="amfam-ces-widget"
     url-allowlist="*"
     render-mode="slide-over"
     language-code="en"
     max-query-length="-1"
   >
     <chat-messenger-container
-      chat-title="AmFam Digital Coverage Advisor"
-      chat-title-icon="https://gstatic.com/dialogflow-console/common/assets/ccai-favicons/conversational_agents.png"
+      chat-title="AmFam FAQ Advisor"
+      chat-title-icon="https://edge.sitecorecloud.io/americanfamilymutualinsurance-j9xa8vzv/media/project/amfam/public/navigations/main/american-family-logo.svg"
       enable-audio-input
+      enable-file-upload
     >
-      <chat-reset-session-button slot="titlebar-actions" title-text="New chat"></chat-reset-session-button>
+      <!-- Titlebar Action Slots (Sanctioned Pierce Point 3) -->
+      <chat-reset-session-button slot="titlebar-actions" title-text="New Chat"></chat-reset-session-button>
       <chat-toggle-dialog-button slot="titlebar-actions" title-text-expanded="Collapse" title-text-collapsed="Expand"></chat-toggle-dialog-button>
       <chat-messenger-close-button slot="titlebar-actions" title-text="Close"></chat-messenger-close-button>
     </chat-messenger-container>
   </chat-messenger>
-
-  <script>
-    window.addEventListener('chat-messenger-loaded', () => {
-      try {
-        if (window.chatSdk && window.chatSdk.registerContext) {
-          chatSdk.registerContext(
-            chatSdk.prebuilts.ces.createContext({
-              deploymentName: 'projects/gecx-amfam/locations/us/apps/b8159ce5-24ba-4578-8547-b58995268856/deployments/amfam-faq-advisor-web-widget',
-              tokenBroker: {
-                enableTokenBroker: true,
-                enableRecaptcha: false,
-              },
-            })
-          );
-        }
-      } catch (err) {
-        console.warn('CES chatSdk registration error:', err);
-      }
-    });
-  </script>
 
   <!-- BIND SUCCESS MODAL -->
   <div id="bind-success-modal" class="fixed inset-0 bg-slate-950/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden">
