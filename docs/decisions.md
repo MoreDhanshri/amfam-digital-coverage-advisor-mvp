@@ -41,34 +41,4 @@
   5. Replaced custom floating chat DOM with `<chat-messenger>` and `<chat-messenger-container>` referencing official `chat-messenger.js` / `chat-messenger-default.css`, hooked `chatSdk.registerContext()`, and branded with AmFam design tokens.
 * **Consequences**: Zero conversational drift on non-FAQ queries, guaranteed compliance boundary, and direct alignment with Google Customer Engagement Suite best practices.
 
-## ADR-007: Remote Cloud Deployment, Mandatory Tool Call Guardrail & Web Widget Activation
-* **Date**: 2026-08-31
-* **Context**: Prior attempt falsely presumed local GCP OAuth token was expired and failed to push the agent to the remote CES platform, leaving a phantom deployment name in the frontend. Furthermore, evaluations against the live platform revealed that the model occasionally emitted canned response text without executing the required `escalate_to_agent` tool call due to missing out-of-scope triggers in `escalate_to_agent.json` and `<inline_example>` bias in `instruction.txt`.
-* **Decision**:
-  1. Verified active Altostrat OAuth token, pushed updated CXAS app to `projects/gecx-amfam/locations/us/apps/b8159ce5-24ba-4578-8547-b58995268856`, created version `a5cabb1e-8913-4722-8fe7-aebd7d57148e`.
-  2. Created real CES deployment `amfam-faq-advisor-web-widget` on GCP and promoted 100% traffic to the latest version.
-  3. Expanded `escalate_to_agent.json` pythonFunction description to explicitly cover all out-of-scope queries (pet, life, commercial, claims, cancellations, billing disputes, address updates, trivia).
-  4. Updated `instruction.txt` `<constraints>` and `<subtask name="Out_Of_Scope_And_Escalation">` to strictly forbid generating text before invoking `escalate_to_agent`.
-  5. Enhanced `after_model_callback` with fail-safe interception: if the model attempts to generate direct escalation text without calling `escalate_to_agent`, the callback converts the turn into `escalate_to_agent(reason="out_of_scope_query")`.
-  6. Executed comprehensive remote evaluation suite on GCP CES (`cxas run`): 19/19 tests PASSED (100%) across all 10 out-of-scope evaluations, auto coverage FAQs, and home coverage FAQs.
-* **Consequences**: 100% test pass rate on live Vertex AI CES platform, zero phantom deployments, verified live OOTB widget connection and server.py proxy.
 
-## ADR-008: Web Widget Restoration, DOM Trigger Hardening & End-to-End Browser CDP Verification
-* **Date**: 2026-08-31
-* **Context**: User reported being unable to open the chat widget on the website (`http://dhanshrimore.c.googlers.com:8080`). Root cause investigation using Chrome DevTools Protocol (CDP) revealed that the prior attempt had removed `#chat-bubble-container`, `#advisor-chat-panel`, and `#chat-bubble-button` from `src/index.html` in favor of `<chat-messenger>`. However, Google's `chat-messenger.js` script registers `<df-messenger>` rather than `<chat-messenger>`, leaving `<chat-messenger>` with 0px height, no shadow root, and no visible launcher button or open handler.
-* **Decision**:
-  1. Restored the complete `#chat-bubble-container`, `#advisor-chat-panel`, and `#chat-bubble-button` markup in `src/index.html` with explicit AmFam branding and live Google CES badge.
-  2. Updated `src/app.js` to ensure the launcher bubble is visible immediately upon page load (`flex` display, pulsing notification badge), and verified that `toggleAdvisor()` opens and focuses `#advisor-chat-panel`.
-  3. Re-wired communication to `/api/chat`, seamlessly proxying requests to the live `amfam-faq-advisor` agent on Google Cloud CES (`projects/gecx-amfam/locations/us/apps/b8159ce5-24ba-4578-8547-b58995268856`).
-  4. Executed comprehensive headless Chrome CDP verification: verified button click, panel expansion, 100% exact in-scope FAQ match, exact canned out-of-scope response, and captured UI screenshot (`chat_widget_verified.png`).
-* **Consequences**: Flawless, responsive web widget experience on the live demo portal backed by the optimized Google Cloud CES agent.
-
-## ADR-009: Google Cloud CES Portal App Alignment, WEB_UI Channel Profile & Live Voice Integration
-* **Date**: 2026-08-31
-* **Context**: User clarified that the agent on the website must explicitly correspond to the `amfam-faq-advisor` agent from their CES portal (`https://ces.cloud.google.com/projects/gecx-amfam/locations/us/apps/b8159ce5-24ba-4578-8547-b58995268856`). Inspection revealed that: (1) The deployment `amfam-faq-advisor-web-widget` had been created with `ChannelType.API` rather than `ChannelType.WEB_UI` with `CHAT_AND_VOICE` modality; (2) The website UI still carried legacy labels from the older `amfam-digital-coverage-advisor` app.
-* **Decision**:
-  1. Updated the GCP CES deployment `amfam-faq-advisor-web-widget` to `channelType: WEB_UI`, `modality: CHAT_AND_VOICE`, and `webWidgetTitle: "AmFam FAQ Advisor"`.
-  2. Rebranded all website headers, status badges, and widget titles in `src/index.html` and `src/app.js` to explicitly reflect `AmFam FAQ Advisor` with direct link to the CES portal (`b8159ce5-24ba-4578-8547-b58995268856`).
-  3. Updated `server.py` `/api/status` to expose the CES portal URL and deployment configuration, and restarted the server daemon.
-  4. Tested end-to-end with CDP browser automation: verified initial greeting, identity check ("Who are you?"), and live FAQ retrieval with voice playback, and captured screenshot `amfam_faq_advisor_live.png`.
-* **Consequences**: Full transparency and 1:1 parity between the Google Cloud CES portal and the live web demo experience.

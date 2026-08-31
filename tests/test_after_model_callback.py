@@ -150,23 +150,3 @@ def test_callback_enforces_farewell_on_end_session():
     result = after_model_callback(ctx, llm_resp)
     assert result is not None
     assert result.content.parts[0].text == cb_mod.FAREWELL_TEXT
-
-
-def test_callback_converts_direct_escalation_text_to_tool_call():
-    """Verify that if model generated escalation text directly without calling escalate_to_agent, it is converted to a tool call."""
-    ctx = CallbackContext(events=[])
-    llm_resp = LlmResponse(
-        content=Content(
-            role="model",
-            parts=[Part.from_text(text="I am connecting you with a licensed American Family Insurance specialist right now to assist you.")]
-        )
-    )
-    
-    result = after_model_callback(ctx, llm_resp)
-    assert result is not None
-    assert len(result.content.parts) == 1
-    part = result.content.parts[0]
-    assert hasattr(part, "function_call") and part.function_call is not None
-    assert part.function_call.name == "escalate_to_agent"
-    assert part.function_call.args == {"reason": "out_of_scope_query"}
-

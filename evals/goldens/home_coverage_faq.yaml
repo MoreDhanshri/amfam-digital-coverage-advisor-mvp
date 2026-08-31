@@ -38,7 +38,7 @@ conversations:
               question_key: "wind_hail_deductible"
     expectations:
       - "The agent must invoke lookup_coverage_faq with wind_hail_deductible"
-      - "The agent must deliver the exact Wind/Hail deductible definition verbatim"
+      - "The agent must explain the Wind/Hail percentage calculation verbatim"
     tags: [P0, BLOCKER, home-deductibles, exact-match]
 
   - conversation: home_water_backup_coverage

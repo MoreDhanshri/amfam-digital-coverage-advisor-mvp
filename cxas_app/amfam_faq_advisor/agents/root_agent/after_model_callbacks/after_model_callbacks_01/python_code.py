@@ -87,16 +87,6 @@ def after_model_callback(
                     elif resp_data.get("status") == "success" and "exact_answer" in resp_data:
                         exact_faq_answer = resp_data["exact_answer"]
 
-    # Guardrail: If model generated escalation text directly without invoking escalate_to_agent,
-    # convert it into the required escalate_to_agent function call.
-    if not has_escalate and not is_escalation_turn and has_text_this_call:
-        for part in llm_response.content.parts:
-            text = (part.text_or_transcript() or "").lower()
-            if "licensed american family insurance specialist" in text or "connecting you with a licensed" in text or "1-800-myamfam" in text:
-                return LlmResponse.from_parts(
-                    parts=[Part(function_call=FunctionCall(name="escalate_to_agent", args={"reason": "out_of_scope_query"}))]
-                )
-
     # If this is an escalation or not-found turn, enforce exact canned response
     if (is_escalation_turn or is_not_found) and has_text_this_call:
         non_fn_parts = [Part.from_text(text=CANNED_OUT_OF_SCOPE)]

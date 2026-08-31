@@ -5,6 +5,6 @@
     "pythonFunction": {
         "name": "escalate_to_agent",
         "pythonCode": "tools/escalate_to_agent/python_function/python_code.py",
-        "description": "Connects the customer to a licensed American Family Insurance specialist. You MUST invoke this tool for ALL out-of-scope inquiries (including pet insurance, life insurance, commercial insurance, filing or checking claim status, policy cancellations, billing disputes, address updates, or off-topic trivia) as well as when the user requests to speak with a human agent or representative."
+        "description": "Transfers the customer to a licensed American Family Insurance representative or agent for binding assistance or complex policy inquiries."
     }
 }

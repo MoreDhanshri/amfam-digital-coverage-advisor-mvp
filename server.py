@@ -174,45 +174,6 @@ class AmFamDemoHandler(http.server.SimpleHTTPRequestHandler):
         # Out-of-scope fallback canned response
         return CANNED_OUT_OF_SCOPE_RESPONSE, "escalate_to_agent", True
 
-    def _mint_ces_token(self):
-        """Mints short-lived Google access token for CES OOTB widget token broker."""
-        try:
-            import google.auth
-            import google.auth.transport.requests
-            creds, proj = google.auth.default(scopes=["https://www.googleapis.com/auth/cloud-platform"])
-            creds.refresh(google.auth.transport.requests.Request())
-            token = creds.token
-            expires_in = 3600
-            if creds.expiry:
-                import datetime
-                now = datetime.datetime.now(datetime.timezone.utc)
-                exp = creds.expiry.replace(tzinfo=datetime.timezone.utc) if creds.expiry.tzinfo is None else creds.expiry
-                expires_in = max(60, int((exp - now).total_seconds()))
-
-            payload = {
-                "token": token,
-                "accessToken": token,
-                "access_token": token,
-                "expires_in": expires_in,
-                "deployment": "projects/gecx-amfam/locations/us/apps/b8159ce5-24ba-4578-8547-b58995268856/deployments/amfam-faq-advisor-web-widget",
-                "deploymentName": "projects/gecx-amfam/locations/us/apps/b8159ce5-24ba-4578-8547-b58995268856/deployments/amfam-faq-advisor-web-widget",
-                "app": APP_NAME,
-                "project": "gecx-amfam",
-                "location": "us"
-            }
-            self.send_response(200)
-            self.send_header("Content-Type", "application/json")
-            self._send_cors_headers()
-            self.end_headers()
-            self.wfile.write(json.dumps(payload).encode("utf-8"))
-        except Exception as e:
-            logger.error(f"Token broker error: {e}")
-            self.send_response(500)
-            self.send_header("Content-Type", "application/json")
-            self._send_cors_headers()
-            self.end_headers()
-            self.wfile.write(json.dumps({"error": str(e)}).encode("utf-8"))
-
     def do_GET(self):
         if self.path == "/api/status":
             self.send_response(200)
@@ -222,41 +183,29 @@ class AmFamDemoHandler(http.server.SimpleHTTPRequestHandler):
             payload = {
                 "status": "online",
                 "agent_name": "amfam-faq-advisor",
-                "display_name": "AmFam FAQ Advisor",
                 "app_name": APP_NAME,
                 "app_id": "b8159ce5-24ba-4578-8547-b58995268856",
                 "project": "gecx-amfam",
                 "location": "us",
-                "portal_url": "https://ces.cloud.google.com/projects/gecx-amfam/locations/us/apps/b8159ce5-24ba-4578-8547-b58995268856",
-                "deployment": f"{APP_NAME}/deployments/amfam-faq-advisor-web-widget",
-                "channel_type": "WEB_UI",
-                "modality": "CHAT_AND_VOICE",
                 "model": "gemini-3-flash",
                 "temperature": 0.0,
                 "exact_match_guarantee": True,
                 "features": [
                     "Deterministic FAQ Knowledge Retrieval",
                     "Greedy Decoding (Temp 0.0)",
-                    "Live CXAS Session Service (b8159ce5-24ba-4578-8547-b58995268856)",
-                    "Native Google CES OOTB <chat-messenger> Widget",
-                    "Native CES Two-Way Streaming Voice with Server-Side VAD Barge-In",
-                    "Token Broker Authentication (/api/token)"
+                    "Live CXAS Session Service",
+                    "Automated 5s Glowing & Jumping Chat Bubble",
+                    "Voice Synthesis Readout"
                 ]
             }
             self.wfile.write(json.dumps(payload, indent=2).encode("utf-8"))
             return
-
-        if self.path in ("/api/token", "/token", "/mint-token"):
-            return self._mint_ces_token()
 
         # Serve static assets from src/
         return super().do_GET()
 
     def do_POST(self):
         global sessions_client
-        if self.path in ("/api/token", "/token", "/mint-token"):
-            return self._mint_ces_token()
-
         if self.path == "/api/chat":
             content_length = int(self.headers.get("Content-Length", 0))
             body = self.rfile.read(content_length).decode("utf-8")
