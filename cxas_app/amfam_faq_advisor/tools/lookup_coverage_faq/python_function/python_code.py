@@ -546,21 +546,13 @@ def lookup_coverage_faq(
     elif normalized_key in faq_aliases:
         target_key = faq_aliases[normalized_key]
     else:
-        # Check substring match against database keys
-        for k in FAQ_DATABASE:
-            if k in normalized_key or normalized_key in k:
-                target_key = k
-                break
-        # Check substring match against aliases
-        if not target_key:
-            for alias, resolved in faq_aliases.items():
-                if alias in normalized_key or normalized_key in alias:
-                    target_key = resolved
-                    break
-        # Fuzzy match with difflib across keys and aliases
+        # Check alias exact matching
+        if normalized_key in faq_aliases:
+            target_key = faq_aliases[normalized_key]
+        # Only do fuzzy matching if similarity is high (cutoff=0.75) to prevent out-of-scope false matches
         if not target_key:
             all_candidates = list(FAQ_DATABASE.keys()) + list(faq_aliases.keys())
-            close_matches = difflib.get_close_matches(normalized_key, all_candidates, n=1, cutoff=0.55)
+            close_matches = difflib.get_close_matches(normalized_key, all_candidates, n=1, cutoff=0.75)
             if close_matches:
                 match = close_matches[0]
                 target_key = faq_aliases.get(match, match)
@@ -581,5 +573,7 @@ def lookup_coverage_faq(
         "status": "not_found",
         "question_key": clean_key,
         "error": f"No exact FAQ found for key '{question_key}'.",
-        "agent_action": "Inform the customer politely that this specific question is not covered in the FAQ guide, and offer to connect them with a licensed agent via escalate_to_agent.",
+        "exact_answer": "I am connecting you with a licensed American Family Insurance specialist right now to assist you with your specific request. You can also call 1-800-MYAMFAM (1-800-692-6326).",
+        "action": "Output the canned escalation response VERBATIM: 'I am connecting you with a licensed American Family Insurance specialist right now to assist you with your specific request. You can also call 1-800-MYAMFAM (1-800-692-6326).'",
+        "agent_action": "Output the canned escalation response VERBATIM: 'I am connecting you with a licensed American Family Insurance specialist right now to assist you with your specific request. You can also call 1-800-MYAMFAM (1-800-692-6326).'",
     }

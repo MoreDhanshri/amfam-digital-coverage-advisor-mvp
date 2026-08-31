@@ -225,6 +225,24 @@ function resetBubbleTimer() {
 }
 
 function toggleAdvisor(forceOpen = null) {
+  const widget = document.getElementById("amfam-ces-widget") || document.querySelector("chat-messenger");
+
+  if (forceOpen !== null) {
+    state.bubble.isOpen = forceOpen;
+  } else {
+    state.bubble.isOpen = !state.bubble.isOpen;
+  }
+
+  if (widget) {
+    if (state.bubble.isOpen) {
+      if (typeof widget.open === "function") widget.open();
+    } else {
+      if (typeof widget.close === "function") widget.close();
+      stopSpeaking();
+      stopListening();
+    }
+  }
+
   const container = document.getElementById("chat-bubble-container");
   const panel = document.getElementById("advisor-chat-panel");
   const button = document.getElementById("chat-bubble-button");
@@ -232,12 +250,6 @@ function toggleAdvisor(forceOpen = null) {
   if (container && forceOpen === true) {
     container.classList.remove("hidden");
     container.classList.add("flex");
-  }
-
-  if (forceOpen !== null) {
-    state.bubble.isOpen = forceOpen;
-  } else {
-    state.bubble.isOpen = !state.bubble.isOpen;
   }
 
   if (state.bubble.isOpen) {
@@ -551,6 +563,7 @@ function normalizeVoice(text) {
   res = res.replace(/250\/500/g, "two hundred fifty over five hundred thousand dollars");
   
   res = res.replace(/1-800-MY-AMFAM/g, "one eight hundred, my am fam");
+  res = res.replace(/1-800-MYAMFAM/g, "one eight hundred, my am fam");
   res = res.replace(/1-800-692-6326/g, "one eight hundred, six nine two, six three two six");
   
   res = res.replace(/\bAOP\b/g, "All Other Perils");
@@ -633,7 +646,30 @@ function updateVoiceUI() {
 function searchFAQ(query) {
   if (!query || !state.faqs || state.faqs.length === 0) return null;
   const clean = query.toLowerCase().trim();
-  const tokens = clean.split(/\s+/).filter(t => t.length > 2);
+  const cleanNoPunct = clean.replace(/[?,.!"']/g, "");
+
+  // 1. Direct exact or substring question match
+  for (const faq of state.faqs) {
+    const q = faq.question.toLowerCase().trim();
+    const qClean = q.replace(/[?,.!"']/g, "");
+    if (q === clean || qClean === cleanNoPunct) return faq;
+  }
+
+  // Explicit guard against out-of-scope topics
+  const outOfScopeKeywords = [
+    "pet", "dog", "cat", "veterinarian", "life insurance", "term life", "whole life",
+    "commercial", "business", "fleet", "cancel", "refund", "cancellation", "claim",
+    "claims", "adjuster", "billing", "dispute", "charged twice", "bank", "installment",
+    "motorcycle", "boat", "rv", "harley", "address change", "garaging address", "update address",
+    "astronaut", "weather", "capital", "trivia", "joke"
+  ];
+  for (const oos of outOfScopeKeywords) {
+    if (clean.includes(oos)) return null;
+  }
+
+  // 2. High-precision keyword matching against questions
+  const stopWords = new Set(["what", "does", "have", "with", "from", "this", "that", "your", "coverage", "insurance", "about", "need", "could", "should", "would", "like"]);
+  const tokens = cleanNoPunct.split(/\s+/).filter(t => t.length > 2 && !stopWords.has(t));
 
   let bestFAQ = null;
   let bestScore = 0;
@@ -643,27 +679,23 @@ function searchFAQ(query) {
     const q = faq.question.toLowerCase();
     const a = faq.answer.toLowerCase();
 
-    if (q === clean) return faq;
-    if (q.includes(clean)) score += 50;
-
     tokens.forEach(t => {
-      if (q.includes(t)) score += 15;
-      if (a.includes(t)) score += 5;
+      if (q.includes(t)) score += 20;
+      else if (a.includes(t)) score += 5;
     });
 
     if (clean.includes("100/300") && q.includes("100/300")) score += 60;
-    if (clean.includes("bodily") && q.includes("Bodily Injury")) score += 50;
-    if (clean.includes("property damage") && q.includes("Property Damage")) score += 50;
-    if (clean.includes("water backup") && q.includes("Water Backup")) score += 60;
-    if ((clean.includes("gap") || clean.includes("loan") || clean.includes("lease")) && q.includes("Loan or Lease")) score += 60;
-    if (clean.includes("oem") && q.includes("OEM")) score += 60;
-    if (clean.includes("wind") && q.includes("Wind/Hail")) score += 60;
+    if (clean.includes("bodily injury") && q.includes("bodily injury")) score += 60;
+    if (clean.includes("property damage") && q.includes("property damage")) score += 60;
+    if (clean.includes("water backup") && q.includes("water backup")) score += 60;
+    if ((clean.includes("gap") || clean.includes("loan") || clean.includes("lease")) && q.includes("loan or lease")) score += 60;
+    if (clean.includes("oem") && q.includes("oem")) score += 60;
+    if (clean.includes("wind") && q.includes("wind/hail")) score += 60;
     if (clean.includes("all-perils") || clean.includes("aop")) score += 60;
-    if (clean.includes("dwelling") && q.includes("Dwelling")) score += 50;
-    if (clean.includes("deductible") && q.includes("deductible")) score += 40;
+    if (clean.includes("dwelling") && q.includes("dwelling")) score += 50;
     if (clean.includes("recalculate") && q.includes("recalculate")) score += 50;
     if (clean.includes("paying monthly") || clean.includes("paying in full")) score += 50;
-    if (clean.includes("agent") || clean.includes("call")) score += 30;
+    if (clean.includes("underwriter") && (q.includes("underwriting") || q.includes("underwriters") || q.includes("midvale"))) score += 50;
 
     if (score > bestScore) {
       bestScore = score;
@@ -671,7 +703,8 @@ function searchFAQ(query) {
     }
   }
 
-  if (bestScore >= 12) return bestFAQ;
+  // Require high threshold so out-of-scope queries return null
+  if (bestScore >= 40) return bestFAQ;
   return null;
 }
 
@@ -861,7 +894,17 @@ async function handleUserPrompt(text) {
   const lower = q.toLowerCase();
   const isEscalation = lower.includes("agent") || lower.includes("human") || lower.includes("call") || lower.includes("speak") || lower.includes("commercial") || lower.includes("claim");
 
-  // Try calling the live CXAS agent on GCP
+  const cannedEscalation = "I am connecting you with a licensed American Family Insurance specialist right now to assist you with your specific request. You can also call 1-800-MYAMFAM (1-800-692-6326).";
+
+  const widget = document.getElementById("amfam-ces-widget") || document.querySelector("chat-messenger");
+  if (widget && typeof widget.open === "function") {
+    widget.open();
+    if (typeof widget.renderCustomText === "function") {
+      widget.renderCustomText(q, true);
+    }
+  }
+
+  // Try calling the live CXAS agent on GCP or backend server
   try {
     const response = await fetch("/api/chat", {
       method: "POST",
@@ -879,6 +922,9 @@ async function handleUserPrompt(text) {
         const smartSuggestions = getSmartNextSuggestions(matchedKey, q);
 
         addMessage("agent", data.reply, smartSuggestions);
+        if (widget && typeof widget.renderCustomText === "function") {
+          widget.renderCustomText(data.reply, false);
+        }
         if (state.voice.isVoiceMode) speakVoice(data.reply);
         return;
       }
@@ -889,20 +935,27 @@ async function handleUserPrompt(text) {
 
   // Fallback to local deterministic FAQ engine
   if (isEscalation) {
-    const resp = "I can connect you directly with a licensed American Family Insurance specialist right now. You can call us at 1-800-MY-AMFAM (1-800-692-6326) or request a priority callback.";
-    addMessage("agent", resp, getSmartNextSuggestions("agent", q));
-    if (state.voice.isVoiceMode) speakVoice(resp);
+    addMessage("agent", cannedEscalation, getSmartNextSuggestions("agent", q));
+    if (widget && typeof widget.renderCustomText === "function") {
+      widget.renderCustomText(cannedEscalation, false);
+    }
+    if (state.voice.isVoiceMode) speakVoice(cannedEscalation);
     return;
   }
 
   const match = searchFAQ(q);
   if (match) {
     addMessage("agent", match.answer, getSmartNextSuggestions(match.question_key || match.category, q));
+    if (widget && typeof widget.renderCustomText === "function") {
+      widget.renderCustomText(match.answer, false);
+    }
     if (state.voice.isVoiceMode) speakVoice(match.answer);
   } else {
-    const fallback = "I am your Digital Coverage Advisor. I can explain auto & home coverages, liability limits, deductibles, and discounts. How can I help you today?";
-    addMessage("agent", fallback, getSmartNextSuggestions("default", q));
-    if (state.voice.isVoiceMode) speakVoice(fallback);
+    addMessage("agent", cannedEscalation, getSmartNextSuggestions("agent", q));
+    if (widget && typeof widget.renderCustomText === "function") {
+      widget.renderCustomText(cannedEscalation, false);
+    }
+    if (state.voice.isVoiceMode) speakVoice(cannedEscalation);
   }
 }
 

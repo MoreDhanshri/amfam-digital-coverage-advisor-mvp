@@ -68,3 +68,29 @@
   - [x] Built insurance-fluent spoken text normalizer for natural cadence and pauses
 - [x] Verified full end-to-end functionality on `http://dhanshrimore.c.googlers.com:8080`
 - [x] Committed and synced repository changes
+
+### Sprint: Deterministic Out-of-Scope Guardrail & OOTB Web Widget Deployment
+- [x] **Phase 1: Ingest & Formalize Requirements**
+  - [x] Ingest business & technical requirements from `faq.md`, `tdd.md`, and user prompt
+  - [x] Lock canned response text: `"I am connecting you with a licensed American Family Insurance specialist right now to assist you with your specific request. You can also call 1-800-MYAMFAM (1-800-692-6326)."`
+- [x] **Phase 2: Update Agent Instructions, Tools, and Callbacks**
+  - [x] Update `agents/root_agent/instruction.txt` with strict out-of-scope routing to canned response
+  - [x] Update `tools/escalate_to_agent/python_function/python_code.py` with standard canned response and `1-800-MYAMFAM (1-800-692-6326)`
+  - [x] Update `tools/lookup_coverage_faq/python_function/python_code.py` to prevent false positive matches and return canned response on `not_found`
+  - [x] Update `agents/root_agent/after_model_callbacks/after_model_callbacks_01/python_code.py` to enforce canned response guardrail on any escalation or non-FAQ query
+- [x] **Phase 3: Author Out-of-Scope Evaluations & Update Baseline Suites**
+  - [x] Author `evals/goldens/out_of_scope_queries.yaml` covering pet, life, commercial, claims, policy cancel, billing, and off-topic queries
+  - [x] Update existing `bundling_and_general_faq.yaml` golden escalation turns to match new canned response
+  - [x] Run `cxas lint` to guarantee 100% clean schema (0 errors, 0 warnings)
+  - [x] Run pytest on tool tests and eval verification suites (12/12 passing)
+- [x] **Phase 4: OOTB Web Widget Integration**
+  - [x] Remove legacy custom chat panel and bubble from `src/index.html`
+  - [x] Integrate Google's OOTB CES `<chat-messenger>` web component with `<chat-messenger-container>`
+  - [x] Configure `chatSdk.registerContext` for CES deployment with token broker and fallback
+  - [x] Update `src/app.js` and `server.py` to support OOTB widget lifecycle, event handling, and deterministic fallback with exact canned response
+  - [x] Brand widget with AmFam colors (#002F6C, #D71920) and configure titlebar actions
+- [x] **Phase 5: Verification & Walkthrough**
+  - [x] Test in-scope FAQ queries (verify exact verbatim answers)
+  - [x] Test out-of-scope queries (verify exact canned response)
+  - [x] Verify web widget renders and functions properly
+  - [x] Update documentation (`docs/decisions.md`, `docs/requirements.md`) and compile final walkthrough

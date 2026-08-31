@@ -24,6 +24,7 @@ PURPOSE:
 from typing import Optional
 
 FAREWELL_TEXT = "Thank you for exploring your coverage options with American Family Insurance. Have a great day!"
+CANNED_OUT_OF_SCOPE = "I am connecting you with a licensed American Family Insurance specialist right now to assist you with your specific request. You can also call 1-800-MYAMFAM (1-800-692-6326)."
 
 
 def after_model_callback(
@@ -31,14 +32,19 @@ def after_model_callback(
     llm_response: LlmResponse
 ) -> Optional[LlmResponse]:
     """Inspects and enforces exact response fidelity on model generation."""
+    if not llm_response or not llm_response.content:
+        return None
 
-    # Check for silent end_session
+    # Check for silent end_session or escalation calls in current response
     has_end_session = False
+    has_escalate = False
     has_text_this_call = False
 
     for part in llm_response.content.parts:
         if part.has_function_call("end_session"):
             has_end_session = True
+        elif part.has_function_call("escalate_to_agent"):
+            has_escalate = True
         else:
             content = part.text_or_transcript()
             if content and len(content.strip()) > 0:
@@ -57,5 +63,40 @@ def after_model_callback(
         new_parts = [Part.from_text(text=FAREWELL_TEXT)]
         new_parts.extend(llm_response.content.parts)
         return LlmResponse.from_parts(parts=new_parts)
+
+    # Check if this turn involved escalate_to_agent or a not_found lookup
+    is_escalation_turn = has_escalate
+    is_not_found = False
+    exact_faq_answer = None
+
+    for event in reversed(callback_context.events):
+        if event.is_user():
+            break
+        for p in event.parts():
+            if hasattr(p, "function_call") and p.function_call:
+                if p.function_call.name == "escalate_to_agent":
+                    is_escalation_turn = True
+            if hasattr(p, "function_response") and p.function_response:
+                fn_name = p.function_response.name
+                resp_data = p.function_response.response or {}
+                if fn_name == "escalate_to_agent":
+                    is_escalation_turn = True
+                elif fn_name == "lookup_coverage_faq":
+                    if resp_data.get("status") == "not_found":
+                        is_not_found = True
+                    elif resp_data.get("status") == "success" and "exact_answer" in resp_data:
+                        exact_faq_answer = resp_data["exact_answer"]
+
+    # If this is an escalation or not-found turn, enforce exact canned response
+    if (is_escalation_turn or is_not_found) and has_text_this_call:
+        non_fn_parts = [Part.from_text(text=CANNED_OUT_OF_SCOPE)]
+        fn_parts = [p for p in llm_response.content.parts if hasattr(p, "function_call") and p.function_call]
+        return LlmResponse.from_parts(parts=non_fn_parts + fn_parts)
+
+    # If an exact FAQ was retrieved, enforce exact verbatim fidelity
+    if exact_faq_answer and has_text_this_call:
+        non_fn_parts = [Part.from_text(text=exact_faq_answer)]
+        fn_parts = [p for p in llm_response.content.parts if hasattr(p, "function_call") and p.function_call]
+        return LlmResponse.from_parts(parts=non_fn_parts + fn_parts)
 
     return None

@@ -75,6 +75,24 @@ def test_not_found_fallback():
     res = lookup_coverage_faq("unknown_topic_xyz")
     assert res["status"] == "not_found"
     assert "agent_action" in res
+    assert "1-800-MYAMFAM (1-800-692-6326)" in res["exact_answer"]
+    assert "licensed American Family Insurance specialist" in res["exact_answer"]
+
+
+def test_escalate_to_agent_tool():
+    """Test escalate_to_agent return payload and phone number."""
+    esc_dir = Path(__file__).resolve().parents[2] / "cxas_app" / "amfam_faq_advisor" / "tools" / "escalate_to_agent" / "python_function"
+    sys.path.insert(0, str(esc_dir))
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("esc_mod", str(esc_dir / "python_code.py"))
+    esc_mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(esc_mod)
+
+    res = esc_mod.escalate_to_agent(reason="out_of_scope_query")
+    assert res["status"] == "success"
+    assert res["phone_number"] == "1-800-MYAMFAM (1-800-692-6326)"
+    assert "licensed American Family Insurance specialist" in res["canned_response"]
+    assert "1-800-MYAMFAM (1-800-692-6326)" in res["canned_response"]
 
 
 if __name__ == "__main__":
@@ -85,4 +103,5 @@ if __name__ == "__main__":
     test_underwriters_exact_match()
     test_fuzzy_and_alias_match()
     test_not_found_fallback()
+    test_escalate_to_agent_tool()
     print("All tool tests passed successfully!")

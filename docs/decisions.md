@@ -30,3 +30,15 @@
 * **Decision**: Integrate dual-path escalation modals in frontend (`src/index.html` & `src/app.js`), update `escalate_to_agent` tool and agent instructions to provide `1-800-MY-AMFAM` toll-free contact and operating hours, implement `getSmartNextSuggestions()` for dynamic 4-chip topic routing, and sanitize `resetSession()` to emit natural advisor greetings without raw session identifiers.
 * **Consequences**: Seamless end-to-end customer support journey from digital FAQ clarification to live licensed agent transfer with pre-routed quote state.
 
+## ADR-006: Out-of-Scope Universal Escalation Guardrail & Google CES OOTB Web Widget Integration
+* **Date**: 2026-08-31
+* **Context**: Requirements mandate that queries outside the canonical FAQ library (pet insurance, commercial lines, life insurance, policy modifications, claims, cancellations, billing disputes, or chit-chat) must strictly output the exact canned response: `"I am connecting you with a licensed American Family Insurance specialist right now to assist you with your specific request. You can also call 1-800-MYAMFAM (1-800-692-6326)."`. In parallel, the legacy custom chat panel is replaced with Google's fast Customer Engagement Suite (CES) `<chat-messenger>` OOTB web component widget.
+* **Decision**:
+  1. Updated `tools/escalate_to_agent/python_function/python_code.py` to return standard `phone_number: "1-800-MYAMFAM (1-800-692-6326)"` and canned response text.
+  2. Tightened `tools/lookup_coverage_faq` fuzzy matching cutoff to 0.75, eliminated substring cross-matching, and set fallback to canned response.
+  3. Enforced exact fidelity in `after_model_callbacks_01` callback, returning canned text whenever escalation occurs or lookup returns `not_found`.
+  4. Authored `evals/goldens/out_of_scope_queries.yaml` (10 test cases covering diverse non-FAQ queries) and verified with `cxas lint` (0 errors, 0 warnings) and pytest (12 unit tests passed).
+  5. Replaced custom floating chat DOM with `<chat-messenger>` and `<chat-messenger-container>` referencing official `chat-messenger.js` / `chat-messenger-default.css`, hooked `chatSdk.registerContext()`, and branded with AmFam design tokens.
+* **Consequences**: Zero conversational drift on non-FAQ queries, guaranteed compliance boundary, and direct alignment with Google Customer Engagement Suite best practices.
+
+

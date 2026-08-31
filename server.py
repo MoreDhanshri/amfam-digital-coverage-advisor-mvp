@@ -25,6 +25,7 @@ import json
 import logging
 import os
 from pathlib import Path
+import re
 import sys
 import uuid
 
@@ -58,6 +59,12 @@ except Exception as auth_err:
     logger.warn(f"CXAS Sessions initialization deferred (will use deterministic engine): {auth_err}")
 
 
+CANNED_OUT_OF_SCOPE_RESPONSE = (
+    "I am connecting you with a licensed American Family Insurance specialist right now "
+    "to assist you with your specific request. You can also call 1-800-MYAMFAM (1-800-692-6326)."
+)
+
+
 class AmFamDemoHandler(http.server.SimpleHTTPRequestHandler):
     """HTTP Request Handler serving static frontend assets and /api/chat endpoints."""
 
@@ -74,35 +81,98 @@ class AmFamDemoHandler(http.server.SimpleHTTPRequestHandler):
         self._send_cors_headers()
         self.end_headers()
 
-
     def _get_local_faq_fallback(self, message):
-        """Fallback to exact canonical FAQ library if live CXAS session fails."""
+        """Deterministic FAQ knowledge engine and out-of-scope escalation router."""
+        clean = message.lower().strip()
+        clean_no_punct = re.sub(r"[^\w\s]", " ", clean).strip()
+
+        # Check explicit escalation keywords (word boundaries to avoid false positives)
+        escalation_patterns = [
+            r"\b(agent|human|representative|specialist|call|speak|talk to someone)\b",
+            r"\b(cancel|cancellation|cancel policy|refund|dispute|charged twice)\b",
+            r"\b(claim|claims|adjuster|file a claim|claim status)\b",
+            r"\b(pet|dog|cat|puppy|kitten|veterinary)\b",
+            r"\b(life insurance|term life|whole life)\b",
+            r"\b(commercial|business insurance|fleet|commercial auto)\b",
+            r"\b(motorcycle|boat|watercraft|rv|trailer|atv|snowmobile)\b",
+            r"\b(address change|change address|update address|garaging address)\b",
+        ]
+        for pat in escalation_patterns:
+            if re.search(pat, clean):
+                return CANNED_OUT_OF_SCOPE_RESPONSE, "escalate_to_agent", True
+
         try:
             faq_path = STATIC_DIR / "data" / "faqs.json"
             if faq_path.exists():
                 with open(faq_path, "r", encoding="utf-8") as f:
                     faqs = json.load(f)
-                clean = message.lower().strip()
+
+                # 1. Exact / normalized question match
                 for faq in faqs:
-                    if faq.get("question", "").lower().strip() == clean:
-                        return faq.get("answer"), faq.get("question_key")
-                    if clean in faq.get("question", "").lower():
-                        return faq.get("answer"), faq.get("question_key")
-                # Keyword tokens
-                tokens = [t for t in clean.split() if len(t) > 3]
-                best_match = None
-                best_score = 0
-                for faq in faqs:
-                    q = faq.get("question", "").lower()
-                    score = sum(1 for t in tokens if t in q)
-                    if score > best_score:
-                        best_score = score
-                        best_match = faq
-                if best_match and best_score >= 1:
-                    return best_match.get("answer"), best_match.get("question_key")
+                    q = faq.get("question", "").lower().strip()
+                    q_clean = re.sub(r"[^\w\s]", " ", q).strip()
+                    if q == clean or q_clean == clean_no_punct:
+                        return faq.get("answer"), faq.get("question_key") or faq.get("id"), False
+
+                # 2. Topic keyword mapping for single-topic or direct inquiries
+                topic_map = [
+                    (r"\bcomprehensive\b", "comprehensive_coverage"),
+                    (r"\bcollision\b", "collision_coverage"),
+                    (r"\bbodily injury\b", "bodily_injury_liability"),
+                    (r"\bproperty damage\b", "property_damage_liability"),
+                    (r"\b(uninsured|um)\b", "uninsured_motorist_um"),
+                    (r"\b(underinsured|uim)\b", "underinsured_motorist_uim"),
+                    (r"\brental\b", "rental_reimbursement"),
+                    (r"\b(roadside|era|towing|jump start)\b", "roadside_assistance_era"),
+                    (r"\b(oem|original equipment)\b", "oem_parts_coverage"),
+                    (r"\b(gap|loan|lease)\b", "gap_loan_lease_assistance"),
+                    (r"\b(new car|brand new vehicle)\b", "new_car_replacement"),
+                    (r"\b(medical expense|med pay)\b", "medical_expense_coverage"),
+                    (r"\bpip\b|\bpersonal injury protection\b", "personal_injury_protection_pip"),
+                    (r"\bdwelling\b|\bcoverage a\b", "dwelling_coverage_a"),
+                    (r"\bother structures\b|\bcoverage b\b", "other_structures_b"),
+                    (r"\bpersonal property\b|\bcoverage c\b", "personal_property_c"),
+                    (r"\bloss of use\b|\bcoverage d\b", "loss_of_use_d"),
+                    (r"\bpersonal liability\b|\bcoverage e\b", "personal_liability_e"),
+                    (r"\bmedical payments\b|\bcoverage f\b", "medical_payments_f"),
+                    (r"\bwater backup\b|\bsump pump\b", "water_backup_coverage"),
+                    (r"\bservice line\b|\butility line\b", "service_line_coverage"),
+                    (r"\bequipment breakdown\b|\bhvac breakdown\b", "equipment_breakdown_coverage"),
+                    (r"\bearthquake\b", "earthquake_coverage"),
+                    (r"\bwind\b|\bhail\b", "wind_hail_deductible"),
+                    (r"\bhurricane\b", "hurricane_deductible"),
+                    (r"\bdeductible\b", "how_to_choose_deductible"),
+                    (r"\b(bundle|bundling|multi product)\b", "how_bundling_saves_money"),
+                    (r"\bdnq\b|\bdoes not qualify\b", "does_not_qualify_dnq"),
+                    (r"\brecalculate\b|\bcalculate new rate\b", "auto_recalculate_rate"),
+                ]
+
+                for pat, key in topic_map:
+                    if re.search(pat, clean):
+                        for faq in faqs:
+                            if faq.get("question_key") == key or faq.get("id") == key:
+                                return faq.get("answer"), key, False
+
+                # 3. Fuzzy overlap matching
+                tokens = set([t for t in clean_no_punct.split() if len(t) > 3 and t not in {"what", "does", "have", "with", "from", "this", "that", "your", "coverage", "insurance", "about", "tell"}])
+                if tokens:
+                    best_match = None
+                    best_overlap = 0
+                    for faq in faqs:
+                        q_words = set(re.sub(r"[^\w\s]", " ", faq.get("question", "").lower()).split())
+                        overlap = len(tokens.intersection(q_words))
+                        if overlap > best_overlap:
+                            best_overlap = overlap
+                            best_match = faq
+
+                    if best_match and best_overlap >= 1:
+                        return best_match.get("answer"), best_match.get("question_key") or best_match.get("id"), False
+
         except Exception as err:
             logger.warn(f"Local fallback error: {err}")
-        return None, None
+
+        # Out-of-scope fallback canned response
+        return CANNED_OUT_OF_SCOPE_RESPONSE, "escalate_to_agent", True
 
     def do_GET(self):
         if self.path == "/api/status":
@@ -135,6 +205,7 @@ class AmFamDemoHandler(http.server.SimpleHTTPRequestHandler):
         return super().do_GET()
 
     def do_POST(self):
+        global sessions_client
         if self.path == "/api/chat":
             content_length = int(self.headers.get("Content-Length", 0))
             body = self.rfile.read(content_length).decode("utf-8")
@@ -203,30 +274,20 @@ class AmFamDemoHandler(http.server.SimpleHTTPRequestHandler):
 
             except Exception as e:
                 logger.warn(f"Live CXAS call failed ({e}), checking deterministic FAQ library fallback...")
-                fallback_ans, q_key = self._get_local_faq_fallback(user_message)
-                if fallback_ans:
-                    logger.info(f"Fallback exact match found: {q_key}")
-                    self.send_response(200)
-                    self.send_header("Content-Type", "application/json")
-                    self._send_cors_headers()
-                    self.end_headers()
-                    self.wfile.write(json.dumps({
-                        "status": "success",
-                        "session_id": session_id,
-                        "reply": fallback_ans,
-                        "tool_calls": [{"name": "get_faq_answer", "args": {"question_key": q_key}}],
-                        "source": "deterministic_fallback"
-                    }).encode("utf-8"))
-                    return
-
-                self.send_response(500)
+                fallback_ans, q_key, is_esc = self._get_local_faq_fallback(user_message)
+                tool_name = "escalate_to_agent" if is_esc else "lookup_coverage_faq"
+                tool_args = {"reason": "out_of_scope_query"} if is_esc else {"question_key": q_key}
+                logger.info(f"Fallback exact match found: {q_key} (tool: {tool_name})")
+                self.send_response(200)
                 self.send_header("Content-Type", "application/json")
                 self._send_cors_headers()
                 self.end_headers()
                 self.wfile.write(json.dumps({
-                    "status": "error",
-                    "error": str(e),
-                    "session_id": session_id
+                    "status": "success",
+                    "session_id": session_id,
+                    "reply": fallback_ans,
+                    "tool_calls": [{"name": tool_name, "args": tool_args}],
+                    "source": "deterministic_fallback"
                 }).encode("utf-8"))
             return
 

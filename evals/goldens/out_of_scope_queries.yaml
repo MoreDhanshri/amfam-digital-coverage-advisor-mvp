@@ -1,0 +1,147 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+common_session_parameters:
+  last_faq_category: "escalation"
+
+conversations:
+  - conversation: pet_insurance_out_of_scope
+    turns:
+      - user: "Can I purchase pet health insurance for my golden retriever dog?"
+        agent: "I am connecting you with a licensed American Family Insurance specialist right now to assist you with your specific request. You can also call 1-800-MYAMFAM (1-800-692-6326)."
+        tool_calls:
+          - action: escalate_to_agent
+            args:
+              reason: "out_of_scope_query"
+    expectations:
+      - "The agent must recognize pet insurance as out-of-scope and call escalate_to_agent"
+      - "The agent must output the exact canned specialist connection response with 1-800-MYAMFAM"
+    tags: [P0, BLOCKER, out-of-scope, escalation, exact-match]
+
+  - conversation: life_insurance_out_of_scope
+    turns:
+      - user: "Do you sell 30-year term life insurance policies?"
+        agent: "I am connecting you with a licensed American Family Insurance specialist right now to assist you with your specific request. You can also call 1-800-MYAMFAM (1-800-692-6326)."
+        tool_calls:
+          - action: escalate_to_agent
+            args:
+              reason: "out_of_scope_query"
+    expectations:
+      - "The agent must recognize life insurance as out-of-scope for the APEX auto/home FAQ advisor"
+      - "The agent must output the exact canned response verbatim"
+    tags: [P0, BLOCKER, out-of-scope, escalation, exact-match]
+
+  - conversation: commercial_fleet_out_of_scope
+    turns:
+      - user: "I need commercial insurance for my business delivery van fleet."
+        agent: "I am connecting you with a licensed American Family Insurance specialist right now to assist you with your specific request. You can also call 1-800-MYAMFAM (1-800-692-6326)."
+        tool_calls:
+          - action: escalate_to_agent
+            args:
+              reason: "out_of_scope_query"
+    expectations:
+      - "The agent must route commercial fleet queries to escalate_to_agent"
+      - "The agent must output the exact canned response verbatim"
+    tags: [P0, BLOCKER, out-of-scope, escalation, exact-match]
+
+  - conversation: claims_filing_status_out_of_scope
+    turns:
+      - user: "Where can I check the adjuster status on my pending auto collision claim #CLM-92841?"
+        agent: "I am connecting you with a licensed American Family Insurance specialist right now to assist you with your specific request. You can also call 1-800-MYAMFAM (1-800-692-6326)."
+        tool_calls:
+          - action: escalate_to_agent
+            args:
+              reason: "out_of_scope_query"
+    expectations:
+      - "The agent must escalate specific claim numbers to a licensed specialist"
+      - "The agent must output the exact canned response verbatim"
+    tags: [P0, BLOCKER, out-of-scope, escalation, exact-match]
+
+  - conversation: policy_cancellation_out_of_scope
+    turns:
+      - user: "I want to cancel my auto policy effective immediately and get a refund."
+        agent: "I am connecting you with a licensed American Family Insurance specialist right now to assist you with your specific request. You can also call 1-800-MYAMFAM (1-800-692-6326)."
+        tool_calls:
+          - action: escalate_to_agent
+            args:
+              reason: "out_of_scope_query"
+    expectations:
+      - "The agent must escalate policy cancellation requests to a live agent"
+      - "The agent must output the exact canned response verbatim"
+    tags: [P1, HIGH, out-of-scope, escalation, exact-match]
+
+  - conversation: billing_dispute_out_of_scope
+    turns:
+      - user: "Why was my bank account charged twice for my monthly premium installment?"
+        agent: "I am connecting you with a licensed American Family Insurance specialist right now to assist you with your specific request. You can also call 1-800-MYAMFAM (1-800-692-6326)."
+        tool_calls:
+          - action: escalate_to_agent
+            args:
+              reason: "out_of_scope_query"
+    expectations:
+      - "The agent must escalate billing dispute inquiries to escalate_to_agent"
+      - "The agent must output the exact canned response verbatim"
+    tags: [P1, HIGH, out-of-scope, escalation, exact-match]
+
+  - conversation: motorcycle_boat_out_of_scope
+    turns:
+      - user: "Can I add my Harley motorcycle or speed boat to this quote?"
+        agent: "I am connecting you with a licensed American Family Insurance specialist right now to assist you with your specific request. You can also call 1-800-MYAMFAM (1-800-692-6326)."
+        tool_calls:
+          - action: escalate_to_agent
+            args:
+              reason: "out_of_scope_query"
+    expectations:
+      - "The agent must escalate specialty vehicle / motorcycle inquiries"
+      - "The agent must output the exact canned response verbatim"
+    tags: [P1, HIGH, out-of-scope, escalation, exact-match]
+
+  - conversation: address_change_endorsement_out_of_scope
+    turns:
+      - user: "I moved to a new apartment in Madison, can you update my garaging address on file?"
+        agent: "I am connecting you with a licensed American Family Insurance specialist right now to assist you with your specific request. You can also call 1-800-MYAMFAM (1-800-692-6326)."
+        tool_calls:
+          - action: escalate_to_agent
+            args:
+              reason: "out_of_scope_query"
+    expectations:
+      - "The agent must escalate personal policy endorsements to a licensed specialist"
+      - "The agent must output the exact canned response verbatim"
+    tags: [P1, HIGH, out-of-scope, escalation, exact-match]
+
+  - conversation: random_trivia_out_of_scope
+    turns:
+      - user: "What is the capital city of Wisconsin and what is the weather like there today?"
+        agent: "I am connecting you with a licensed American Family Insurance specialist right now to assist you with your specific request. You can also call 1-800-MYAMFAM (1-800-692-6326)."
+        tool_calls:
+          - action: escalate_to_agent
+            args:
+              reason: "out_of_scope_query"
+    expectations:
+      - "The agent must route off-topic general knowledge queries to escalate_to_agent"
+      - "The agent must output the exact canned response verbatim"
+    tags: [P2, MEDIUM, out-of-scope, escalation, exact-match]
+
+  - conversation: astronaut_discount_unanswerable
+    turns:
+      - user: "Do you offer a special 50% discount for NASA astronauts and space travelers?"
+        agent: "I am connecting you with a licensed American Family Insurance specialist right now to assist you with your specific request. You can also call 1-800-MYAMFAM (1-800-692-6326)."
+        tool_calls:
+          - action: escalate_to_agent
+            args:
+              reason: "out_of_scope_query"
+    expectations:
+      - "The agent must escalate unanswerable discounts not found in the FAQ knowledge base"
+      - "The agent must output the exact canned response verbatim"
+    tags: [P2, MEDIUM, out-of-scope, escalation, exact-match]
