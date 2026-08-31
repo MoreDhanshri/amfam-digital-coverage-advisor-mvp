@@ -1030,48 +1030,116 @@
   </div>
 
   <!-- ========================================================================= -->
-  <!-- DIGITAL COVERAGE ADVISOR WIDGET (TWO-WAY VOICE + REAL-TIME BARGE-IN) -->
+  <!-- AMFAM FAQ ADVISOR WIDGET (TWO-WAY VOICE + REAL-TIME BARGE-IN) -->
+  <!-- Deployment: projects/gecx-amfam/locations/us/apps/b8159ce5-24ba-4578-8547-b58995268856/deployments/amfam-faq-advisor-web-widget -->
   <!-- ========================================================================= -->
-  <!-- ========================================================================= -->
-  <!-- GOOGLE CUSTOMER ENGAGEMENT SUITE (CES) OOTB CHAT-MESSENGER WEB WIDGET -->
-  <!-- ========================================================================= -->
-  <chat-messenger
-    id="amfam-ces-widget"
-    url-allowlist="*"
-    render-mode="slide-over"
-    language-code="en"
-    max-query-length="-1"
-  >
-    <chat-messenger-container
-      chat-title="AmFam Digital Coverage Advisor"
-      chat-title-icon="https://gstatic.com/dialogflow-console/common/assets/ccai-favicons/conversational_agents.png"
-      enable-audio-input
-    >
-      <chat-reset-session-button slot="titlebar-actions" title-text="New chat"></chat-reset-session-button>
-      <chat-toggle-dialog-button slot="titlebar-actions" title-text-expanded="Collapse" title-text-collapsed="Expand"></chat-toggle-dialog-button>
-      <chat-messenger-close-button slot="titlebar-actions" title-text="Close"></chat-messenger-close-button>
-    </chat-messenger-container>
-  </chat-messenger>
+  <div id="chat-bubble-container" class="fixed bottom-6 right-6 z-50 flex flex-col items-end">
+    
+    <!-- EXPANDED ADVISOR CHAT PANEL -->
+    <div id="advisor-chat-panel" class="w-[360px] sm:w-[420px] bg-white rounded-2xl shadow-2xl border border-slate-300 flex flex-col overflow-hidden mb-3 h-[580px] transition-all duration-200 hidden">
+      
+      <!-- HEADER WITH LIVE GECX CES BADGE, RESET SESSION & TWO-WAY VOICE TOGGLE -->
+      <div class="bg-[#002F6C] text-white px-4 py-3 flex items-center justify-between shadow-xs">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-full bg-[#0A58CA] flex items-center justify-center font-bold text-xs shadow-inner border border-blue-400">
+            AF
+          </div>
+          <div>
+            <div class="flex items-center gap-1.5">
+              <span class="font-bold text-sm sm:text-base leading-none text-white">AmFam FAQ Advisor</span>
+              <a href="https://ces.cloud.google.com/projects/gecx-amfam/locations/us/apps/b8159ce5-24ba-4578-8547-b58995268856" target="_blank" class="inline-flex items-center gap-1 bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-[9px] font-bold px-1.5 py-0.5 rounded-full hover:bg-emerald-500/30 transition" title="Open Agent in Google CES Portal">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
+                CES Portal ↗
+              </a>
+            </div>
+            <div class="text-[10px] text-blue-200 mt-1 flex items-center gap-1">
+              <span>App: amfam-faq-advisor</span>
+              <span>•</span>
+              <span class="text-emerald-300 font-mono">b8159ce5 (Live Voice)</span>
+            </div>
+          </div>
+        </div>
 
-  <script>
-    window.addEventListener('chat-messenger-loaded', () => {
-      try {
-        if (window.chatSdk && window.chatSdk.registerContext) {
-          chatSdk.registerContext(
-            chatSdk.prebuilts.ces.createContext({
-              deploymentName: 'projects/gecx-amfam/locations/us/apps/b8159ce5-24ba-4578-8547-b58995268856/deployments/amfam-faq-advisor-web-widget',
-              tokenBroker: {
-                enableTokenBroker: true,
-                enableRecaptcha: false,
-              },
-            })
-          );
-        }
-      } catch (err) {
-        console.warn('CES chatSdk registration error:', err);
-      }
-    });
-  </script>
+        <div class="flex items-center gap-1.5">
+          <!-- RESET SESSION BUTTON -->
+          <button onclick="resetSession()" class="text-blue-200 hover:text-white p-1.5 rounded-lg hover:bg-blue-800 transition" title="Reset Conversation &amp; Session">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+          </button>
+          
+          <!-- TWO-WAY VOICE TOGGLE -->
+          <button id="voice-mode-toggle-btn" onclick="toggleVoiceMode()" class="text-blue-200 hover:text-white p-1.5 rounded-lg hover:bg-blue-800 transition" title="Toggle Two-Way Voice Mode (Continuous Talk &amp; Listen)">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/></svg>
+          </button>
+          
+          <!-- CLOSE -->
+          <button onclick="toggleAdvisor(false)" class="text-blue-200 hover:text-white p-1.5 rounded-lg hover:bg-blue-800 transition">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- LIVE TWO-WAY VOICE BANNER (SPEAKING / LISTENING / MUTED STATE) -->
+      <div id="voice-status-banner" class="hidden bg-[#0C2340] px-4 py-2 flex items-center justify-between text-xs text-blue-200 border-b border-blue-900">
+        <div id="voice-status-text" class="flex items-center gap-2 text-[11px]">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+          <span class="text-emerald-300 font-semibold">Listening... Speak now (Barge-in ready)</span>
+        </div>
+        
+        <div class="flex items-center gap-2">
+          <!-- MUTE / UNMUTE TOGGLE BUTTON -->
+          <button id="voice-mute-btn" onclick="toggleMute()" class="bg-blue-800 hover:bg-blue-700 text-blue-100 px-2 py-1 rounded text-[10px] font-semibold transition flex items-center gap-1">
+            🎙️ <span>Mute</span>
+          </button>
+          <button onclick="toggleVoiceMode()" class="text-slate-400 hover:text-white text-[10px] underline">Exit Voice</button>
+        </div>
+      </div>
+
+      <!-- BARGE-IN INTERRUPTION TOAST -->
+      <div id="barge-in-toast" class="hidden bg-amber-500 text-slate-950 font-bold px-3 py-1.5 text-center text-xs barge-in-badge shadow-sm flex items-center justify-center gap-1.5">
+        <span>⚡ Interrupted! Advisor paused &amp; listening to you...</span>
+      </div>
+
+      <!-- INTERIM VOICE SPEECH PREVIEW -->
+      <div id="voice-interim-display" class="hidden bg-blue-950/90 text-amber-200 px-4 py-1.5 text-[11px] font-mono italic border-b border-blue-800 truncate"></div>
+
+      <!-- SESSION RESET CONFIRMATION TOAST -->
+      <div id="session-reset-toast" class="hidden bg-emerald-700 text-white text-[11px] px-3 py-1.5 text-center font-semibold">
+        ✨ Session reset successfully! Started a new conversation.
+      </div>
+
+      <!-- MESSAGES SCROLL -->
+      <div id="advisor-messages-list" class="flex-grow p-4 overflow-y-auto bg-[#F8FAFC] space-y-3"></div>
+
+      <!-- INPUT BAR WITH VOICE MIC TRIGGER -->
+      <div class="p-3 bg-white border-t border-slate-200">
+        <form onsubmit="event.preventDefault(); const inp = document.getElementById('chat-text-inp'); handleUserPrompt(inp.value); inp.value='';">
+          <div class="flex items-center gap-2">
+            <input id="chat-text-inp" type="text" placeholder="Ask about 100/300, deductibles, water backup..." class="flex-grow bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2 text-xs font-medium focus:ring-2 focus:ring-[#0A58CA] focus:outline-none" />
+            
+            <!-- MIC BUTTON (QUICK VOICE INPUT / STT TRIGGER / BARGE-IN) -->
+            <button id="voice-mic-main-btn" type="button" onclick="triggerMainMicClick()" class="p-2 rounded-xl text-blue-100 bg-blue-800 hover:bg-blue-700 transition shrink-0 shadow-xs" title="Talk / Interrupt Advisor">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/></svg>
+            </button>
+
+            <!-- SEND BUTTON -->
+            <button type="submit" class="bg-[#002F6C] hover:bg-[#0A58CA] text-white p-2 rounded-xl transition shrink-0 shadow-xs">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+            </button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+
+    <!-- GLOWING & JUMPING CHAT LAUNCHER BUTTON -->
+    <button id="chat-bubble-button" onclick="toggleAdvisor()" class="relative bg-gradient-to-br from-[#002F6C] to-[#0C2340] text-white p-4 rounded-full shadow-2xl transition transform flex items-center justify-center border-2 border-[#D71920] bubble-glowing bubble-jumping" title="Open AmFam FAQ Advisor">
+      <div class="absolute -top-1 -right-1 w-4 h-4 bg-[#D71920] rounded-full animate-ping"></div>
+      <div class="absolute -top-1 -right-1 w-4 h-4 bg-[#D71920] rounded-full flex items-center justify-center text-[9px] font-bold text-white">1</div>
+      
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
+    </button>
+
+  </div>
 
   <!-- BIND SUCCESS MODAL -->
   <div id="bind-success-modal" class="fixed inset-0 bg-slate-950/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden">

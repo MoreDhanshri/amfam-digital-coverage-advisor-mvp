@@ -107,7 +107,7 @@ function getFreshSessionGreeting() {
     {
       id: "msg-welcome",
       sender: "agent",
-      text: "👋 Hi there! I am your American Family Digital Coverage Advisor. How can I help you today? Ask me any question about auto & home coverage limits, deductibles, optional add-ons, or multi-policy bundling.",
+      text: "👋 Hello! I am your American Family Insurance FAQ Advisor. How can I help you today? Ask me any question about auto & home coverage limits, deductibles, optional add-ons, or multi-policy bundling.",
       time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
       quickReplies: [
         "🚗 What is Bodily Injury 100/300?",
